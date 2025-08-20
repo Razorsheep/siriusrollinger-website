@@ -20,92 +20,107 @@ class PageSeeder extends Seeder
                 'author_id' => 1,
                 'status' => 'published',
                 'page_type' => 'service',
-                'content' => '<h2>Førstehjælpskurser til din hund</h2>
+                'next_event_title' => 'Grundlæggende førstehjælp til hund',
+                'next_event_date' => '15. september 2025',
+                'next_event_time' => '09:00 - 13:00',
+                'next_event_location' => 'Bagsværd Hundetræningscenter',
+                'next_event_description' => '4-timers kursus med teori og praktiske øvelser. Maks 12 deltagere.',
+                'next_event_registration_link' => 'mailto:info@firstaiddog.dk?subject=Tilmelding til førstehjælpskursus',
+                'photos' => [
+                    '/images/logo.png',
+                    '/images/logo.png'
+                ],
+                'contact_phone' => '+45 42 20 38 70',
+                'contact_email' => 'info@firstaiddog.dk',
+                'content' => '<h1>Kurser i førstehjælp til private, virksomheder og foreninger</h1>
 
-<p>Vil du være forberedt på at håndtere nødsituationer med din hund? Vores praktiske førstehjælpskurser giver dig de vigtigste færdigheder og viden til at redde liv, når det betyder mest.</p>
+Grundlæggende førstehjælp til hund
+Har du oplevet, at din hund har flækket en klo, skåret en trædepude, været halt efter en lang dag efter en tur eller at den har haft sår og skrammer? Eller måske har den kastet op eller haft tynd mave? Og har du været i tvivl om, hvad du skulle gøre, og hvornår det er så alvorligt, at du skal kontakte dyrlæge?
 
-<h3>Hvad lærer du på kurset?</h3>
+Så er et kursus i grundlæggende førstehjælpskursus for hunde noget for dig.
 
+Førstehjælpskurset bliver afholdt på små hold med fokus på teori der omsættes i praksis med øvelser og træning på egne hunde. Kurset er både til privatpersoner der træner hund, foreninger med hundetræning, jagt, canicross eller lignende, samt virksomheder med arbejdshunde.
+
+<h2>Hvad lærer du på kurset</h2>
 <ul>
-<li><strong>Grundlæggende førstehjælp:</strong> ABC-principperne (Airway, Breathing, Circulation) for hunde</li>
-<li><strong>Hjertemassage og kunstig åndedræt:</strong> Teknikker til at genoplive din hund</li>
-<li><strong>Forbandning og blødningskontrol:</strong> Håndtering af sår og blødninger</li>
-<li><strong>Chok og bevidstløshed:</strong> Genkendelse og behandling</li>
-<li><strong>Forgiftning:</strong> Symptomer og førstehjælp ved forgiftning</li>
-<li><strong>Brændsår og varmeskader:</strong> Akut behandling</li>
-<li><strong>Frostskader:</strong> Håndtering i kolde omgivelser</li>
+<li>Hvordan du håndterer en skadet hund og sikrer dig selv</li>
+<li>Funktionel anatomi og hvordan du kender og tjekker din egen hunds normale værdier: puls, vejrtrækning, temperatur, slimhindevurdering og hvad du kan bruge de normale værdier til</li>
+<li>Hvordan du systematisk og effektivt kan gennemgå din hund for skader</li>
+<li>Hvordan du vurderer og håndterer mindre og større skader, herunder diarré, sårrens og forbindinger</li>
+<li>Grundlæggende ide om hvilke skadestyper du selv kan håndtere og hvilke der kræver dyrlægebesøg</li>
+<li>Hvordan du yder livreddende førstehjælp til din hund – og hvad der adskiller sig fra førstehjælp til mennesker</li>
+<li>Hvad du skal have med i din førstehjælpstaske og i dit hjemmeapotek til hund</li>
 </ul>
 
-<h3>Kursusformat</h3>
+<p>Kurset varer 4 timer, og der er praktiske øvelser indlagt.</p>
 
-<p>Vores kurser afholdes i små grupper (maks. 8 deltagere) for at sikre personlig opmærksomhed og praktisk øvelse. Hvert kursus varer 4 timer og inkluderer:</p>
+<p>Med kurset får du også et aktionskort, som indeholder den vigtigste viden i komprimeret form og vejrbestandigt format.</p>
 
-<ul>
-<li>Teoretisk undervisning med visuelle materialer</li>
-<li>Praktiske øvelser på hundedukker</li>
-<li>Case-studier fra virkelige situationer</li>
-<li>Kursusmateriale og certifikat</li>
-<li>Kaffe og kage undervejs</li>
-</ul>
+<p>Der er mulighed for at tilkøbe det førstehjælpskit der bliver anvendt i undervisningen.</p>
 
-<h3>Praktisk information</h3>
+<p>Deltagerantal er 12 for at optimere forhold til feedback og øvelser.</p>
 
-<p><strong>Pris:</strong> 795 kr. per person<br>
-<strong>Varighed:</strong> 4 timer<br>
-<strong>Sted:</strong> Vores kursuslokale i [by] eller hos dig (for grupper på 6+ personer)<br>
-<strong>Datoer:</strong> Se vores kalender for kommende kurser</p>
+<p>Max. én hund pr. to kursister til øvelserne. Hunden skal være omgængelig og vaccineret efter de gældende regler.</p>
 
-<h3>Book dit kursus</h3>
+<p><strong>Kurset er ikke en erstatning for et dyrlægebesøg.</strong></p>
 
-<p>Kontakt os for at booke plads på et af vores kommende kurser eller for at arrangere et privat kursus for din familie eller vennegruppe.</p>
+<h2>Hvad koster det?</h2>
+<p>Pris for kurset (ikke pr. deltager): <strong>10.500 kr.</strong></p>
 
-<p><em>Husk: Den bedste førstehjælp er den, du aldrig behøver at bruge. Men når du har brug for det, er det uundværligt at vide, hvad du skal gøre.</em></p>',
+<p>Dertil kommer transport fra Bagsværd efter statens transporttakster.</p>
+
+<h2>Hvordan booker jeg?</h2>
+<p>Kontakt Julie for mere information eller bookning af kursus.</p>'
             ],
             [
                 'title' => 'Kurser for Dyrlæger',
+                'slug' => 'kurser-for-dyrlaeger',
                 'author_id' => 1,
                 'status' => 'published',
                 'page_type' => 'service',
-                'content' => '<h2>Førstehjælpskurser til din hund</h2>
+                'next_event_title' => 'Den Akutte Patient & Genoplivning',
+                'next_event_date' => '20. oktober 2025',
+                'next_event_time' => '08:00 - 16:00',
+                'next_event_location' => 'På jeres klinik',
+                'next_event_description' => 'Dagskursus afholdt på jeres klinik for praktisk læring for hele klinikken.',
+                'next_event_registration_link' => 'mailto:kontakt@førstehjælphund.dk?subject=Tilmelding til dyrlægekursus',
+                'photos' => [
+                    '/images/logo.png',
+                    '/images/logo.png'
+                ],
+                'contact_phone' => '+45 42 20 38 70',
+                'contact_email' => 'kontakt@førstehjælphund.dk',
+                'content' => '<h1>Kurser til dyrlæger og veterinærsygeplejersker</h1>
 
-<p>Vil du være forberedt på at håndtere nødsituationer med din hund? Vores praktiske førstehjælpskurser giver dig de vigtigste færdigheder og viden til at redde liv, når det betyder mest.</p>
+<h2>Den Akutte patient & Genoplivning</h2>
+<p><strong>DAGSKURSER AFHOLDT PÅ JERES KLINIK FOR PRAKTISK LÆRING FOR HELE KLINIKKEN, SOM I KAN ANVENDE DIREKTE I HVERDAGEN</strong></p>
 
-<h3>Hvad lærer du på kurset?</h3>
+<h3>DEN AKUTTE PATIENT</h3>
 
-<ul>
-<li><strong>Grundlæggende førstehjælp:</strong> ABC-principperne (Airway, Breathing, Circulation) for hunde</li>
-<li><strong>Hjertemassage og kunstig åndedræt:</strong> Teknikker til at genoplive din hund</li>
-<li><strong>Forbandning og blødningskontrol:</strong> Håndtering af sår og blødninger</li>
-<li><strong>Chok og bevidstløshed:</strong> Genkendelse og behandling</li>
-<li><strong>Forgiftning:</strong> Symptomer og førstehjælp ved forgiftning</li>
-<li><strong>Brændsår og varmeskader:</strong> Akut behandling</li>
-<li><strong>Frostskader:</strong> Håndtering i kolde omgivelser</li>
-</ul>
+<p>Hvad gør I når en trafikskadet hund kommer ind på klinikken? Eller når du som vagtdyrlæge eller VSP modtager en hund med blokerede luftveje? Har I en akutkasse med organisering efter akutte lidelser og lige præcis den medicin og det udstyr I skal bruge?</p>
 
-<h3>Kursusformat</h3>
+<p>Med den simple systematiske algoritme C-ABcDE bliver I på dette kursus forberedt optimalt på at kunne håndtere akutte og livstruende lidelser i klinikken.</p>
 
-<p>Vores kurser afholdes i små grupper (maks. 8 deltagere) for at sikre personlig opmærksomhed og praktisk øvelse. Hvert kursus varer 4 timer og inkluderer:</p>
+<p>I bliver i stand til trygt at håndtere den akutte patient på systematisk vis. Det forbedrer behandlingen, prognosen og reducerer stress for både patient og personale.</p>
 
-<ul>
-<li>Teoretisk undervisning med visuelle materialer</li>
-<li>Praktiske øvelser på hundedukker</li>
-<li>Case-studier fra virkelige situationer</li>
-<li>Kursusmateriale og certifikat</li>
-<li>Kaffe og kage undervejs</li>
-</ul>
+<p>Vi gennemgår patienter og tilgangen lige fra triage i telefonen og venteværelset til vurdering og behandling af de mest relevante akutte lidelser og skader.</p>
 
-<h3>Praktisk information</h3>
+<p>I får handouts med de forskellige trin i C-ABcDE med hjem, så du med det samme kan bruge din viden hjemme på klinikken.</p>
 
-<p><strong>Pris:</strong> 795 kr. per person<br>
-<strong>Varighed:</strong> 4 timer<br>
-<strong>Sted:</strong> Vores kursuslokale i [by] eller hos dig (for grupper på 6+ personer)<br>
-<strong>Datoer:</strong> Se vores kalender for kommende kurser</p>
+<p>Kurset varer som udgangspunkt 7 timer, men kan justeres efter jeres behov – kontakt mig for en snak om muligheder.</p>
 
-<h3>Book dit kursus</h3>
+<h3>PRAKTISK WORKSHOP I GENOPLIVNING</h3>
 
-<p>Kontakt os for at booke plads på et af vores kommende kurser eller for at arrangere et privat kursus for din familie eller vennegruppe.</p>
+<p>Med en workshop i genoplivning, får alle på klinikken praktisk øvet og arbejdet med de nyeste internationale retningslinjer fra RECOVER (Reassessment Campaign on Veterinary Resuscitation).</p>
 
-<p><em>Husk: Den bedste førstehjælp er den, du aldrig behøver at bruge. Men når du har brug for det, er det uundværligt at vide, hvad du skal gøre.</em></p>',
+<p>Efter den teoretiske gennemgang af genoplivning (HLR) med Basal Life Support (BSL) og Advanced Life Support (ALS) fortsætter vi i workshops med med praktiske relevante teambaserede øvelser og cases, hvor alle i klinikken deltager, og afprøver forskellige roller.</p>
+
+<p>I forbindelse med workshoppen udleveres handouts og flowcharts til brug undervejs og efterfølgende i klinikken.</p>
+
+<p>Workshoppen varer 3-4 timer afhængigt af deltagerantal.</p>
+
+<h2>HVORDAN BOOKER DU?</h2>
+<p>Ring til 42203870 eller send en mail til kontakt@førstehjælphund.dk for mere information eller bookning af kursus.</p>'
             ],
             [
                 'title' => 'Foredrag',
@@ -113,58 +128,34 @@ class PageSeeder extends Seeder
                 'author_id' => 1,
                 'status' => 'published',
                 'page_type' => 'service',
-                'content' => '<h2>Engagerende foredrag om hundesikkerhed</h2>
+                'next_event_title' => 'Dyrlæge i sne og sand - fra Arktis til Afghanistan',
+                'next_event_date' => '25. november 2025',
+                'next_event_time' => '19:00 - 21:00',
+                'next_event_location' => 'Københavns Dyrlægeforening',
+                'next_event_description' => 'Kom med på en fantastisk rejse fra Arktis til Afghanistan med dyrlæge og major Julie Pio Kragelund.',
+                'next_event_registration_link' => 'mailto:info@firstaiddog.dk?subject=Tilmelding til foredrag',
+                'photos' => [
+                    '/images/logo.png',
+                    '/images/logo.png'
+                ],
+                'contact_phone' => '+45 42 20 38 70',
+                'contact_email' => 'info@firstaiddog.dk',
+                'content' => '<h1>Foredrag og oplæg</h1>
 
-<p>Vil du lære mere om, hvordan du kan beskytte din hund mod almindelige farer og nødsituationer? Vores foredrag giver dig værdifuld viden på en underholdende og letforståelig måde.</p>
+<h2>Dyrlæge i sne og sand - fra Arktis til Afghanistan</h2>
+<p>Kom med på en fantastisk rejse fra Arktis til Afghanistan, hvor dyrlæge og major Julie Pio Kragelund fortæller om sit enestående arbejde med de militære arbejdshunde i det danske forsvar.</p>
 
-<h3>Populære foredragstemaer</h3>
+<p>Hundesnuden overgås ikke af noget teknisk, og er stadig den bedste detektor der findes til at snuse sprængstof, narko og meget andet. De militære arbejdshunde og deres hundeførere sendes i mission afsides steder i verden, hvor der i bedste fald er en telefonlinje hjem, og i værste fald ingenting.</p>
 
-<h4>1. "Sikker sommer med din hund"</h4>
-<p>Lær om de skjulte farer om sommeren: hedebølger, giftige planter, insektstik og strandliv. Få praktiske tips til at holde din hund sikker og sund i varmen.</p>
+<p>Militære arbejdshunde redder mænd og liv, og selvfølgelig skal vi derfor også kunne behandle og hjælpe hundene hvis og når de kommer til skade langt væk hjemmefra.</p>
 
-<h4>2. "Julen - en magisk men farlig tid"</h4>
-<p>Opdag hvorfor julen kan være risikabelt for hunde: chokolade, juletræer, lys og dekorationer. Lær at skabe en hundesikker juleatmosfære.</p>
+<p>Julie fortæller levende og engageret om alt fra forberedelse af hunde og mænd til de ukendte farer, og det livreddende præhospitale taktisk førstehjælp som foregår i felten inden en skadet hund faktisk kommer til dyrlæge.</p>
 
-<h4>3. "Førstehjælp i hjemmet"</h4>
-<p>Hvad skal du have i din førstehjælpskasse? Hvordan håndterer du almindelige hjemmeulykker? Få praktiske råd til at forberede dig på det uventede.</p>
+<p>Med billeder, videoer og mere end 12 års erfaring og 18 rejser til Nordøstgrønland giver Julie jer en unik indsigt i et fascinerende arbejde.</p>
 
-<h4>4. "Hundesikker have og terrasse"</h4>
-<p>Gør din have til et sikkert paradis for din hund. Lær om giftige planter, sikre hegn og andre vigtige sikkerhedsforanstaltninger.</p>
+<p>Julie er Danmarks første NATOuddannede instruktør i taktisk førstehjælp for militær arbejdshunde.</p>
 
-<h3>Foredrag for forskellige målgrupper</h3>
-
-<ul>
-<li><strong>Hundeejere:</strong> Praktiske råd og tips til daglig brug</li>
-<li><strong>Familier med børn:</strong> Særlige overvejelser når børn og hunde lever sammen</li>
-<li><strong>Seniorhundeejere:</strong> Tilpasninger for ældre hunde</li>
-<li><strong>Nye hundeejere:</strong> Grundlæggende sikkerhed og forberedelse</li>
-</ul>
-
-<h3>Booking af foredrag</h3>
-
-<p>Vi kan afholde foredrag på:</p>
-
-<ul>
-<li>Hundeklubber og foreninger</li>
-<li>Dyrlægeklinikker</li>
-<li>Pet shops og hundebutikker</li>
-<li>Private arrangementer</li>
-<li>Virksomhedsarrangementer</li>
-<li>Skoler og daginstitutioner</li>
-</ul>
-
-<h3>Praktisk information</h3>
-
-<p><strong>Varighed:</strong> 45-90 minutter (tilpasses efter behov)<br>
-<strong>Pris:</strong> Fra 1.500 kr. (afhænger af lokation og antal deltagere)<br>
-<strong>Udstyr:</strong> Vi medbringer alt nødvendigt udstyr og materialer<br>
-<strong>Gruppestørrelse:</strong> 5-100 deltagere</p>
-
-<h3>Kontakt os</h3>
-
-<p>Kontakt os for at diskutere dit foredrag og få et tilbud tilpasset dine behov og budget.</p>
-
-<p><em>Vores foredrag er ikke kun informative - de er også underholdende og inspirerende. Du går hjem med ny viden og motivation til at gøre din hunde tilværelse sikrere.</em></p>',
+<p>Hun har undervist i førstehjælp på hund for Slædepatruljen Sirius, Jægerskorpset, Frømandskorpset samt på den internationale medicuddannelse for specialoperationssoldater NNSOCM.</p>'
             ],
             [
                 'title' => 'Førstehjælpsgrej',
@@ -172,107 +163,42 @@ class PageSeeder extends Seeder
                 'author_id' => 1,
                 'status' => 'published',
                 'page_type' => 'service',
-                'content' => '<h2>Førstehjælpsgrej - Vær forberedt på alt</h2>
+                'next_event_title' => 'Workshop: Byg dit eget førstehjælpskit',
+                'next_event_date' => '10. december 2025',
+                'next_event_time' => '14:00 - 16:00',
+                'next_event_location' => 'Online via Zoom',
+                'next_event_description' => 'Lær at sammensætte det perfekte førstehjælpskit til din hund. Gratis workshop.',
+                'next_event_registration_link' => 'mailto:info@firstaiddog.dk?subject=Tilmelding til workshop',
+                'photos' => [
+                    '/images/logo.png',
+                    '/images/logo.png'
+                ],
+                'contact_phone' => '+45 42 20 38 70',
+                'contact_email' => 'info@firstaiddog.dk',
+                'content' => '<h1>Førstehjælpsgrej – hvad skal du bruge?</h1>
 
-<p>En veludstyret førstehjælpskasse kan være forskellen mellem liv og død for din hund. Vi tilbyder professionelle førstehjælpskasser og enkeltstående produkter, der er udvalgt med omhu til at håndtere de mest almindelige nødsituationer.</p>
+<h2>Hvilket udstyr og medicin skal du bruge?</h2>
+<p>Det er en rigtig god ide at have et hjemmeapotek med førstehjælpsgrej, du kan bruge til at hjælpe din hund, hvis uheldet er ude.</p>
 
-<h3>Komplette førstehjælpskasser</h3>
+<p>Det kan være alt fra behandling af tynd mave, rense ører, begrænse og behandle et sår og tage temperaturen.</p>
 
-<h4>Basis førstehjælpskasse - 495 kr.</h4>
-<p>Perfekt til små hunde og nye hundeejere. Indeholder de mest essentielle produkter:</p>
+<p>Du må ikke selv behandle med receptpligtig medicin, men der er en masse medicin i håndkøb og førstehjælpsgrej i fri handel, som du kan bruge. På den måde giver du både dig selv og din hund de bedste forudsætninger, hvis den bliver syg.</p>
+
+<p>Du kan selvfølgelig ikke behandle alt selv, men efter et kursus i grundlæggende førstehjælp hos mig, er du bedre i stand til at vurdere, hvornår og til hvad du behøver dyrlægehjælp, samt skelne hvad du selv kan håndtere og ikke mindst hvordan du gør det.</p>
+
+<p>Hvis du er aktiv med din hund fx på jagt, til canicross eller på vandreture, er det en rigtig god ide at have både et hjemmeapotek og en mindre førstehjælpstaske, som du har med, når I er ude.</p>
+
+<h2>Hvad skal være i dit førstehjælpskit?</h2>
 <ul>
-<li>Sterile kompresser og bandager</li>
-<li>Antiseptisk rengøringsmiddel</li>
-<li>Gummihandsker og saks</li>
-<li>Pincet og termometer</li>
-<li>Førstehjælpsmanual</li>
-<li>Kontaktoplysninger til dyrlæge</li>
+<li><strong>Forbindsstoffer:</strong> Gaze, bandager, tape, saks</li>
+<li><strong>Rensemidler:</strong> Desinfektionsmiddel, saltvand</li>
+<li><strong>Værktøj:</strong> Pincet, termometer, pincet</li>
+<li><strong>Medicin:</strong> Aktivt kul, øredråber, øjensalve</li>
+<li><strong>Dokumentation:</strong> Din hunds journal, dyrlægens nummer</li>
 </ul>
 
-<h4>Professionel førstehjælpskasse - 895 kr.</h4>
-<p>Omfattende udstyr til store hunde og erfarne hundeejere:</p>
-<ul>
-<li>Alt fra basis-kassen</li>
-<li>Ekstra bandagematerialer</li>
-<li>Blødningskontrolprodukter</li>
-<li>Kunstig åndedrætsmaske</li>
-<li>Hjertemassage-podning</li>
-<li>Førstehjælpsapp</li>
-<li>Portabel bærepose</li>
-</ul>
-
-<h4>Premium førstehjælpskasse - 1.295 kr.</h4>
-<p>Komplet udstyr til professionelle og meget aktive hundeejere:</p>
-<ul>
-<li>Alt fra professionel-kassen</li>
-<li>Defibrillator (AED) til hunde</li>
-<li>Sauerstoffbehandling</li>
-<li>Avancerede bandageringsteknikker</li>
-<li>Komplet sæt til genoplivning</li>
-<li>Online kursus inkluderet</li>
-</ul>
-
-<h3>Enkeltstående produkter</h3>
-
-<h4>Bandagematerialer</h4>
-<ul>
-<li>Sterile kompresser (25 kr.)</li>
-<li>Elastiske bandager (45 kr.)</li>
-<li>Selvhæftende bandager (35 kr.)</li>
-<li>Gaze (30 kr.)</li>
-<li>Tejp (40 kr.)</li>
-</ul>
-
-<h4>Rengøring og desinfektion</h4>
-<ul>
-<li>Antiseptisk rengøringsmiddel (55 kr.)</li>
-<li>Sterile vådservietter (25 kr.)</li>
-<li>Jodopløsning (65 kr.)</li>
-<li>Salineopløsning (35 kr.)</li>
-</ul>
-
-<h4>Værktøjer og udstyr</h4>
-<ul>
-<li>Førstehjælpssaks (75 kr.)</li>
-<li>Pincet (45 kr.)</li>
-<li>Digital termometer (120 kr.)</li>
-<li>Gummihandsker (15 kr./par)</li>
-<li>Førstehjælpsmanual (95 kr.)</li>
-</ul>
-
-<h3>Specialprodukter</h3>
-
-<h4>Hjertemassage-podning</h4>
-<p>Specialsnydt til hjertemassage på hunde. Giver den rette dybde og frekvens. Pris: 180 kr.</p>
-
-<h4>Kunstig åndedrætsmaske</h4>
-<p>Hygiejnisk maske til mund-til-næse genoplivning. Pris: 65 kr.</p>
-
-<h4>Blødningskontrolprodukter</h4>
-<p>Hæmostatiske produkter til hurtig blødningskontrol. Pris: 95 kr.</p>
-
-<h4>Portabel bærepose</h4>
-<p>Letvægts bærepose til transport af skadede hunde. Pris: 145 kr.</p>
-
-<h3>Bestilling og levering</h3>
-
-<p>Alle produkter kan bestilles online eller telefonisk. Vi tilbyder:</p>
-<ul>
-<li>Gratis levering ved køb over 500 kr.</li>
-<li>Levering inden for 1-3 hverdage</li>
-<li>30 dages returret</li>
-<li>Gratis rådgivning ved køb</li>
-</ul>
-
-<h3>Kurser i brug af udstyr</h3>
-
-<p>Køber du en af vores førstehjælpskasser, får du gratis adgang til et 30-minutters online kursus om, hvordan du bruger udstyret korrekt.</p>
-
-<h3>Kontakt os</h3>
-
-<p>Har du spørgsmål til vores produkter eller har brug for hjælp til at vælge den rigtige førstehjælpskasse? Kontakt os for personlig rådgivning.</p>
-
-<p><em>Husk: Det bedste udstyr er det, du ved, hvordan du bruger. Invester i både udstyr og viden.</em></p>',
+<h2>Hvorfor er det vigtigt?</h2>
+<p>Et veludstyret førstehjælpskit kan være forskellen på liv og død i en akut situation. Det giver dig ro og mulighed for at handle hurtigt og effektivt, når din hund har brug for hjælp.</p>'
             ],
             [
                 'title' => 'Guides og gode råd',
@@ -280,13 +206,25 @@ class PageSeeder extends Seeder
                 'author_id' => 1,
                 'status' => 'published',
                 'page_type' => 'service',
-                'content' => '<h2>Guides og gode råd til hundesikkerhed</h2>
+                'next_event_title' => 'Årshjul - Sikkerhed gennem året',
+                'next_event_date' => '1. januar 2026',
+                'next_event_time' => '10:00 - 11:00',
+                'next_event_location' => 'Online via Facebook Live',
+                'next_event_description' => 'Gratis online session om sikkerhed for din hund gennem året.',
+                'next_event_registration_link' => null,
+                'photos' => [
+                    '/images/logo.png',
+                    '/images/logo.png'
+                ],
+                'contact_phone' => '+45 42 20 38 70',
+                'contact_email' => 'info@firstaiddog.dk',
+                'content' => '<h1>Gode råd, guides og links</h1>
 
 <p>Vil du lære mere om, hvordan du kan beskytte din hund og håndtere almindelige situationer? Her finder du praktiske guides og råd, der kan hjælpe dig med at skabe en sikker tilværelse for din firbenede ven.</p>
 
-<h3>Årshjul - Sikkerhed gennem året</h3>
+<h2>Årshjul - Sikkerhed gennem året</h2>
 
-<h4>Forår</h4>
+<h3>Forår</h3>
 <ul>
 <li><strong>Giftige planter:</strong> Lær at genkende de farligste forårsplanter</li>
 <li><strong>Påske:</strong> Hold chokolade og påskeæg væk fra din hund</li>
@@ -294,7 +232,7 @@ class PageSeeder extends Seeder
 <li><strong>Vand:</strong> Smeltevand kan være koldt og farligt</li>
 </ul>
 
-<h4>Sommer</h4>
+<h3>Sommer</h3>
 <ul>
 <li><strong>Hedebølger:</strong> Tegn på overophedning og hvad du skal gøre</li>
 <li><strong>Strandliv:</strong> Saltvand, sand og sol kan skade din hund</li>
@@ -302,7 +240,7 @@ class PageSeeder extends Seeder
 <li><strong>Grillning:</strong> Hold din hund væk fra grill og varm mad</li>
 </ul>
 
-<h4>Efterår</h4>
+<h3>Efterår</h3>
 <ul>
 <li><strong>Løv:</strong> Faldne blade kan skjule farer</li>
 <li><strong>Regn:</strong> Våde forhold og køligere vejr</li>
@@ -310,7 +248,7 @@ class PageSeeder extends Seeder
 <li><strong>Mørke:</strong> Synlighed og reflekser bliver vigtige</li>
 </ul>
 
-<h4>Vinter</h4>
+<h3>Vinter</h3>
 <ul>
 <li><strong>Kulde:</strong> Frostskader og underkøling</li>
 <li><strong>Salt:</strong> Vejsalt kan skade poterne</li>
@@ -318,9 +256,9 @@ class PageSeeder extends Seeder
 <li><strong>Mørke:</strong> Ekstra opmærksomhed på trafik</li>
 </ul>
 
-<h3>Almindelige nødsituationer og hvad du skal gøre</h3>
+<h2>Almindelige nødsituationer og hvad du skal gøre</h2>
 
-<h4>Din hund har spist noget giftigt</h4>
+<h3>Din hund har spist noget giftigt</h3>
 <p><strong>Symptomer:</strong> Kvalme, opkast, diarré, sløvhed, rysten<br>
 <strong>Hvad du skal gøre:</strong></p>
 <ol>
@@ -330,76 +268,37 @@ class PageSeeder extends Seeder
 <li>Tag hunden til dyrlægen hurtigst muligt</li>
 </ol>
 
-<h4>Din hund er blevet bidt af en anden hund</h4>
-<p><strong>Symptomer:</strong> Sår, blødning, smerter, hævelse<br>
+<h3>Din hund er blevet bidt</h3>
+<p><strong>Symptomer:</strong> Sår, hævelse, smerter, rødme<br>
 <strong>Hvad du skal gøre:</strong></p>
 <ol>
-<li>Kontroller om hunden er i fare</li>
-<li>Rengør sår med rent vand</li>
-<li>Dæk sår med sterilt materiale</li>
-<li>Kontakt dyrlæge for vurdering</li>
+<li>Rens såret grundigt med saltvand</li>
+<li>Dæk såret med en ren bandage</li>
+<li>Kontakt din dyrlæge</li>
+<li>Hold øje med tegn på infektion</li>
 </ol>
 
-<h4>Din hund er faldet og kan ikke rejse sig</h4>
-<p><strong>Symptomer:</strong> Kan ikke bevæge sig, smerter, angst<br>
+<h3>Din hund er halt</h3>
+<p><strong>Symptomer:</strong> Humper, holder poten oppe, smerter<br>
 <strong>Hvad du skal gøre:</strong></p>
 <ol>
-<li>Rør ikke ved hunden (kan forværre skaden)</li>
-<li>Kald straks dyrlæge</li>
-<li>Hvis hunden er i fare, bær den forsigtigt</li>
-<li>Hold hunden varm og rolig</li>
+<li>Undersøg poten for synlige skader</li>
+<li>Giv hunden ro</li>
+<li>Kontakt dyrlægen hvis problemet varer</li>
+<li>Undgå at lade hunden løbe eller lege</li>
 </ol>
 
-<h3>Forebyggelse - Bedre end behandling</h3>
-
-<h4>Hjemmesikkerhed</h4>
+<h2>Præventive foranstaltninger</h2>
+<p>Den bedste måde at beskytte din hund på er at være proaktiv:</p>
 <ul>
-<li><strong>Køkken:</strong> Hold giftige fødevarer væk</li>
-<li><strong>Badeværelse:</strong> Lås medicin og rengøringsmidler væk</li>
-<li><strong>Stue:</strong> Sikre kabler og farlige genstande</li>
-<li><strong>Have:</strong> Plant ikke giftige planter</li>
+<li>Hold din hund vaccineret og behandlet mod parasitter</li>
+<li>Træn grundlæggende kommandoer</li>
+<li>Brug sele og snor i trafikerede områder</li>
+<li>Hold giftige stoffer væk fra din hund</li>
+<li>Undersøg din hund regelmæssigt for skader eller ændringer</li>
 </ul>
 
-<h4>Transport og rejser</h4>
-<ul>
-<li><strong>Bil:</strong> Brug altid sikkerhedssele eller transportboks</li>
-<li><strong>Gåture:</strong> Hold hunden i snor nær trafik</li>
-<li><strong>Offentlig transport:</strong> Tjek regler før rejse</li>
-<li><strong>Ferie:</strong> Planlæg for hundesikkerhed</li>
-</ul>
-
-<h4>Socialisering og træning</h4>
-<ul>
-<li><strong>Puppy:</strong> Start tidligt med grundlæggende kommandoer</li>
-<li><strong>Voksen:</strong> Oprethold træning gennem hele livet</li>
-<li><strong>Ældre:</strong> Tilpas træning til alder og evner</li>
-<li><strong>Reaktivitet:</strong> Arbejd med professionel træner</li>
-</ul>
-
-<h3>Nødkontakter - Gem dem et sikkert sted</h3>
-
-<p><strong>Din dyrlæge:</strong> [Indsæt nummer]<br>
-<strong>Nøddyrlæge:</strong> [Indsæt nummer]<br>
-<strong>Dyreværnet:</strong> [Indsæt nummer]<br>
-<strong>Giftinformationscenter:</strong> [Indsæt nummer]</p>
-
-<h3>Førstehjælpskasse - Hvad skal du have?</h3>
-
-<p>En grundlæggende førstehjælpskasse bør indeholde:</p>
-<ul>
-<li>Sterile kompresser og bandager</li>
-<li>Antiseptisk rengøringsmiddel</li>
-<li>Gummihandsker og saks</li>
-<li>Pincet og termometer</li>
-<li>Førstehjælpsmanual</li>
-<li>Kontaktoplysninger</li>
-</ul>
-
-<h3>Kontakt os</h3>
-
-<p>Har du spørgsmål til vores guides eller har brug for personlig rådgivning? Kontakt os - vi er her for at hjælpe dig med at holde din hund sikker og sund.</p>
-
-<p><em>Husk: Den bedste førstehjælp er den, du aldrig behøver at bruge. Men når du har brug for det, er det uundværligt at vide, hvad du skal gøre.</em></p>',
+<p>Har du spørgsmål til vores guides eller har brug for personlig rådgivning? Kontakt os - vi er her for at hjælpe dig med at holde din hund sikker og sund.</p>'
             ],
         ];
 
