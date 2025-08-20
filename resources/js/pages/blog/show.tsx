@@ -1,0 +1,207 @@
+import { Footer } from '@/components/footer';
+import { Header } from '@/components/header';
+import { SharedData } from '@/types';
+import { Head, Link, usePage } from '@inertiajs/react';
+import { ArrowLeft, Calendar, User, Tag, Clock, BookOpen, Heart } from 'lucide-react';
+
+export default function BlogShow() {
+    const { settings, blogEntry, navigationItems } = usePage<SharedData>().props;
+
+    if (!blogEntry) {
+        return (
+            <>
+                <Head title="Blog indlæg ikke fundet - Førstehjælp til Hunde" />
+                <Header settings={settings} navigationItems={navigationItems || []} />
+                <div className="min-h-screen bg-red-50 flex items-center justify-center">
+                    <div className="text-center">
+                        <h1 className="text-3xl font-bold text-red-900 mb-4">Blog indlæg ikke fundet</h1>
+                        <p className="text-red-700 mb-6">Det ønskede blog indlæg kunne ikke findes.</p>
+                        <Link
+                            href="/blog"
+                            className="inline-flex items-center bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                        >
+                            <ArrowLeft className="h-4 w-4 mr-2" />
+                            Tilbage til blog
+                        </Link>
+                    </div>
+                </div>
+                <Footer settings={settings} />
+            </>
+        );
+    }
+
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('da-DK', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    };
+
+    const estimatedReadTime = blogEntry.content ? Math.ceil(blogEntry.content.split(' ').length / 200) : 5;
+
+    return (
+        <>
+            <Head title={`${blogEntry.title} - Førstehjælp til Hunde`} />
+            
+            <Header settings={settings} navigationItems={navigationItems || []} />
+
+            {/* Breadcrumb */}
+            <section className="bg-red-50 py-4">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <nav className="flex items-center space-x-2 text-sm">
+                        <Link href="/" className="text-red-600 hover:text-red-800 transition-colors">
+                            Forside
+                        </Link>
+                        <span className="text-red-400">/</span>
+                        <Link href="/blog" className="text-red-600 hover:text-red-800 transition-colors">
+                            Blog
+                        </Link>
+                        <span className="text-red-400">/</span>
+                        <span className="text-red-800 font-medium">{blogEntry.title}</span>
+                    </nav>
+                </div>
+            </section>
+
+            {/* Blog Post Header */}
+            <section className="py-12 bg-white">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-8">
+                        <div className="inline-flex items-center px-4 py-2 bg-red-100 text-red-700 rounded-full text-sm font-medium mb-4">
+                            <Tag className="h-4 w-4 mr-2" />
+                            {blogEntry.category}
+                        </div>
+                        
+                        <h1 className="text-4xl lg:text-5xl font-bold text-red-900 mb-6 leading-tight">
+                            {blogEntry.title}
+                        </h1>
+                        
+                        <div className="flex items-center justify-center space-x-6 text-red-600 mb-6">
+                            <span className="flex items-center">
+                                <User className="h-5 w-5 mr-2" />
+                                {blogEntry.author || 'Julie Pio Kragelund'}
+                            </span>
+                            <span className="flex items-center">
+                                <Calendar className="h-5 w-5 mr-2" />
+                                {formatDate(blogEntry.date)}
+                            </span>
+                            <span className="flex items-center">
+                                <Clock className="h-5 w-5 mr-2" />
+                                {blogEntry.read_time || estimatedReadTime} min læsning
+                            </span>
+                        </div>
+
+                        {blogEntry.image && (
+                            <div className="mb-8">
+                                <img
+                                    src={blogEntry.image_url || blogEntry.image}
+                                    alt={blogEntry.title}
+                                    className="w-full max-w-2xl mx-auto rounded-xl shadow-lg"
+                                />
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </section>
+
+            {/* Blog Content */}
+            <section className="py-12 bg-white">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <article className="prose prose-lg prose-red max-w-none">
+                        <div 
+                            className="text-red-800 leading-relaxed text-lg"
+                            dangerouslySetInnerHTML={{ __html: blogEntry.content }}
+                        />
+                    </article>
+                </div>
+            </section>
+
+            {/* Author Bio */}
+            <section className="py-12 bg-red-50">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="bg-white rounded-2xl p-8 shadow-lg">
+                        <div className="flex items-start space-x-6">
+                            <div className="flex-shrink-0">
+                                <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center">
+                                    <BookOpen className="h-10 w-10 text-red-600" />
+                                </div>
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="text-2xl font-bold text-red-900 mb-2">
+                                    {blogEntry.author || 'Julie Pio Kragelund'}
+                                </h3>
+                                <p className="text-red-700 mb-4 leading-relaxed">
+                                    Dyrlæge med speciale i førstehjælp til hunde. Julie har over 15 års erfaring 
+                                    med at undervise hundeejere og professionelle i at håndtere nødsituationer. 
+                                    Hun er uddannet i NATO-regi som instruktør i taktisk førstehjælp på hund.
+                                </p>
+                                <div className="flex items-center space-x-4">
+                                    <Link
+                                        href="/about"
+                                        className="inline-flex items-center text-red-600 hover:text-red-800 font-semibold transition-colors"
+                                    >
+                                        Læs mere om Julie
+                                        <ArrowLeft className="h-4 w-4 ml-2 rotate-180" />
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Related Posts CTA */}
+            <section className="py-16 bg-white">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h3 className="text-3xl font-bold text-red-900 mb-4">
+                        Lær mere om førstehjælp til hunde
+                    </h3>
+                    <p className="text-xl text-red-700 mb-8 max-w-2xl mx-auto">
+                        Udforsk vores blog for at få flere tips, guides og nyheder om hundesikkerhed og førstehjælp
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <Link
+                            href="/blog"
+                            className="inline-flex items-center bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors shadow-lg hover:shadow-xl"
+                        >
+                            <BookOpen className="h-5 w-5 mr-2" />
+                            Se alle blog indlæg
+                        </Link>
+                        <Link
+                            href="/"
+                            className="inline-flex items-center border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white font-semibold py-3 px-8 rounded-lg transition-colors"
+                        >
+                            <Heart className="h-5 w-5 mr-2" />
+                            Få hjælp til din hund
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* Newsletter Signup */}
+            <section className="py-16 bg-red-600">
+                <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+                    <h3 className="text-3xl font-bold text-white mb-4">
+                        Få de seneste tips direkte i din indbakke
+                    </h3>
+                    <p className="text-xl text-red-100 mb-8">
+                        Tilmeld dig vores nyhedsbrev og få eksklusive råd om hundesikkerhed og førstehjælp
+                    </p>
+                    <div className="max-w-md mx-auto flex flex-col sm:flex-row gap-4">
+                        <input
+                            type="email"
+                            placeholder="Din email adresse"
+                            className="flex-1 px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-red-300"
+                        />
+                        <button className="bg-white text-red-600 hover:bg-red-50 font-semibold px-6 py-3 rounded-lg transition-colors">
+                            Tilmeld
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <Footer settings={settings} />
+        </>
+    );
+}
