@@ -40,7 +40,7 @@ export function NewsletterSignup() {
                 setStatus('error');
                 setMessage(data.message || 'Der opstod en fejl. Prøv venligst igen.');
             }
-        } catch (error) {
+        } catch {
             setStatus('error');
             setMessage('Der opstod en fejl. Prøv venligst igen.');
         }
@@ -48,7 +48,7 @@ export function NewsletterSignup() {
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
-            handleSubmit(e as any);
+            handleSubmit(e as React.FormEvent);
         }
     };
 

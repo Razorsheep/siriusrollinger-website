@@ -1,4 +1,4 @@
-import { X, Menu, ChevronDown } from "lucide-react"
+import { Menu, ChevronDown } from "lucide-react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { 
@@ -12,7 +12,7 @@ import { Separator } from "@/components/ui/separator"
 import { Link } from "@inertiajs/react"
 import { NavigationData, NavigationItem, NavigationGroup } from "@/types"
 
-export function Header({ settings, navigationItems }: { settings: any, navigationItems: NavigationData[] }) {
+export function Header({ navigationItems }: { navigationItems: NavigationData[] }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false);
 
@@ -117,7 +117,7 @@ export function Header({ settings, navigationItems }: { settings: any, navigatio
                                         <Link
                                             key={item.href}
                                             href={item.href}
-                                            className="block text-red-700 hover:text-red-900 font-medium text-lg"
+                                            className="block text-red-700 hover:text-red-900 font-medium text-lg ml-4"
                                             onClick={() => setIsMobileMenuOpen(false)}
                                         >
                                             {item.label}

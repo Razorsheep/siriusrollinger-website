@@ -7,7 +7,7 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import { ArrowLeft, Calendar, User, Tag, Clock, BookOpen, Heart } from 'lucide-react';
 
 export default function BlogShow() {
-    const { settings, blogEntry, navigationItems } = usePage<SharedData>().props;
+    const { settings, blogEntry, navigationItems, seo } = usePage<SharedData>().props;
 
     if (!blogEntry) {
         return (
@@ -63,7 +63,72 @@ export default function BlogShow() {
 
     return (
         <>
-            <Head title={`${blogEntry.title} - Førstehjælp til Hunde`} />
+            <Head>
+                <title>{seo?.meta_title || `${blogEntry.title} - Førstehjælp til Hunde`}</title>
+                <meta name="description" content={seo?.meta_description || blogEntry.excerpt || `Læs om ${blogEntry.title} fra Førstehjælp til Hunde.`} />
+                <meta name="keywords" content={seo?.meta_keywords || `hundesikkerhed, førstehjælp til hunde, ${blogEntry.title.toLowerCase()}, denmark`} />
+                <meta name="author" content={seo?.article_author || blogEntry.author_name || 'Julie Pio Kragelund'} />
+                <meta name="robots" content={`${seo?.robots_index ? 'index' : 'noindex'}, ${seo?.robots_follow ? 'follow' : 'nofollow'}`} />
+                
+                {/* Open Graph / Facebook */}
+                <meta property="og:type" content={seo?.og_type || 'article'} />
+                <meta property="og:url" content={seo?.canonical_url || window.location.href} />
+                <meta property="og:title" content={seo?.og_title || blogEntry.title} />
+                <meta property="og:description" content={seo?.og_description || blogEntry.excerpt || `Læs om ${blogEntry.title} fra Førstehjælp til Hunde.`} />
+                <meta property="og:image" content={seo?.og_image || (blogEntry.image || '/images/logo.png')} />
+                <meta property="og:site_name" content="Førstehjælp til Hunde" />
+                <meta property="og:locale" content="da_DK" />
+                <meta property="article:published_time" content={seo?.article_published_time || blogEntry.date} />
+                <meta property="article:modified_time" content={seo?.article_modified_time || blogEntry.updated_at} />
+                <meta property="article:author" content={seo?.article_author || blogEntry.author_name || 'Julie Pio Kragelund'} />
+                <meta property="article:section" content={seo?.article_section || blogEntry.category} />
+                
+                {/* Twitter */}
+                <meta name="twitter:card" content={seo?.twitter_card || 'summary_large_image'} />
+                <meta name="twitter:title" content={seo?.twitter_title || blogEntry.title} />
+                <meta name="twitter:description" content={seo?.twitter_description || blogEntry.excerpt || `Læs om ${blogEntry.title} fra Førstehjælp til Hunde.`} />
+                <meta name="twitter:image" content={seo?.twitter_image || (blogEntry.image || '/images/logo.png')} />
+                
+                {/* Additional SEO */}
+                <meta name="geo.region" content={seo?.geo_region || 'DK'} />
+                <meta name="geo.placename" content={seo?.geo_placename || 'Denmark'} />
+                <link rel="canonical" href={seo?.canonical_url || window.location.href} />
+            </Head>
+
+            {/* Structured Data for SEO */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "BlogPosting",
+                        "headline": blogEntry.title,
+                        "description": blogEntry.excerpt || `Læs om ${blogEntry.title} fra Førstehjælp til Hunde.`,
+                        "author": {
+                            "@type": "Person",
+                            "name": blogEntry.author_name || "Julie Pio Kragelund"
+                        },
+                        "publisher": {
+                            "@type": "Organization",
+                            "name": "Førstehjælp til Hunde",
+                            "url": window.location.origin,
+                            "logo": {
+                                "@type": "ImageObject",
+                                "url": `${window.location.origin}/images/logo.png`
+                            }
+                        },
+                        "datePublished": blogEntry.date,
+                        "dateModified": blogEntry.date,
+                        "mainEntityOfPage": {
+                            "@type": "WebPage",
+                            "@id": window.location.href
+                        },
+                        "articleSection": blogEntry.category,
+                        "image": blogEntry.image || `${window.location.origin}/images/logo.png`,
+                        "keywords": `hundesikkerhed, førstehjælp til hunde, ${blogEntry.title.toLowerCase()}, denmark`
+                    })
+                }}
+            />
             
             <Header settings={settings} navigationItems={navigationItems || []} />
 

@@ -1,15 +1,11 @@
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 import { SharedData } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
-import { Heart, BookOpen, ShoppingBag, Lightbulb, ChevronDown, Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { Head, usePage } from '@inertiajs/react';
+import { Heart, BookOpen, ShoppingBag, Lightbulb } from 'lucide-react';
 
 export default function About() {
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false);
-
-    const { settings, navigationItems } = usePage<SharedData>().props;
+    const { settings, navigationItems, seo } = usePage<SharedData>().props;
 
     const services = [
         {
@@ -40,9 +36,76 @@ export default function About() {
     
     return (
         <>
-            <Head title="Førstehjælp til Hunde - Din Hunds Sikkerhed Kommer Først" />
+            <Head>
+                <title>{seo?.meta_title || 'Om os - Førstehjælp til Hunde'}</title>
+                <meta name="description" content={seo?.meta_description || 'Lær om Julie Pio Kragelund, dyrlæge og ekspert i hundesikkerhed og førstehjælp. Erfaren i militære arbejdshunde og taktisk førstehjælp.'} />
+                <meta name="keywords" content={seo?.meta_keywords || 'om os, julie pio kragelund, dyrlæge, hundesikkerhed, førstehjælp til hunde, militære arbejdshunde, denmark'} />
+                <meta name="author" content={seo?.author || 'Førstehjælp til Hunde'} />
+                <meta name="robots" content={`${seo?.robots_index ? 'index' : 'nofollow'}, ${seo?.robots_follow ? 'follow' : 'nofollow'}`} />
+                
+                {/* Open Graph / Facebook */}
+                <meta property="og:type" content={seo?.og_type || 'website'} />
+                <meta property="og:url" content={seo?.canonical_url || window.location.href} />
+                <meta property="og:title" content={seo?.og_title || 'Om os - Førstehjælp til Hunde'} />
+                <meta property="og:description" content={seo?.og_description || 'Lær om Julie Pio Kragelund, dyrlæge og ekspert i hundesikkerhed og førstehjælp. Erfaren i militære arbejdshunde og taktisk førstehjælp.'} />
+                <meta property="og:image" content={seo?.og_image || '/images/logo.png'} />
+                <meta property="og:site_name" content="Førstehjælp til Hunde" />
+                <meta property="og:locale" content="da_DK" />
+                
+                {/* Twitter */}
+                <meta name="twitter:card" content={seo?.twitter_card || 'summary_large_image'} />
+                <meta name="twitter:title" content={seo?.twitter_title || 'Om os - Førstehjælp til Hunde'} />
+                <meta name="twitter:description" content={seo?.twitter_description || 'Lær om Julie Pio Kragelund, dyrlæge og ekspert i hundesikkerhed og førstehjælp. Erfaren i militære arbejdshunde og taktisk førstehjælp.'} />
+                <meta name="twitter:image" content={seo?.twitter_image || '/images/logo.png'} />
+                
+                {/* Additional SEO */}
+                <meta name="geo.region" content={seo?.geo_region || 'DK'} />
+                <meta name="geo.placename" content={seo?.geo_placename || 'Denmark'} />
+                <link rel="canonical" href={seo?.canonical_url || window.location.href} />
+            </Head>
+
+            {/* Structured Data for SEO */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "Person",
+                        "name": "Julie Pio Kragelund",
+                        "jobTitle": "Dyrlæge og Ekspert i Hundesikkerhed",
+                        "description": "Julie Pio Kragelund er uddannet dyrlæge i 2005 og har specialiseret sig i hundesikkerhed og førstehjælp. Hun har omfattende erfaring med militære arbejdshunde og taktisk førstehjælp.",
+                        "alumniOf": {
+                            "@type": "Organization",
+                            "name": "Forsvaret"
+                        },
+                        "knowsAbout": [
+                            "Hundesikkerhed",
+                            "Førstehjælp til hunde",
+                            "Militære arbejdshunde",
+                            "Taktisk førstehjælp",
+                            "Veterinær genoplivning"
+                        ],
+                        "author": [
+                            {
+                                "@type": "Book",
+                                "name": "Friluftsrollinger",
+                                "description": "Serie om friluftsliv for familier"
+                            },
+                            {
+                                "@type": "Book",
+                                "name": "Førstehjælp og friluftsliv – sådan håndterer du skader i naturen",
+                                "description": "Praktisk guide til førstehjælp i naturen"
+                            }
+                        ],
+                        "worksFor": {
+                            "@type": "Organization",
+                            "name": "Førstehjælp til Hunde"
+                        }
+                    })
+                }}
+            />
             
-            <Header settings={settings} navigationItems={navigationItems || []} />
+            <Header navigationItems={navigationItems || []} />
 
                 
 

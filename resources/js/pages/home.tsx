@@ -5,22 +5,77 @@ import { NewsletterSignup } from '@/components/newsletter-signup';
 import { ServicesSection } from '@/components/services-section';
 import { SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { Calendar, User, Tag, ArrowRight } from 'lucide-react';
+import { Calendar, User, ArrowRight } from 'lucide-react';
 
 export default function Home() {
-    const { settings, blogEntries, navigationItems } = usePage<SharedData>().props;
-    
-    console.log(navigationItems);
+    const { settings, blogEntries, navigationItems, seo } = usePage<SharedData>().props;
+
     return (
         <>
-            <Head title="Førstehjælp til Hunde - Din Hunds Sikkerhed Kommer Først" />
+            <Head>
+                <title>{seo?.meta_title || 'Førstehjælp til Hunde - Din Hunds Sikkerhed Kommer Først'}</title>
+                <meta name="description" content={seo?.meta_description || 'Førstehjælp til Hunde tilbyder kvalificeret rådgivning og kurser i hundesikkerhed og førstehjælp. Lær at beskytte din hund i enhver situation.'} />
+                <meta name="keywords" content={seo?.meta_keywords || 'førstehjælp til hunde, hundesikkerhed, hundeførstehjælp, denmark, hundekurser, hundesikkerhedstips'} />
+                <meta name="author" content={seo?.author || 'Førstehjælp til Hunde'} />
+                <meta name="robots" content={`${seo?.robots_index ? 'index' : 'noindex'}, ${seo?.robots_follow ? 'follow' : 'nofollow'}`} />
+                
+                {/* Open Graph / Facebook */}
+                <meta property="og:type" content={seo?.og_type || 'website'} />
+                <meta property="og:url" content={seo?.canonical_url || window.location.href} />
+                <meta property="og:title" content={seo?.og_title || 'Førstehjælp til Hunde - Din Hunds Sikkerhed Kommer Først'} />
+                <meta property="og:description" content={seo?.og_description || 'Førstehjælp til Hunde tilbyder kvalificeret rådgivning og kurser i hundesikkerhed og førstehjælp. Lær at beskytte din hund i enhver situation.'} />
+                <meta property="og:image" content={seo?.og_image || '/images/logo.png'} />
+                <meta property="og:site_name" content="Førstehjælp til Hunde" />
+                <meta property="og:locale" content="da_DK" />
+                
+                {/* Twitter */}
+                <meta name="twitter:card" content={seo?.twitter_card || 'summary_large_image'} />
+                <meta name="twitter:title" content={seo?.twitter_title || 'Førstehjælp til Hunde - Din Hunds Sikkerhed Kommer Først'} />
+                <meta name="twitter:description" content={seo?.twitter_description || 'Førstehjælp til Hunde tilbyder kvalificeret rådgivning og kurser i hundesikkerhed og førstehjælp. Lær at beskytte din hund i enhver situation.'} />
+                <meta name="twitter:image" content={seo?.twitter_image || '/images/logo.png'} />
+                
+                {/* Additional SEO */}
+                <meta name="geo.region" content={seo?.geo_region || 'DK'} />
+                <meta name="geo.placename" content={seo?.geo_placename || 'Denmark'} />
+                <link rel="canonical" href={seo?.canonical_url || window.location.href} />
+            </Head>
+
+            {/* Structured Data for SEO */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "Organization",
+                        "name": "Førstehjælp til Hunde",
+                        "url": window.location.origin,
+                        "logo": `${window.location.origin}/images/logo.png`,
+                        "description": "Førstehjælp til Hunde tilbyder kvalificeret rådgivning og kurser i hundesikkerhed og førstehjælp. Lær at beskytte din hund i enhver situation.",
+                        "address": {
+                            "@type": "PostalAddress",
+                            "addressCountry": "DK",
+                            "addressRegion": "Denmark"
+                        },
+                        "contactPoint": {
+                            "@type": "ContactPoint",
+                            "contactType": "customer service",
+                            "availableLanguage": "Danish"
+                        },
+                        "sameAs": [
+                            "https://www.facebook.com/førstehjælptilhunde",
+                            "https://www.instagram.com/førstehjælptilhunde"
+                        ]
+                    })
+                }}
+            />
+
+            <Header navigationItems={navigationItems || []} />
             
-            <Header settings={settings} navigationItems={navigationItems} />
-
+            
             <HeroSection />
-
+            
             <ServicesSection />
-
+            
             {/* Latest Blog Entries Section */}
             <section className="py-20 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -33,7 +88,7 @@ export default function Home() {
                         </p>
                     </div>
 
-                                        {blogEntries && blogEntries.length > 0 ? (
+                    {blogEntries && blogEntries.length > 0 ? (
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                             {blogEntries.slice(0, 3).map((entry) => {
                                 const formatDate = (dateString: string) => {
@@ -57,7 +112,7 @@ export default function Home() {
                                         <div className="flex items-center space-x-4 text-sm text-red-600 mb-3">
                                             <span className="flex items-center">
                                                 <User className="h-4 w-4 mr-1" />
-                                                {entry.author || 'Julie Pio Kragelund'}
+                                                {entry.author_name || 'Julie Pio Kragelund'}
                                             </span>
                                             <span className="flex items-center">
                                                 <Calendar className="h-4 w-4 mr-1" />
@@ -68,7 +123,7 @@ export default function Home() {
                                             {entry.title}
                                         </h4>
                                         <p className="text-red-700 leading-relaxed mb-4">
-                                            {entry.excerpt || (entry.content ? entry.content.substring(0, 120) + '...' : 'Ingen beskrivelse tilgængelig')}
+                                            {entry.excerpt || (entry.content && typeof entry.content === 'string' ? entry.content.substring(0, 120) + '...' : 'Ingen beskrivelse tilgængelig')}
                                         </p>
                                         <Link
                                             href={`/blog/${entry.slug}`}
@@ -108,9 +163,9 @@ export default function Home() {
                     )}
                 </div>
             </section>
-
+            
             <NewsletterSignup />
-
+            
             <Footer settings={settings} />
         </>
     );

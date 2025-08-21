@@ -13,14 +13,14 @@ interface PageProps {
 }
 
 export default function ServiceShow() {
-  const { settings, navigationItems, page } = usePage<PageProps>().props;
+  const { settings, navigationItems, page, seo } = usePage<PageProps>().props;
 
   if (!page) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Service ikke fundet</h1>
-          <p className="text-gray-600">Den ønskede service kunne ikke findes.</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Ydelse ikke fundet</h1>
+          <p className="text-gray-600">Den ønskede ydelse kunne ikke findes.</p>
         </div>
       </div>
     );
@@ -28,7 +28,63 @@ export default function ServiceShow() {
 
   return (
     <>
-      <Head title={`${page.title} - Førstehjælp til Hunde`} />
+      <Head>
+        <title>{seo?.meta_title || `${page.title} - Førstehjælp til Hunde`}</title>
+        <meta name="description" content={seo?.meta_description || `Lær om ${page.title} fra Førstehjælp til Hunde. Kvalificeret rådgivning og kurser i hundesikkerhed.`} />
+        <meta name="keywords" content={seo?.meta_keywords || `hundesikkerhed, førstehjælp til hunde, ${page.title.toLowerCase()}, denmark, hundekurser`} />
+        <meta name="author" content={seo?.author || 'Førstehjælp til Hunde'} />
+        <meta name="robots" content={`${seo?.robots_index ? 'index' : 'noindex'}, ${seo?.robots_follow ? 'follow' : 'nofollow'}`} />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content={seo?.og_type || 'website'} />
+        <meta property="og:url" content={seo?.canonical_url || window.location.href} />
+        <meta property="og:title" content={seo?.og_title || page.title} />
+        <meta property="og:description" content={seo?.og_description || `Lær om ${page.title} fra Førstehjælp til Hunde. Kvalificeret rådgivning og kurser i hundesikkerhed.`} />
+        <meta property="og:image" content={seo?.og_image || (page.photos && page.photos.length > 0 ? page.photos[0] : '/images/logo.png')} />
+        <meta property="og:site_name" content="Førstehjælp til Hunde" />
+        <meta property="og:locale" content="da_DK" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content={seo?.twitter_card || 'summary_large_image'} />
+        <meta name="twitter:title" content={seo?.twitter_title || page.title} />
+        <meta name="twitter:description" content={seo?.twitter_description || `Lær om ${page.title} fra Førstehjælp til Hunde. Kvalificeret rådgivning og kurser i hundesikkerhed.`} />
+        <meta name="twitter:image" content={seo?.twitter_image || (page.photos && page.photos.length > 0 ? page.photos[0] : '/images/logo.png')} />
+        
+        {/* Additional SEO */}
+        <meta name="geo.region" content={seo?.geo_region || 'DK'} />
+        <meta name="geo.placename" content={seo?.geo_placename || 'Denmark'} />
+        <link rel="canonical" href={seo?.canonical_url || window.location.href} />
+      </Head>
+
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "name": page.title,
+            "description": `Lær om ${page.title} fra Førstehjælp til Hunde. Kvalificeret rådgivning og kurser i hundesikkerhed.`,
+            "provider": {
+              "@type": "Organization",
+              "name": "Førstehjælp til Hunde",
+              "url": window.location.origin,
+              "logo": {
+                "@type": "ImageObject",
+                "url": `${window.location.origin}/images/logo.png`
+              }
+            },
+            "serviceType": page.page_type,
+            "areaServed": {
+              "@type": "Country",
+              "name": "Denmark"
+            },
+            "url": window.location.href,
+            "image": page.photos && page.photos.length > 0 ? page.photos[0] : `${window.location.origin}/images/logo.png`,
+            "keywords": `hundesikkerhed, førstehjælp til hunde, ${page.title.toLowerCase()}, denmark, hundekurser`
+          })
+        }}
+      />
 
       <Header settings={settings} navigationItems={navigationItems} />
 

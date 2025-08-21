@@ -17,7 +17,7 @@ class BlogEntryResource extends JsonResource
         return array_merge(
             parent::toArray($request),
             [
-                'author_name' => $this->author->name,
+                'author' => $this->author->name,
             ]
         );
     }

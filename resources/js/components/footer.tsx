@@ -1,4 +1,4 @@
-export function Footer({ settings }: { settings: any }) {
+export function Footer({ settings }: { settings: { email?: string; phone_number?: string } }) {
     return (
 
         <footer className="bg-red-900 text-white py-12">

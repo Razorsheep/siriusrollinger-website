@@ -5,34 +5,41 @@ namespace App\Services;
 class SeoService
 {
     /**
-     * Generate SEO data for a course page
+     * Generate SEO data for a blog entry page
      */
-    public static function forCourse(array $course): array
+    public static function forBlog(array $blogEntry): array
     {
-        $title = $course['title'] ?? '';
-        $subtitle = $course['subtitle'] ?? '';
-        $description = is_array($course['description']) ? self::extractTextFromJson($course['description']) : ($course['description'] ?? '');
+        $title = $blogEntry['title'] ?? '';
+        $excerpt = $blogEntry['excerpt'] ?? '';
+        $content = isset($blogEntry['content']) && is_array($blogEntry['content']) ? self::extractTextFromJson($blogEntry['content']) : ($blogEntry['content'] ?? '');
+        $description = $excerpt ?: $content;
+        $author = $blogEntry['author']['name'] ?? 'Førstehjælp til Hunde';
+        $category = $blogEntry['category'] ?? 'Hundesikkerhed';
         
         return [
-            'meta_title' => self::generateMetaTitle($title, $subtitle),
-            'meta_description' => self::generateMetaDescription($description, $subtitle),
-            'meta_keywords' => self::generateKeywords($course),
-            'og_title' => self::generateOgTitle($title, $subtitle),
-            'og_description' => self::generateOgDescription($description, $subtitle),
-            'og_type' => 'course',
-            'og_image' => self::getCourseImage($course),
+            'meta_title' => self::generateMetaTitle($title),
+            'meta_description' => self::generateMetaDescription($description),
+            'meta_keywords' => self::generateBlogKeywords($blogEntry),
+            'og_title' => self::generateOgTitle($title),
+            'og_description' => self::generateOgDescription($description),
+            'og_type' => 'article',
+            'og_image' => self::getBlogImage($blogEntry),
             'twitter_card' => 'summary_large_image',
-            'twitter_title' => self::generateTwitterTitle($title, $subtitle),
-            'twitter_description' => self::generateTwitterDescription($description, $subtitle),
-            'twitter_image' => self::getCourseImage($course),
-            'author' => 'Fjeldgruppen',
-            'publisher' => 'Fjeldgruppen',
-            'category' => 'Outdoor Education',
+            'twitter_title' => self::generateTwitterTitle($title),
+            'twitter_description' => self::generateTwitterDescription($description),
+            'twitter_image' => self::getBlogImage($blogEntry),
+            'author' => $author,
+            'publisher' => 'Førstehjælp til Hunde',
+            'category' => $category,
             'geo_region' => 'DK',
             'geo_placename' => 'Denmark',
             'robots_index' => true,
             'robots_follow' => true,
             'canonical_url' => request()->url(),
+            'article_published_time' => $blogEntry['created_at'] ?? null,
+            'article_modified_time' => $blogEntry['updated_at'] ?? null,
+            'article_author' => $author,
+            'article_section' => $category,
         ];
     }
 
@@ -48,7 +55,7 @@ class SeoService
             'description' => is_array($course['description']) ? self::extractTextFromJson($course['description']) : ($course['description'] ?? ''),
             'provider' => [
                 '@type' => 'Organization',
-                'name' => 'Fjeldgruppen',
+                'name' => 'Førstehjælp til Hunde',
                 'url' => config('app.url'),
             ],
             'educationalLevel' => ucfirst($course['level'] ?? 'beginner'),
@@ -60,7 +67,7 @@ class SeoService
         if (isset($course['owner']) && $course['owner']) {
             $structuredData['instructor'] = [
                 '@type' => 'Person',
-                'name' => $course['owner']['name'] ?? 'Fjeldgruppen Instructor',
+                'name' => $course['owner']['name'] ?? 'Førstehjælp til Hunde Instructor',
             ];
         }
 
@@ -89,7 +96,7 @@ class SeoService
                     'endDate' => $event['end_time'] ?? '',
                     'location' => [
                         '@type' => 'Place',
-                        'name' => $event['start_location']['name'] ?? 'Fjeldgruppen Location',
+                        'name' => $event['start_location']['name'] ?? 'Førstehjælp til Hunde Location',
                     ],
                 ];
             })->toArray();
@@ -140,18 +147,18 @@ class SeoService
         $defaults = [
             'meta_title' => self::generateMetaTitle($title),
             'meta_description' => self::generateMetaDescription($description),
-            'meta_keywords' => $options['keywords'] ?? 'fjeldgruppen, outdoor, mountain, wilderness, courses, denmark',
+            'meta_keywords' => $options['keywords'] ?? 'førstehjælp til hunde, hundesikkerhed, hundeførstehjælp, denmark',
             'og_title' => self::generateOgTitle($title),
             'og_description' => self::generateOgDescription($description),
             'og_type' => 'website',
-            'og_image' => $options['og_image'] ?? '/images/fjeldgruppen-logo.jpg',
+            'og_image' => $options['og_image'] ?? '/images/logo.png',
             'twitter_card' => 'summary_large_image',
             'twitter_title' => self::generateTwitterTitle($title),
             'twitter_description' => self::generateTwitterDescription($description),
-            'twitter_image' => $options['twitter_image'] ?? '/images/fjeldgruppen-logo.jpg',
-            'author' => 'Fjeldgruppen',
-            'publisher' => 'Fjeldgruppen',
-            'category' => 'Outdoor Education',
+            'twitter_image' => $options['twitter_image'] ?? '/images/logo.png',
+            'author' => 'Førstehjælp til Hunde',
+            'publisher' => 'Førstehjælp til Hunde',
+            'category' => 'Hundesikkerhed',
             'geo_region' => 'DK',
             'geo_placename' => 'Denmark',
             'robots_index' => $options['robots_index'] ?? true,
@@ -168,11 +175,11 @@ class SeoService
     public static function forHome(): array
     {
         return self::forPage(
-            'Fjeldgruppen - Outdoor Education & Mountain Courses',
-            'Fjeldgruppen tilbyder kvalificerede kurser i fjeld og vildmark. Lær at færdes sikkert i naturen med vores erfarne instruktører.',
+            'Førstehjælp til Hunde - Din Hunds Sikkerhed Kommer Først',
+            'Førstehjælp til Hunde tilbyder kvalificeret rådgivning og kurser i hundesikkerhed og førstehjælp. Lær at beskytte din hund i enhver situation.',
             [
-                'keywords' => 'fjeldgruppen, outdoor, mountain, wilderness, courses, denmark, hiking, camping, survival, first aid',
-                'og_image' => '/images/fjeldgruppen-logo.jpg',
+                'keywords' => 'førstehjælp til hunde, hundesikkerhed, hundeførstehjælp, denmark, hundekurser, hundesikkerhedstips',
+                'og_image' => '/images/logo.png',
             ]
         );
     }
@@ -183,11 +190,11 @@ class SeoService
     public static function forCoursesIndex(): array
     {
         return self::forPage(
-            'Kurser - Fjeldgruppen',
-            'Udforsk vores udvalg af outdoor kurser. Fra begyndere til avancerede, vi har kurser til alle niveauer.',
+            'Kurser - Førstehjælp til Hunde',
+            'Udforsk vores udvalg af hundesikkerhedskurser. Fra begyndere til avancerede, vi har kurser til alle niveauer.',
             [
-                'keywords' => 'outdoor kurser, fjeldkurser, vandrekurser, vinterfjeld, sommerfjeld, førstehjælp, denmark',
-                'og_image' => '/images/fjeldgruppen-logo.jpg',
+                'keywords' => 'hundekurser, hundesikkerhedskurser, hundeførstehjælp, denmark, hundesikkerhed, førstehjælp',
+                'og_image' => '/images/logo.png',
             ]
         );
     }
@@ -198,11 +205,11 @@ class SeoService
     public static function forStoriesIndex(): array
     {
         return self::forPage(
-            'Historier & Artikler - Fjeldgruppen',
-            'Læs om outdoor oplevelser, sikkerhedstips og vandreture fra Fjeldgruppen. Få inspiration til dine egne eventyr i naturen.',
+            'Blog & Artikler - Førstehjælp til Hunde',
+            'Læs om hundesikkerhed, førstehjælpstips og hundepleje fra Førstehjælp til Hunde. Få inspiration til at beskytte din hund.',
             [
-                'keywords' => 'outdoor historier, vandretur artikler, fjeldoplevelser, sikkerhedstips, naturen, denmark, fjeldgruppen',
-                'og_image' => '/images/fjeldgruppen-logo.jpg',
+                'keywords' => 'hundeblog, hundesikkerhedsartikler, hundeførstehjælp, hundepleje, denmark, førstehjælp til hunde',
+                'og_image' => '/images/logo.png',
             ]
         );
     }
@@ -231,9 +238,9 @@ class SeoService
             'twitter_title' => self::generateTwitterTitle($title),
             'twitter_description' => self::generateTwitterDescription($excerpt),
             'twitter_image' => self::getStoryImage($story),
-            'author' => $story['author'] ?? 'Fjeldgruppen',
-            'publisher' => 'Fjeldgruppen',
-            'category' => 'Outdoor Education',
+            'author' => $story['author'] ?? 'Førstehjælp til Hunde',
+            'publisher' => 'Førstehjælp til Hunde',
+            'category' => 'Hundesikkerhed',
             'geo_region' => 'DK',
             'geo_placename' => 'Denmark',
             'robots_index' => true,
@@ -241,8 +248,8 @@ class SeoService
             'canonical_url' => request()->url(),
             'article_published_time' => $story['published_at'] ?? null,
             'article_modified_time' => $story['updated_at'] ?? null,
-            'article_author' => $story['author'] ?? 'Fjeldgruppen',
-            'article_section' => $story['category'] ?? 'Outdoor Education',
+            'article_author' => $story['author'] ?? 'Førstehjælp til Hunde',
+            'article_section' => $story['category'] ?? 'Hundesikkerhed',
         ];
     }
 
@@ -262,11 +269,11 @@ class SeoService
             ],
             'publisher' => [
                 '@type' => 'Organization',
-                'name' => 'Fjeldgruppen',
+                'name' => 'Førstehjælp til Hunde',
                 'url' => config('app.url'),
                 'logo' => [
                     '@type' => 'ImageObject',
-                    'url' => config('app.url') . '/images/fjeldgruppen-logo.jpg',
+                    'url' => config('app.url') . '/images/logo.png',
                 ],
             ],
             'datePublished' => $story['published_at'] ?? null,
@@ -295,6 +302,60 @@ class SeoService
         // Add category
         if (isset($story['category']) && $story['category']) {
             $structuredData['articleSection'] = $story['category'];
+        }
+
+        return $structuredData;
+    }
+
+    /**
+     * Generate structured data (Schema.org) for a blog entry
+     */
+    public static function generateBlogStructuredData(array $blogEntry): array
+    {
+        $structuredData = [
+            '@context' => 'https://schema.org',
+            '@type' => 'BlogPosting',
+            'headline' => $blogEntry['title'] ?? '',
+            'description' => $blogEntry['excerpt'] ?? '',
+            'author' => [
+                '@type' => 'Person',
+                'name' => $blogEntry['author']['name'] ?? 'Førstehjælp til Hunde',
+            ],
+            'publisher' => [
+                '@type' => 'Organization',
+                'name' => 'Førstehjælp til Hunde',
+                'url' => config('app.url'),
+                'logo' => [
+                    '@type' => 'ImageObject',
+                    'url' => config('app.url') . '/images/logo.png',
+                ],
+            ],
+            'datePublished' => $blogEntry['created_at'] ?? null,
+            'dateModified' => $blogEntry['updated_at'] ?? null,
+            'mainEntityOfPage' => [
+                '@type' => 'WebPage',
+                '@id' => request()->url(),
+            ],
+            'articleSection' => $blogEntry['category'] ?? 'Hundesikkerhed',
+        ];
+
+        // Add image if available
+        if (isset($blogEntry['image']) && $blogEntry['image']) {
+            $structuredData['image'] = [
+                '@type' => 'ImageObject',
+                'url' => $blogEntry['image'],
+                'alt' => $blogEntry['title'] ?? '',
+            ];
+        }
+
+        // Add read time if available
+        if (isset($blogEntry['read_time']) && $blogEntry['read_time']) {
+            $structuredData['timeRequired'] = 'PT' . $blogEntry['read_time'] . 'M';
+        }
+
+        // Add category
+        if (isset($blogEntry['category']) && $blogEntry['category']) {
+            $structuredData['keywords'] = $blogEntry['category'];
         }
 
         return $structuredData;
@@ -338,7 +399,7 @@ class SeoService
      */
     private static function generateKeywords(array $course): string
     {
-        $keywords = ['fjeldgruppen', 'outdoor', 'mountain', 'wilderness'];
+        $keywords = ['førstehjælp til hunde', 'hundesikkerhed', 'hundeførstehjælp', 'denmark'];
         
         // Add level-specific keywords
         if (isset($course['level'])) {
@@ -402,7 +463,7 @@ class SeoService
         }
         
         // Fallback to logo
-        return '/images/fjeldgruppen-logo.jpg';
+        return '/images/logo.png';
     }
 
     /**
@@ -416,7 +477,26 @@ class SeoService
         }
         
         // Fallback to logo
-        return '/images/fjeldgruppen-logo.jpg';
+        return '/images/logo.png';
+    }
+
+    /**
+     * Get blog entry image for social media
+     */
+    private static function getBlogImage(array $blogEntry): string
+    {
+        // Check if blog entry has an image
+        if (isset($blogEntry['image']) && $blogEntry['image']) {
+            return $blogEntry['image'];
+        }
+        
+        // Check if blog entry has media
+        if (isset($blogEntry['media']) && !empty($blogEntry['media'])) {
+            return $blogEntry['media'][0]['original_url'] ?? '/images/logo.png';
+        }
+        
+        // Fallback to logo
+        return '/images/logo.png';
     }
 
     /**
@@ -424,7 +504,7 @@ class SeoService
      */
     private static function generateStoryKeywords(string $title, string $excerpt, array $tagNames): string
     {
-        $keywords = ['fjeldgruppen', 'outdoor', 'mountain', 'wilderness'];
+        $keywords = ['førstehjælp til hunde', 'hundesikkerhed', 'hundeførstehjælp', 'denmark'];
         
         // Add title keywords
         $keywords = array_merge($keywords, explode(' ', $title));
@@ -434,6 +514,35 @@ class SeoService
         
         // Add tag keywords
         $keywords = array_merge($keywords, $tagNames);
+        
+        return implode(', ', array_unique($keywords));
+    }
+
+    /**
+     * Generate keywords for a blog entry
+     */
+    private static function generateBlogKeywords(array $blogEntry): string
+    {
+        $keywords = ['førstehjælp til hunde', 'hundesikkerhed', 'hundeførstehjælp', 'denmark'];
+        
+        $title = $blogEntry['title'] ?? '';
+        $excerpt = $blogEntry['excerpt'] ?? '';
+        $category = $blogEntry['category'] ?? '';
+        
+        // Add title keywords
+        if ($title) {
+            $keywords = array_merge($keywords, explode(' ', strtolower($title)));
+        }
+        
+        // Add excerpt keywords
+        if ($excerpt) {
+            $keywords = array_merge($keywords, explode(' ', strtolower($excerpt)));
+        }
+        
+        // Add category keywords
+        if ($category) {
+            $keywords[] = strtolower($category);
+        }
         
         return implode(', ', array_unique($keywords));
     }

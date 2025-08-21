@@ -99,17 +99,6 @@ class HandleInertiaRequests extends Middleware
 
         return $navigationItems;
 
-        // foreach ($pages as $page) {
-        // return Page::where('status', 'published')
-        //     ->orderBy('order_column')
-        //     ->get()
-        //     ->map(function ($page) {
-        //         return [
-        //             'title' => $page->title,
-        //             'slug' => $page->slug,
-    
-        //         ];
-        //     });
     }
 
     private function getSettings(): array

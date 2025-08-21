@@ -2,12 +2,10 @@
 
 namespace App\Filament\Resources\Pages\Tables;
 
-use App\Models\Page;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -18,23 +16,20 @@ class PagesTable
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->searchable()
-                    ->limit(20),
+                    ->searchable(),
                 TextColumn::make('slug')
                     ->searchable(),
                 ImageColumn::make('image'),
-                TextColumn::make('author.name')
-                    ->label('Forfatter'),
-                SelectColumn::make('page_type')
-                    ->options(Page::$types)
+                TextColumn::make('author_id')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('status')
                     ->searchable(),
-                SelectColumn::make('status')
-                    ->options(Page::$statuses)
+                TextColumn::make('page_type')
                     ->searchable(),
                 TextColumn::make('order_column')
                     ->numeric()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -43,6 +38,22 @@ class PagesTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('next_event_title')
+                    ->searchable(),
+                TextColumn::make('next_event_date')
+                    ->searchable(),
+                TextColumn::make('next_event_time')
+                    ->searchable(),
+                TextColumn::make('next_event_location')
+                    ->searchable(),
+                TextColumn::make('next_event_registration_link')
+                    ->searchable(),
+                TextColumn::make('contact_phone')
+                    ->searchable(),
+                TextColumn::make('contact_email')
+                    ->searchable(),
+                TextColumn::make('contact_website')
+                    ->searchable(),
             ])
             ->filters([
                 //
@@ -54,7 +65,6 @@ class PagesTable
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ])
-            ->reorderable('order_column');
+            ]);
     }
 }

@@ -1,19 +1,18 @@
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 import { NewsletterSignup } from '@/components/newsletter-signup';
-import { TipTapJsonRenderer } from '@/components/tiptap-json-renderer';
 import { SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { Search, Calendar, User, Tag, ArrowRight, Filter } from 'lucide-react';
 import { useState } from 'react';
 
 export default function BlogIndex() {
-    const { settings, blogEntries, categories, navigationItems } = usePage<SharedData>().props;
+    const { settings, blogEntries, categories, navigationItems, seo } = usePage<SharedData>().props;
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
 
     // Helper function to extract text from content (handles both string and TiptapContent)
-    const extractTextFromContent = (content: any): string => {
+    const extractTextFromContent = (content: unknown): string => {
         if (!content) return '';
         
         if (typeof content === 'string') {
@@ -21,10 +20,10 @@ export default function BlogIndex() {
         }
         
         // For TiptapContent, recursively extract text
-        const extractText = (node: any): string => {
+        const extractText = (node: unknown): string => {
             if (typeof node === 'string') return node;
-            if (node.text) return node.text;
-            if (node.content && Array.isArray(node.content)) {
+            if (node && typeof node === 'object' && 'text' in node && typeof node.text === 'string') return node.text;
+            if (node && typeof node === 'object' && 'content' in node && Array.isArray(node.content)) {
                 return node.content.map(extractText).join(' ');
             }
             return '';
@@ -57,7 +56,7 @@ export default function BlogIndex() {
             name: category,
             count: blogPosts.filter(post => post.category === category).length
         })) || [])
-    ];
+    ].filter(category => category && category.name); // Filter out any undefined categories
 
     const filteredPosts = blogPosts.filter(post => {
         const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -77,7 +76,67 @@ export default function BlogIndex() {
 
     return (
         <>
-            <Head title="Blog - Førstehjælp til Hunde" />
+            <Head>
+                <title>{seo?.meta_title || 'Blog - Førstehjælp til Hunde'}</title>
+                <meta name="description" content={seo?.meta_description || 'Læs om hundesikkerhed, førstehjælpstips og hundepleje fra Førstehjælp til Hunde. Få inspiration til at beskytte din hund.'} />
+                <meta name="keywords" content={seo?.meta_keywords || 'hundeblog, hundesikkerhedsartikler, hundeførstehjælp, hundepleje, denmark, førstehjælp til hunde'} />
+                <meta name="author" content={seo?.author || 'Førstehjælp til Hunde'} />
+                <meta name="robots" content={`${seo?.robots_index ? 'index' : 'noindex'}, ${seo?.robots_follow ? 'follow' : 'nofollow'}`} />
+                
+                {/* Open Graph / Facebook */}
+                <meta property="og:type" content={seo?.og_type || 'website'} />
+                <meta property="og:url" content={seo?.canonical_url || window.location.href} />
+                <meta property="og:title" content={seo?.og_title || 'Blog - Førstehjælp til Hunde'} />
+                <meta property="og:description" content={seo?.og_description || 'Læs om hundesikkerhed, førstehjælpstips og hundepleje fra Førstehjælp til Hunde. Få inspiration til at beskytte din hund.'} />
+                <meta property="og:image" content={seo?.og_image || '/images/logo.png'} />
+                <meta property="og:site_name" content="Førstehjælp til Hunde" />
+                <meta property="og:locale" content="da_DK" />
+                
+                {/* Twitter */}
+                <meta name="twitter:card" content={seo?.twitter_card || 'summary_large_image'} />
+                <meta name="twitter:title" content={seo?.twitter_title || 'Blog - Førstehjælp til Hunde'} />
+                <meta name="twitter:description" content={seo?.twitter_description || 'Læs om hundesikkerhed, førstehjælpstips og hundepleje fra Førstehjælp til Hunde. Få inspiration til at beskytte din hund.'} />
+                <meta name="twitter:image" content={seo?.twitter_image || '/images/logo.png'} />
+                
+                {/* Additional SEO */}
+                <meta name="geo.region" content={seo?.geo_region || 'DK'} />
+                <meta name="geo.placename" content={seo?.geo_placename || 'Denmark'} />
+                <link rel="canonical" href={seo?.canonical_url || window.location.href} />
+            </Head>
+
+            {/* Structured Data for SEO */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "Blog",
+                        "name": "Førstehjælp til Hunde Blog",
+                        "description": "Blog om hundesikkerhed, førstehjælpstips og hundepleje fra Førstehjælp til Hunde",
+                        "url": window.location.href,
+                        "publisher": {
+                            "@type": "Organization",
+                            "name": "Førstehjælp til Hunde",
+                            "url": window.location.origin,
+                            "logo": {
+                                "@type": "ImageObject",
+                                "url": `${window.location.origin}/images/logo.png`
+                            }
+                        },
+                        "blogPost": blogEntries.map(entry => ({
+                            "@type": "BlogPosting",
+                            "headline": entry.title,
+                            "description": entry.excerpt || entry.content,
+                            "author": {
+                                "@type": "Person",
+                                "name": entry.author_name || "Julie Pio Kragelund"
+                            },
+                            "datePublished": entry.date,
+                            "url": `${window.location.origin}/blog/${entry.slug}`
+                        }))
+                    })
+                }}
+            />
             
             <Header settings={settings} navigationItems={navigationItems} />
 
@@ -122,7 +181,7 @@ export default function BlogIndex() {
                                         Kategorier
                                     </h3>
                                     <div className="space-y-2">
-                                        {allCategories.map((category) => (
+                                        {allCategories.filter(category => category && category.name).map((category) => (
                                             <button
                                                 key={category.id}
                                                 onClick={() => setSelectedCategory(category.id)}

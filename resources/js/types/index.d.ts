@@ -52,7 +52,7 @@ export interface BlogEntry {
     content: TiptapContent | string;
     excerpt?: string;
     category: string;
-    author: string;
+    author_name: string;
     date: string;
     image?: string;
     image_url?: string;
@@ -83,6 +83,29 @@ export interface ServicePage {
     };
 }
 
+export interface SEO {
+    meta_title: string;
+    meta_description: string;
+    meta_keywords: string;
+    og_title: string;
+    og_description: string;
+    og_type: string;
+    og_image: string;
+    twitter_card: string;
+    twitter_title: string;
+    twitter_description: string;
+    twitter_image: string;
+    author: string;
+    publisher: string;
+    category: string;
+    geo_region: string;
+    geo_placename: string;
+    robots_index: boolean;
+    robots_follow: boolean;
+    canonical_url: string;
+    [key: string]: unknown;
+}
+
 export interface SharedData {
     name: string;
     quote: { message: string; author: string };
@@ -94,6 +117,7 @@ export interface SharedData {
     categories?: string[];
     navigationItems?: NavigationData[];
     settings?: any;
+    seo?: SEO;
     [key: string]: unknown;
 }
 
