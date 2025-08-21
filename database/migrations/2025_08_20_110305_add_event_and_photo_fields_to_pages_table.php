@@ -38,7 +38,7 @@ return new class extends Migration
         Schema::table('pages', function (Blueprint $table) {
             $table->dropColumn([
                 'next_event_title',
-                'next_event_date', 
+                'next_event_date',
                 'next_event_time',
                 'next_event_location',
                 'next_event_description',

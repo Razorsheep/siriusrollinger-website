@@ -8,7 +8,6 @@ class WebsiteSettings extends Settings
 {
     public string $phone_number;
     public string $email;
-    
     public string $footer_text;
 
     public static function group(): string
