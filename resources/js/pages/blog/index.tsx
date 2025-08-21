@@ -1,6 +1,7 @@
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 import { NewsletterSignup } from '@/components/newsletter-signup';
+import { TipTapJsonRenderer } from '@/components/tiptap-json-renderer';
 import { SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { Search, Calendar, User, Tag, ArrowRight, Filter } from 'lucide-react';
@@ -11,11 +12,35 @@ export default function BlogIndex() {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
 
+    // Helper function to extract text from content (handles both string and TiptapContent)
+    const extractTextFromContent = (content: any): string => {
+        if (!content) return '';
+        
+        if (typeof content === 'string') {
+            return content;
+        }
+        
+        // For TiptapContent, recursively extract text
+        const extractText = (node: any): string => {
+            if (typeof node === 'string') return node;
+            if (node.text) return node.text;
+            if (node.content && Array.isArray(node.content)) {
+                return node.content.map(extractText).join(' ');
+            }
+            return '';
+        };
+        
+        return extractText(content);
+    };
+
     // Transform backend data to match our frontend structure
     const blogPosts = blogEntries?.map(entry => ({
         id: entry.id,
         title: entry.title,
-        excerpt: entry.excerpt || (entry.content ? entry.content.substring(0, 150) + '...' : ''),
+        excerpt: entry.excerpt || (() => {
+            const textContent = extractTextFromContent(entry.content);
+            return textContent.length > 150 ? textContent.substring(0, 150) + '...' : textContent;
+        })(),
         author: entry.author || 'Julie Pio Kragelund',
         date: entry.date,
         category: entry.category,

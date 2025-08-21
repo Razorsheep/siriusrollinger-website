@@ -4,30 +4,34 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Image\Enums\Fit;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class Page extends Model
+class Page extends Model implements HasMedia
 {
-    use HasSlug;
+    use HasSlug, InteractsWithMedia;
 
     protected $fillable = [
         'title',
         'slug',
         'excerpt',
         'content',
-        'image',
         'author_id',
-        'menu_title',
         'status',
         'page_type',
         'order_column',
+
         'next_event_title',
         'next_event_date',
         'next_event_time',
         'next_event_location',
         'next_event_description',
         'next_event_registration_link',
+
         'photos',
         'contact_phone',
         'contact_email',
@@ -35,6 +39,7 @@ class Page extends Model
     ];
 
     protected $casts = [
+        'content' => 'array',
         'photos' => 'array',
     ];
 
@@ -44,7 +49,7 @@ class Page extends Model
     ];
 
     public static $types = [
-        'page' => 'Side',
+        'default' => 'Standard Side',
         'service' => 'Ydelse',
     ];
 
@@ -53,6 +58,20 @@ class Page extends Model
         return SlugOptions::create()
             ->generateSlugsFrom('title')
             ->saveSlugsTo('slug');
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('featured_image')
+            ->singleFile();
+        $this->addMediaCollection('images');
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('preview')
+            ->fit(Fit::Contain, 300, 300)
+            ->nonQueued();
     }
 
     public function author()

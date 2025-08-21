@@ -37,11 +37,19 @@ export interface NavigationGroup {
 
 export type NavigationData = NavigationItem | NavigationGroup;
 
+export interface TiptapContent {
+    type: string;
+    content?: TiptapContent[];
+    text?: string;
+    marks?: Array<{ type: string }>;
+    attrs?: Record<string, any>;
+}
+
 export interface BlogEntry {
     id: number;
     title: string;
     slug: string;
-    content: string;
+    content: TiptapContent | string;
     excerpt?: string;
     category: string;
     author: string;
@@ -50,6 +58,29 @@ export interface BlogEntry {
     image_url?: string;
     read_time?: number;
     status: string;
+}
+
+export interface ServicePage {
+    id: number;
+    title: string;
+    slug: string;
+    content: TiptapContent | string;
+    page_type: string;
+    status: string;
+    next_event?: {
+        title: string;
+        date: string;
+        time: string;
+        location: string;
+        description: string;
+        registration_link?: string;
+    };
+    photos?: string[];
+    contact_info?: {
+        phone?: string;
+        email?: string;
+        website?: string;
+    };
 }
 
 export interface SharedData {
@@ -72,6 +103,7 @@ export interface User {
     email: string;
     avatar?: string;
     email_verified_at: string | null;
+    admin: boolean;
     created_at: string;
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...

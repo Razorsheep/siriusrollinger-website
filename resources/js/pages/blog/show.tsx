@@ -1,5 +1,7 @@
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
+import { NewsletterSignup } from '@/components/newsletter-signup';
+import { TipTapJsonRenderer } from '@/components/tiptap-json-renderer';
 import { SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { ArrowLeft, Calendar, User, Tag, Clock, BookOpen, Heart } from 'lucide-react';
@@ -39,7 +41,25 @@ export default function BlogShow() {
         });
     };
 
-    const estimatedReadTime = blogEntry.content ? Math.ceil(blogEntry.content.split(' ').length / 200) : 5;
+    const estimatedReadTime = (() => {
+        if (!blogEntry.content) return 5;
+        
+        if (typeof blogEntry.content === 'string') {
+            return Math.ceil(blogEntry.content.split(' ').length / 200);
+        }
+        
+        // For TiptapContent, estimate based on content structure
+        const countWords = (content: any): number => {
+            if (typeof content === 'string') return content.split(' ').length;
+            if (content.text) return content.text.split(' ').length;
+            if (content.content) {
+                return content.content.reduce((acc: number, child: any) => acc + countWords(child), 0);
+            }
+            return 0;
+        };
+        
+        return Math.ceil(countWords(blogEntry.content) / 200);
+    })();
 
     return (
         <>
@@ -109,9 +129,9 @@ export default function BlogShow() {
             <section className="py-12 bg-white">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <article className="prose prose-lg prose-red max-w-none">
-                        <div 
+                        <TipTapJsonRenderer 
+                            content={blogEntry.content}
                             className="text-red-800 leading-relaxed text-lg"
-                            dangerouslySetInnerHTML={{ __html: blogEntry.content }}
                         />
                     </article>
                 </div>
@@ -129,7 +149,7 @@ export default function BlogShow() {
                             </div>
                             <div className="flex-1">
                                 <h3 className="text-2xl font-bold text-red-900 mb-2">
-                                    {blogEntry.author || 'Julie Pio Kragelund'}
+                                    {blogEntry.author.name || 'Julie Pio Kragelund'}
                                 </h3>
                                 <p className="text-red-700 mb-4 leading-relaxed">
                                     Dyrlæge med speciale i førstehjælp til hunde. Julie har over 15 års erfaring 
@@ -179,27 +199,7 @@ export default function BlogShow() {
                 </div>
             </section>
 
-            {/* Newsletter Signup */}
-            <section className="py-16 bg-red-600">
-                <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-                    <h3 className="text-3xl font-bold text-white mb-4">
-                        Få de seneste tips direkte i din indbakke
-                    </h3>
-                    <p className="text-xl text-red-100 mb-8">
-                        Tilmeld dig vores nyhedsbrev og få eksklusive råd om hundesikkerhed og førstehjælp
-                    </p>
-                    <div className="max-w-md mx-auto flex flex-col sm:flex-row gap-4">
-                        <input
-                            type="email"
-                            placeholder="Din email adresse"
-                            className="flex-1 px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-red-300"
-                        />
-                        <button className="bg-white text-red-600 hover:bg-red-50 font-semibold px-6 py-3 rounded-lg transition-colors">
-                            Tilmeld
-                        </button>
-                    </div>
-                </div>
-            </section>
+            <NewsletterSignup />
 
             <Footer settings={settings} />
         </>

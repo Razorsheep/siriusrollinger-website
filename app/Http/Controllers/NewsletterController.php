@@ -61,8 +61,7 @@ class NewsletterController extends Controller
             ];
 
             // Make the API call to Mailchimp
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $apiKey,
+            $response = Http::withBasicAuth('anystring', $apiKey)->withHeaders([
                 'Content-Type' => 'application/json',
             ])->post(
                 "https://{$serverPrefix}.api.mailchimp.com/3.0/lists/{$listId}/members",

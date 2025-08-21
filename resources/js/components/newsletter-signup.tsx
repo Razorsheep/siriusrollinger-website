@@ -19,12 +19,13 @@ export function NewsletterSignup() {
         setMessage('');
 
         try {
-            // Mailchimp signup endpoint - you'll need to create this in your Laravel backend
+            // Mailchimp signup endpoint
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
             const response = await fetch('/api/newsletter/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify({ email }),
             });

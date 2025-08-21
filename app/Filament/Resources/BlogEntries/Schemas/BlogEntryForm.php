@@ -7,6 +7,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Schema;
@@ -24,9 +25,10 @@ class BlogEntryForm
                     ->disabled(),
                 RichEditor::make('content')
                     ->required()
-                    ->columnSpanFull(),
-                FileUpload::make('image')
-                    ->image(),
+                    ->columnSpanFull()
+                    ->json(),
+                SpatieMediaLibraryFileUpload::make('featured_image')
+                    ->collection('featured_image'),
                 Select::make('author_id')
                     ->relationship('author', 'name')
                     ->default(1),

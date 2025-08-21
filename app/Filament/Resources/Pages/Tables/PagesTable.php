@@ -18,21 +18,23 @@ class PagesTable
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->searchable(),
+                    ->searchable()
+                    ->limit(20),
                 TextColumn::make('slug')
                     ->searchable(),
                 ImageColumn::make('image'),
                 TextColumn::make('author.name')
                     ->label('Forfatter'),
-                SelectColumn::make('status')
-                    ->options(Page::$statuses)
-                    ->searchable(),
                 SelectColumn::make('page_type')
                     ->options(Page::$types)
                     ->searchable(),
+                SelectColumn::make('status')
+                    ->options(Page::$statuses)
+                    ->searchable(),
                 TextColumn::make('order_column')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

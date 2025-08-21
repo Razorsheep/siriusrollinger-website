@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BlogEntryResource;
 use App\Settings\WebsiteSettings;
 use App\Models\BlogEntry;
 use App\Models\Page;
@@ -96,7 +97,7 @@ class BlogController extends Controller
         ];
 
         return Inertia::render('blog/show', [
-            'blogEntry' => $blogEntry,
+            'blogEntry' => $blogEntry,//new BlogEntryResource($blogEntry->load('author'))->resolve(),
             'settings' => app(WebsiteSettings::class)->toArray(),
             'navigationItems' => $navigationItems,
         ]);

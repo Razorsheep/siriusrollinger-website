@@ -22,7 +22,8 @@ class PageForm
                     ->required(),
                 RichEditor::make('content')
                     ->required()
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->json(),
                 FileUpload::make('image')
                     ->image(),
                 Select::make('author')

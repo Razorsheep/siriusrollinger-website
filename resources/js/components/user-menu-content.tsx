@@ -6,11 +6,16 @@ import { Link, router } from '@inertiajs/react';
 import { LogOut, Settings } from 'lucide-react';
 
 interface UserMenuContentProps {
-    user: User;
+    user: User | null | undefined;
 }
 
 export function UserMenuContent({ user }: UserMenuContentProps) {
     const cleanup = useMobileNavigation();
+
+    // Don't render anything if user is not available
+    if (!user) {
+        return null;
+    }
 
     const handleLogout = () => {
         cleanup();

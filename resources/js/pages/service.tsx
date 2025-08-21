@@ -1,31 +1,9 @@
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
+import { TipTapJsonRenderer } from '@/components/tiptap-json-renderer';
 import { Head, usePage } from '@inertiajs/react';
-import { NavigationData } from '@/types';
+import { NavigationData, ServicePage } from '@/types';
 import { Calendar, Clock, MapPin, Phone, Mail, ExternalLink } from 'lucide-react';
-
-interface ServicePage {
-  id: number;
-  title: string;
-  slug: string;
-  content: string;
-  page_type: string;
-  status: string;
-  next_event?: {
-    title: string;
-    date: string;
-    time: string;
-    location: string;
-    description: string;
-    registration_link?: string;
-  };
-  photos?: string[];
-  contact_info?: {
-    phone?: string;
-    email?: string;
-    website?: string;
-  };
-}
 
 interface PageProps {
   settings: any;
@@ -72,10 +50,12 @@ export default function ServiceShow() {
               
               {/* Main Content Column */}
               <div className="lg:col-span-2">
-                <div
-                  className="prose prose-lg prose-red max-w-none"
-                  dangerouslySetInnerHTML={{ __html: page.content }}
-                />
+                <div className="prose prose-lg prose-red max-w-none">
+                  <TipTapJsonRenderer 
+                    content={page.content}
+                    className="prose prose-lg prose-red max-w-none"
+                  />
+                </div>
               </div>
 
               {/* Sidebar Column */}
@@ -205,6 +185,8 @@ export default function ServiceShow() {
                     </div>
                   </div>
                 </div>
+
+                
               </div>
             </div>
           </div>

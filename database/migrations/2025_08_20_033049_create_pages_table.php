@@ -17,12 +17,12 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
             $table->text('excerpt')->nullable();
-            $table->text('content');
+            $table->json('content');
             $table->string('image')->nullable();
             $table->foreignId('author_id')->references('id')->on('users');
             $table->string('status')->default('draft');
             $table->string('page_type')->default('page');
-            
+
             $table->unsignedInteger('order_column')->default(0);
 
             $table->timestamps();

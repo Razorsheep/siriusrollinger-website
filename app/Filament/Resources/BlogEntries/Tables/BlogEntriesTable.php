@@ -9,6 +9,7 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\SelectColumn;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -20,12 +21,15 @@ class BlogEntriesTable
             ->columns([
                 TextColumn::make('title')
                     ->label('Titel')
-                    ->searchable(),
+                    ->searchable()
+                    ->limit(25),
                 TextColumn::make('excerpt')
                     ->label('Uddrag')
                     ->searchable()
-                    ->limit(30),
-                ImageColumn::make('image'),
+                    ->limit(25),
+                SpatieMediaLibraryImageColumn::make('featured_image')
+                    ->collection('featured_image')
+                    ->conversion('preview'),
                 TextColumn::make('author.name')
                     ->label('Forfatter'),
                 TextColumn::make('category')
