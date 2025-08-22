@@ -13,48 +13,36 @@ class TestSmtpCommand extends Command
     /**
      * The name and signature of the console command.
      */
-    protected $signature = 'mail:test-smtp 
+    protected $signature = 'mail:test-resend 
                             {--to= : Email address to send test email to}
                             {--from= : From email address (defaults to config)}
                             {--subject= : Subject line for test email}
-                            {--config= : Test specific mail configuration}
-                            {--details : Show detailed connection information}';
+                            {--html : Send HTML email instead of plain text}';
 
     /**
      * The console command description.
      */
-    protected $description = 'Test SMTP settings and send a test email';
+    protected $description = 'Test Resend configuration and send a test email';
 
     /**
      * Execute the console command.
      */
     public function handle(): int
     {
-        $this->info('🧪 Testing SMTP Configuration...');
+        $this->info('🧪 Testing Resend Configuration...');
         $this->newLine();
 
         // Get options
         $toEmail = $this->option('to') ?: config('mail.from.address');
         $fromEmail = $this->option('from') ?: config('mail.from.address');
-        $subject = $this->option('subject') ?: 'SMTP Test Email - Førstehjælp til Hunde';
-        $config = $this->option('config');
-        $verbose = $this->option('details');
+        $subject = $this->option('subject') ?: 'Resend Test Email - Førstehjælp til Hunde';
+        $isHtml = $this->option('html');
 
         // Display current mail configuration
-        $this->displayMailConfig($verbose);
+        $this->displayMailConfig();
 
-        // Test connection
-        if (! $this->testConnection($config)) {
-            $this->error('❌ SMTP connection failed!');
-
-            return 1;
-        }
-
-        $this->info('✅ SMTP connection successful!');
-        $this->newLine();
-
-        // Send test email
-        if ($this->sendTestEmail($toEmail, $fromEmail, $subject, $config)) {
+        // Test connection by sending email
+        if ($this->sendTestEmail($toEmail, $fromEmail, $subject, $isHtml)) {
             $this->info('📧 Test email sent successfully!');
             $this->info("📬 Sent to: {$toEmail}");
             $this->info("📤 From: {$fromEmail}");
@@ -70,97 +58,49 @@ class TestSmtpCommand extends Command
     /**
      * Display current mail configuration
      */
-    private function displayMailConfig(bool $verbose): void
+    private function displayMailConfig(): void
     {
         $this->info('📋 Current Mail Configuration:');
         $this->line('Driver: '.config('mail.default'));
-        $this->line('Host: '.config('mail.mailers.smtp.host'));
-        $this->line('Port: '.config('mail.mailers.smtp.port'));
-        $this->line('Encryption: '.config('mail.mailers.smtp.encryption'));
-        $this->line('Username: '.config('mail.mailers.smtp.username'));
         $this->line('From Address: '.config('mail.from.address'));
         $this->line('From Name: '.config('mail.from.name'));
 
-        if ($verbose) {
-            $this->newLine();
-            $this->info('🔧 Additional Configuration:');
-            $this->line('Timeout: '.config('mail.mailers.smtp.timeout', '30').'s');
-            $this->line('Local Domain: '.config('mail.mailers.smtp.local_domain', 'Not set'));
-            $this->line('Verify Peer: '.(config('mail.mailers.smtp.verify_peer', true) ? 'Yes' : 'No'));
-        }
         $this->newLine();
-    }
-
-    /**
-     * Test SMTP connection
-     */
-    private function testConnection(?string $config): bool
-    {
-        try {
-            $this->info('🔌 Testing SMTP connection...');
-
-            // Test basic connection
-            $host = config('mail.mailers.smtp.host');
-            $port = config('mail.mailers.smtp.port');
-
-            $this->line("Connecting to {$host}:{$port}...");
-
-            $connection = @fsockopen($host, $port, $errno, $errstr, 10);
-
-            if (! $connection) {
-                $this->error("Connection failed: {$errstr} ({$errno})");
-
-                return false;
-            }
-
-            fclose($connection);
-            $this->info('✅ Basic connection test passed');
-
-            // Test with Laravel's mail system
-            $this->line('Testing with Laravel mail system...');
-
-            // This will attempt to connect using the configured mailer
-            Mail::raw('Connection test', function (Message $message) {
-                $message->to('test@example.com')
-                    ->subject('Connection Test');
-            });
-
-            $this->info('✅ Laravel mail system test passed');
-
-            return true;
-
-        } catch (Exception $e) {
-            $this->error('❌ Connection test failed: '.$e->getMessage());
-            Log::error('SMTP test failed', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
-
-            return false;
-        }
+        $this->info('🔧 Resend Configuration:');
+        $this->line('API Key: '.(config('services.resend.key') ? 'Set' : 'Not set'));
+        $this->line('Mail Driver: '.config('mail.default'));
+        $this->newLine();
     }
 
     /**
      * Send test email
      */
-    private function sendTestEmail(string $toEmail, string $fromEmail, string $subject, ?string $config): bool
+    private function sendTestEmail(string $toEmail, string $fromEmail, string $subject, bool $isHtml): bool
     {
         try {
-            $this->info('📧 Sending test email...');
+            $this->info('📧 Sending test email via Resend...');
 
-            $testContent = $this->generateTestEmailContent();
-
-            Mail::raw($testContent, function (Message $message) use ($toEmail, $fromEmail, $subject) {
-                $message->to($toEmail)
-                    ->from($fromEmail, config('mail.from.name'))
-                    ->subject($subject);
-            });
+            if ($isHtml) {
+                $htmlContent = $this->generateHtmlTestEmailContent();
+                Mail::html($htmlContent, function (Message $message) use ($toEmail, $fromEmail, $subject) {
+                    $message->to($toEmail)
+                        ->from($fromEmail, config('mail.from.name'))
+                        ->subject($subject);
+                });
+            } else {
+                $textContent = $this->generateTextTestEmailContent();
+                Mail::raw($textContent, function (Message $message) use ($toEmail, $fromEmail, $subject) {
+                    $message->to($toEmail)
+                        ->from($fromEmail, config('mail.from.name'))
+                        ->subject($subject);
+                });
+            }
 
             return true;
 
         } catch (Exception $e) {
             $this->error('❌ Failed to send email: '.$e->getMessage());
-            Log::error('SMTP email send failed', [
+            Log::error('Resend email send failed', [
                 'to' => $toEmail,
                 'from' => $fromEmail,
                 'error' => $e->getMessage(),
@@ -172,20 +112,73 @@ class TestSmtpCommand extends Command
     }
 
     /**
-     * Generate test email content
+     * Generate HTML test email content
      */
-    private function generateTestEmailContent(): string
+    private function generateHtmlTestEmailContent(): string
     {
-        return "Hej!
+        return '
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <title>Resend Test Email</title>
+        </head>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+                <h1 style="color: #dc2626;">🧪 Resend Test Email</h1>
+                
+                <p>Hej!</p>
+                
+                <p>Dette er en test email fra din Laravel applikation via <strong>Resend</strong>.</p>
+                
+                <div style="background-color: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                    <h3 style="margin-top: 0;">📧 Email Detaljer:</h3>
+                    <ul>
+                        <li><strong>Tidspunkt:</strong> '.now()->format('d/m/Y H:i:s').'</li>
+                        <li><strong>Server:</strong> '.gethostname().'</li>
+                        <li><strong>Laravel Version:</strong> '.app()->version().'</li>
+                        <li><strong>Mail Driver:</strong> '.config('mail.default').'</li>
+                    </ul>
+                </div>
+                
+                <p>✅ Hvis du modtager denne email, betyder det at din Resend konfiguration fungerer korrekt!</p>
+                
+                <div style="background-color: #dc2626; color: white; padding: 15px; border-radius: 8px; text-align: center; margin: 20px 0;">
+                    <h3 style="margin: 0;">Førstehjælp til Hunde</h3>
+                    <p style="margin: 10px 0 0 0;">Din partner i hundesikkerhed</p>
+                </div>
+                
+                <p>Med venlig hilsen,<br>
+                <strong>Førstehjælp til Hunde Team</strong></p>
+                
+                <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;">
+                <p style="font-size: 12px; color: #6b7280;">
+                    Dette er en automatisk genereret test email. Du kan slette den.
+                </p>
+            </div>
+        </body>
+        </html>';
+    }
 
-Dette er en test email fra din Laravel applikation 'Førstehjælp til Hunde'.
+    /**
+     * Generate text test email content
+     */
+    private function generateTextTestEmailContent(): string
+    {
+        return 'Hej!
+
+Dette er en test email fra din Laravel applikation via Resend.
 
 📧 Email Test Detaljer:
-- Tidspunkt: ".now()->format('d/m/Y H:i:s').'
+- Tidspunkt: '.now()->format('d/m/Y H:i:s').'
 - Server: '.gethostname().'
 - Laravel Version: '.app()->version().'
+- Mail Driver: '.config('mail.default').'
 
-✅ Hvis du modtager denne email, betyder det at din SMTP konfiguration fungerer korrekt!
+✅ Hvis du modtager denne email, betyder det at din Resend konfiguration fungerer korrekt!
+
+Førstehjælp til Hunde
+Din partner i hundesikkerhed
 
 Med venlig hilsen,
 Førstehjælp til Hunde Team
