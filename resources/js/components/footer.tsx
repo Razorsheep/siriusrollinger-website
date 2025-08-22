@@ -25,7 +25,7 @@ export function Footer() {
 
                 {/* Quick links section */}
                 <div className="mt-[var(--spacing-2xl)] pt-[var(--spacing-xl)] border-t border-[var(--color-red-800)]">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[var(--spacing-xl)]">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-[var(--spacing-xl)]">
                         <div>
                             <h5 className="font-semibold mb-[var(--spacing-md)] text-[var(--color-white)]">Hurtige links</h5>
                             <ul className="space-y-[var(--spacing-sm)] text-[var(--color-red-200)]">
@@ -50,14 +50,14 @@ export function Footer() {
                                 <li><a href="/newsletter" className="hover:text-[var(--color-white)] transition-colors">Nyhedsbrev</a></li>
                             </ul>
                         </div> */}
-                        <div>
+                        {/* <div>
                             <h5 className="font-semibold mb-[var(--spacing-md)] text-[var(--color-white)]">Følg os</h5>
                             <ul className="space-y-[var(--spacing-sm)] text-[var(--color-red-200)]">
                                 <li><a href="#" className="hover:text-[var(--color-white)] transition-colors">Facebook</a></li>
                                 <li><a href="#" className="hover:text-[var(--color-white)] transition-colors">Instagram</a></li>
                                 <li><a href="#" className="hover:text-[var(--color-white)] transition-colors">LinkedIn</a></li>
                             </ul>
-                        </div>
+                        </div> */}
                         <div>
                             <h5 className="font-semibold mb-[var(--spacing-md)] text-[var(--color-white)]">Kontakt</h5>
                             
