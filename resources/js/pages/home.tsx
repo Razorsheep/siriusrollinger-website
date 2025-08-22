@@ -9,12 +9,13 @@ import { useState, useEffect } from 'react';
 import AppLayout from '@/layouts/app-layout';
 
 export default function Home() {
-    const { settings, blogEntries, navigationItems, seo } = usePage<SharedData>().props;
+    const { blogEntries } = usePage<SharedData>().props;
     const [showNewsletterPopup, setShowNewsletterPopup] = useState(false);
 
     // Show newsletter popup after 3 seconds, but only if user hasn't dismissed it before
     useEffect(() => {
         const hasDismissed = localStorage.getItem('newsletter-popup-dismissed');
+        // const hasDismissed = false;
         
         if (!hasDismissed) {
             const timer = setTimeout(() => {
@@ -25,7 +26,6 @@ export default function Home() {
         }
     }, []);
 
-    console.log(blogEntries);
     return (
         <AppLayout>
             <HeroSection />

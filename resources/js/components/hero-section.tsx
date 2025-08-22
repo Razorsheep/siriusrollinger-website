@@ -1,3 +1,6 @@
+import { Button } from "./ui/button";
+import { Link } from "@inertiajs/react";
+
 export function HeroSection() {
     return (
         <section className="relative bg-gradient-to-br from-[var(--color-red-50)] to-[var(--color-white)] py-[var(--spacing-4xl)] lg:py-[var(--spacing-5xl)]">
@@ -12,12 +15,14 @@ export function HeroSection() {
                             Med viden, øvelse og det rette udstyr kan du redde liv, yde god førstehjælp og håndtere akutte situationer for din hund. Vi glæder os til at hjælpe dig, så du kan hjælpe din hund
                         </p>
                         <div className="flex flex-col sm:flex-row gap-[var(--spacing-md)] justify-center lg:justify-start mb-[var(--spacing-3xl)]">
-                            <button className="bg-[var(--color-red-600)] hover:bg-[var(--color-red-700)] text-[var(--color-white)] font-semibold py-[var(--spacing-sm)] px-[var(--spacing-xl)] rounded-[var(--radius-lg)] transition-colors shadow-lg hover:shadow-xl">
-                                Kom i gang
-                            </button>
-                            <button className="border-2 border-[var(--color-red-600)] text-[var(--color-red-600)] hover:bg-[var(--color-red-600)] hover:text-[var(--color-white)] font-semibold py-[var(--spacing-sm)] px-[var(--spacing-xl)] rounded-[var(--radius-lg)] transition-colors">
+                            <Button asChild className="bg-[var(--color-red-600)] hover:bg-[var(--color-red-700)] text-[var(--color-white)] font-semibold py-[var(--spacing-sm)] px-[var(--spacing-xl)] rounded-[var(--radius-lg)] transition-colors shadow-lg hover:shadow-xl">
+                                <Link href="/contact">
+                                    Kontakt os
+                                </Link>
+                            </Button>
+                            {/* <button className="border-2 border-[var(--color-red-600)] text-[var(--color-red-600)] hover:bg-[var(--color-red-600)] hover:text-[var(--color-white)] font-semibold py-[var(--spacing-sm)] px-[var(--spacing-xl)] rounded-[var(--radius-lg)] transition-colors">
                                 Læs mere
-                            </button>
+                            </button> */}
                         </div>
                     </div>
                     
