@@ -4,9 +4,10 @@ import { SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowLeft, Calendar, User, Tag, Clock, BookOpen, Heart } from 'lucide-react';
 import AppLayout from '@/layouts/app-layout';
+import { Image } from '@/components/image';
 
 export default function BlogShow() {
-    const { settings, blogEntry, navigationItems, seo } = usePage<SharedData>().props;
+    const { blogEntry } = usePage<SharedData>().props;
 
     if (!blogEntry) {
         return (
@@ -100,7 +101,7 @@ export default function BlogShow() {
                     {/* Featured Image */}
                     {blogEntry.featured_image && (
                         <div className="mb-[var(--spacing-xl)]">
-                            <img
+                            <Image
                                 src={blogEntry.featured_image}
                                 alt={blogEntry.title}
                                 className="w-full max-w-2xl mx-auto rounded-[var(--radius-xl)] shadow-lg"

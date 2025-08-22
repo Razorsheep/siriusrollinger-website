@@ -76,6 +76,38 @@ export default function ServiceShow() {
 
               {/* Sidebar Column */}
               <div className="lg:col-span-1 space-y-[var(--spacing-xl)]">
+
+
+                {/* Photos Section */}
+                {page.images && page.images.length > 0 && (
+                  <div className="bg-[var(--color-white)] border border-[var(--color-gray-200)] rounded-[var(--radius-xl)] p-[var(--spacing-xl)]">
+                    <h3 className="text-xl font-bold text-[var(--color-gray-900)] mb-[var(--spacing-md)]">
+                      Billeder
+                    </h3>
+                    <div className="grid grid-cols-2 gap-[var(--spacing-md)]">
+                      {page.images.map((image, index) => {
+                        console.log(`Image ${index}:`, { 
+                          preview_url: image.preview_url, 
+                          url: image.url, 
+                          name: image.name 
+                        });
+                        return (
+                          <div
+                            key={index}
+                            className="aspect-square rounded-[var(--radius-lg)] overflow-hidden focus:outline-none focus:ring-2 focus:ring-[var(--color-red-500)]"
+                          >
+                            <Image
+                              src={image.preview_url}
+                              alt={`${page.title} - billede ${index + 1}`}
+                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
+                              lightboxSrc={image.url || image.preview_url}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
                 
                 {/* Next Event Info Box */}
                 {page.next_event && (
@@ -124,36 +156,7 @@ export default function ServiceShow() {
                   </div>
                 )}
 
-                {/* Photos Section */}
-                {page.images && page.images.length > 0 && (
-                  <div className="bg-[var(--color-white)] border border-[var(--color-gray-200)] rounded-[var(--radius-xl)] p-[var(--spacing-xl)]">
-                    <h3 className="text-xl font-bold text-[var(--color-gray-900)] mb-[var(--spacing-md)]">
-                      Billeder
-                    </h3>
-                    <div className="grid grid-cols-2 gap-[var(--spacing-md)]">
-                      {page.images.map((image, index) => {
-                        console.log(`Image ${index}:`, { 
-                          preview_url: image.preview_url, 
-                          url: image.url, 
-                          name: image.name 
-                        });
-                        return (
-                          <div
-                            key={index}
-                            className="aspect-square rounded-[var(--radius-lg)] overflow-hidden focus:outline-none focus:ring-2 focus:ring-[var(--color-red-500)]"
-                          >
-                            <Image
-                              src={image.preview_url}
-                              alt={`${page.title} - billede ${index + 1}`}
-                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
-                              lightboxSrc={image.url || image.preview_url}
-                            />
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
+                
 
                 
               </div>

@@ -22,7 +22,7 @@ class BlogController extends Controller
         return Inertia::render('blog/index', [
             'blogEntries' => BlogEntryResource::collection($blogEntries)->resolve(),
             'tags' => $tags,
-            'seo' => SeoService::forStoriesIndex(),
+            'seo' => SeoService::forBlogIndex(),
         ]);
     }
 
@@ -31,9 +31,11 @@ class BlogController extends Controller
         if($blogEntry->status != 'published')
             abort(404);
 
+        $formattedBlogEntry = new BlogEntryResource($blogEntry)->resolve();
+        
         return Inertia::render('blog/show', [
-            'blogEntry' => new BlogEntryResource($blogEntry)->resolve(),
-            'seo' => SeoService::forBlog($blogEntry->toArray()),
+            'blogEntry' => $formattedBlogEntry,
+            'seo' => SeoService::forBlogEntry($formattedBlogEntry),
         ]);
     }
 }

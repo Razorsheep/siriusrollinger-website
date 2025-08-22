@@ -7,8 +7,9 @@ class SeoService
     /**
      * Generate SEO data for a blog entry page
      */
-    public static function forBlog(array $blogEntry): array
+    public static function forBlogEntry(array $blogEntry): array
     {
+
         $title = $blogEntry['title'] ?? '';
         $excerpt = $blogEntry['excerpt'] ?? '';
         $content = isset($blogEntry['content']) && is_array($blogEntry['content']) ? self::extractTextFromJson($blogEntry['content']) : ($blogEntry['content'] ?? '');
@@ -50,98 +51,98 @@ class SeoService
     /**
      * Generate structured data (Schema.org) for a course
      */
-    public static function generateStructuredData(array $course): array
-    {
-        $structuredData = [
-            '@context' => 'https://schema.org',
-            '@type' => 'Course',
-            'name' => $course['title'] ?? '',
-            'description' => is_array($course['description']) ? self::extractTextFromJson($course['description']) : ($course['description'] ?? ''),
-            'provider' => [
-                '@type' => 'Organization',
-                'name' => 'Førstehjælp til Hunde',
-                'url' => config('app.url'),
-            ],
-            'educationalLevel' => ucfirst($course['level'] ?? 'beginner'),
-            'timeRequired' => self::calculateCourseDuration($course),
-            'coursePrerequisites' => self::extractPrerequisites($course),
-        ];
+    // public static function generateStructuredData(array $course): array
+    // {
+    //     $structuredData = [
+    //         '@context' => 'https://schema.org',
+    //         '@type' => 'Course',
+    //         'name' => $course['title'] ?? '',
+    //         'description' => is_array($course['description']) ? self::extractTextFromJson($course['description']) : ($course['description'] ?? ''),
+    //         'provider' => [
+    //             '@type' => 'Organization',
+    //             'name' => 'Førstehjælp til Hunde',
+    //             'url' => config('app.url'),
+    //         ],
+    //         'educationalLevel' => ucfirst($course['level'] ?? 'beginner'),
+    //         'timeRequired' => self::calculateCourseDuration($course),
+    //         'coursePrerequisites' => self::extractPrerequisites($course),
+    //     ];
 
-        // Add instructor if available
-        if (isset($course['owner']) && $course['owner']) {
-            $structuredData['instructor'] = [
-                '@type' => 'Person',
-                'name' => $course['owner']['name'] ?? 'Førstehjælp til Hunde Instructor',
-            ];
-        }
+    //     // Add instructor if available
+    //     if (isset($course['owner']) && $course['owner']) {
+    //         $structuredData['instructor'] = [
+    //             '@type' => 'Person',
+    //             'name' => $course['owner']['name'] ?? 'Førstehjælp til Hunde Instructor',
+    //         ];
+    //     }
 
-        // Add course subjects if available
-        if (isset($course['course_subjects']) && is_array($course['course_subjects']) && !empty($course['course_subjects'])) {
-            $structuredData['about'] = self::extractTextFromJson($course['course_subjects']);
-        }
+    //     // Add course subjects if available
+    //     if (isset($course['course_subjects']) && is_array($course['course_subjects']) && !empty($course['course_subjects'])) {
+    //         $structuredData['about'] = self::extractTextFromJson($course['course_subjects']);
+    //     }
 
-        // Add pricing information
-        if (isset($course['price']) && $course['price'] > 0) {
-            $structuredData['offers'] = [
-                '@type' => 'Offer',
-                'price' => $course['price'],
-                'priceCurrency' => $course['currency'] ?? 'DKK',
-                'availability' => 'https://schema.org/InStock',
-            ];
-        }
+    //     // Add pricing information
+    //     if (isset($course['price']) && $course['price'] > 0) {
+    //         $structuredData['offers'] = [
+    //             '@type' => 'Offer',
+    //             'price' => $course['price'],
+    //             'priceCurrency' => $course['currency'] ?? 'DKK',
+    //             'availability' => 'https://schema.org/InStock',
+    //         ];
+    //     }
 
         // Add upcoming events if available
-        if (isset($course['events']['data']) && !empty($course['events']['data'])) {
-            $structuredData['hasCourseInstance'] = collect($course['events']['data'])->map(function ($event) {
-                return [
-                    '@type' => 'CourseInstance',
-                    'name' => $event['title'] ?? '',
-                    'startDate' => $event['start_time'] ?? '',
-                    'endDate' => $event['end_time'] ?? '',
-                    'location' => [
-                        '@type' => 'Place',
-                        'name' => $event['start_location']['name'] ?? 'Førstehjælp til Hunde Location',
-                    ],
-                ];
-            })->toArray();
-        }
+    //     if (isset($course['events']['data']) && !empty($course['events']['data'])) {
+    //         $structuredData['hasCourseInstance'] = collect($course['events']['data'])->map(function ($event) {
+    //             return [
+    //                 '@type' => 'CourseInstance',
+    //                 'name' => $event['title'] ?? '',
+    //                 'startDate' => $event['start_time'] ?? '',
+    //                 'endDate' => $event['end_time'] ?? '',
+    //                 'location' => [
+    //                     '@type' => 'Place',
+    //                     'name' => $event['start_location']['name'] ?? 'Førstehjælp til Hunde Location',
+    //                 ],
+    //             ];
+    //         })->toArray();
+    //     }
 
-        return $structuredData;
-    }
+    //     return $structuredData;
+    // }
 
-    /**
-     * Calculate course duration in ISO 8601 format
-     */
-    private static function calculateCourseDuration(array $course): string
-    {
-        if (!isset($course['booking_start_date']) || !isset($course['booking_end_date'])) {
-            return 'P1D'; // Default to 1 day
-        }
+    // /**
+    //  * Calculate course duration in ISO 8601 format
+    //  */
+    // private static function calculateCourseDuration(array $course): string
+    // {
+    //     if (!isset($course['booking_start_date']) || !isset($course['booking_end_date'])) {
+    //         return 'P1D'; // Default to 1 day
+    //     }
 
-        $start = \Carbon\Carbon::parse($course['booking_start_date']);
-        $end = \Carbon\Carbon::parse($course['booking_end_date']);
-        $diff = $start->diff($end);
+    //     $start = \Carbon\Carbon::parse($course['booking_start_date']);
+    //     $end = \Carbon\Carbon::parse($course['booking_end_date']);
+    //     $diff = $start->diff($end);
         
-        if ($diff->days > 0) {
-            return 'P' . $diff->days . 'D';
-        } elseif ($diff->h > 0) {
-            return 'PT' . $diff->h . 'H';
-        } else {
-            return 'PT1H'; // Default to 1 hour
-        }
-    }
+    //     if ($diff->days > 0) {
+    //         return 'P' . $diff->days . 'D';
+    //     } elseif ($diff->h > 0) {
+    //         return 'PT' . $diff->h . 'H';
+    //     } else {
+    //         return 'PT1H'; // Default to 1 hour
+    //     }
+    // }
 
-    /**
-     * Extract prerequisites from course data
-     */
-    private static function extractPrerequisites(array $course): string
-    {
-        if (isset($course['participant_requirements']) && is_array($course['participant_requirements'])) {
-            return self::extractTextFromJson($course['participant_requirements']);
-        }
+    // /**
+    //  * Extract prerequisites from course data
+    //  */
+    // private static function extractPrerequisites(array $course): string
+    // {
+    //     if (isset($course['participant_requirements']) && is_array($course['participant_requirements'])) {
+    //         return self::extractTextFromJson($course['participant_requirements']);
+    //     }
         
-        return $course['participant_requirements'] ?? 'Basic fitness level required';
-    }
+    //     return $course['participant_requirements'] ?? 'Basic fitness level required';
+    // }
 
     /**
      * Generate SEO data for a general page
@@ -191,22 +192,22 @@ class SeoService
     /**
      * Generate SEO data for courses listing page
      */
-    public static function forCoursesIndex(): array
-    {
-        return self::forPage(
-            'Kurser - Førstehjælp til Hunde',
-            'Udforsk vores udvalg af hundesikkerhedskurser. Fra begyndere til avancerede, vi har kurser til alle niveauer.',
-            [
-                'keywords' => 'hundekurser, hundesikkerhedskurser, hundeførstehjælp, denmark, hundesikkerhed, førstehjælp',
-                'og_image' => '/images/logo.png',
-            ]
-        );
-    }
+    // public static function forCoursesIndex(): array
+    // {
+    //     return self::forPage(
+    //         'Kurser - Førstehjælp til Hunde',
+    //         'Udforsk vores udvalg af hundesikkerhedskurser. Fra begyndere til avancerede, vi har kurser til alle niveauer.',
+    //         [
+    //             'keywords' => 'hundekurser, hundesikkerhedskurser, hundeførstehjælp, denmark, hundesikkerhed, førstehjælp',
+    //             'og_image' => '/images/logo.png',
+    //         ]
+    //     );
+    // }
 
     /**
      * Generate SEO data for stories listing page
      */
-    public static function forStoriesIndex(): array
+    public static function forBlogIndex(): array
     {
         return self::forPage(
             'Blog & Artikler - Førstehjælp til Hunde',
@@ -221,95 +222,95 @@ class SeoService
     /**
      * Generate SEO data for a story page
      */
-    public static function forStory(array $story): array
-    {
-        $title = $story['title'] ?? '';
-        $excerpt = $story['excerpt'] ?? '';
-        $tags = $story['tags'] ?? [];
+    // public static function forStory(array $story): array
+    // {
+    //     $title = $story['title'] ?? '';
+    //     $excerpt = $story['excerpt'] ?? '';
+    //     $tags = $story['tags'] ?? [];
         
-        // Extract tag names for keywords
-        $tagNames = collect($tags)->pluck('name')->toArray();
+    //     // Extract tag names for keywords
+    //     $tagNames = collect($tags)->pluck('name')->toArray();
         
-        return [
-            'meta_title' => self::generateMetaTitle($title),
-            'meta_description' => self::generateMetaDescription($excerpt),
-            'meta_keywords' => self::generateStoryKeywords($title, $excerpt, $tagNames),
-            'og_title' => self::generateOgTitle($title),
-            'og_description' => self::generateOgDescription($excerpt),
-            'og_type' => 'article',
-            'og_image' => self::getStoryImage($story),
-            'twitter_card' => 'summary_large_image',
-            'twitter_title' => self::generateTwitterTitle($title),
-            'twitter_description' => self::generateTwitterDescription($excerpt),
-            'twitter_image' => self::getStoryImage($story),
-            'author' => $story['author'] ?? 'Førstehjælp til Hunde',
-            'publisher' => 'Førstehjælp til Hunde',
-            'category' => 'Hundesikkerhed',
-            'geo_region' => 'DK',
-            'geo_placename' => 'Denmark',
-            'robots_index' => true,
-            'robots_follow' => true,
-            'canonical_url' => request()->url(),
-            'article_published_time' => $story['published_at'] ?? null,
-            'article_modified_time' => $story['updated_at'] ?? null,
-            'article_author' => $story['author'] ?? 'Førstehjælp til Hunde',
-            'article_section' => $story['category'] ?? 'Hundesikkerhed',
-        ];
-    }
+    //     return [
+    //         'meta_title' => self::generateMetaTitle($title),
+    //         'meta_description' => self::generateMetaDescription($excerpt),
+    //         'meta_keywords' => self::generateStoryKeywords($title, $excerpt, $tagNames),
+    //         'og_title' => self::generateOgTitle($title),
+    //         'og_description' => self::generateOgDescription($excerpt),
+    //         'og_type' => 'article',
+    //         'og_image' => self::getStoryImage($story),
+    //         'twitter_card' => 'summary_large_image',
+    //         'twitter_title' => self::generateTwitterTitle($title),
+    //         'twitter_description' => self::generateTwitterDescription($excerpt),
+    //         'twitter_image' => self::getStoryImage($story),
+    //         'author' => $story['author'] ?? 'Førstehjælp til Hunde',
+    //         'publisher' => 'Førstehjælp til Hunde',
+    //         'category' => 'Hundesikkerhed',
+    //         'geo_region' => 'DK',
+    //         'geo_placename' => 'Denmark',
+    //         'robots_index' => true,
+    //         'robots_follow' => true,
+    //         'canonical_url' => request()->url(),
+    //         'article_published_time' => $story['published_at'] ?? null,
+    //         'article_modified_time' => $story['updated_at'] ?? null,
+    //         'article_author' => $story['author'] ?? 'Førstehjælp til Hunde',
+    //         'article_section' => $story['category'] ?? 'Hundesikkerhed',
+    //     ];
+    // }
 
     /**
      * Generate structured data (Schema.org) for a story
      */
-    public static function generateStoryStructuredData(array $story): array
-    {
-        $structuredData = [
-            '@context' => 'https://schema.org',
-            '@type' => 'Article',
-            'headline' => $story['title'] ?? '',
-            'description' => $story['excerpt'] ?? '',
-            'author' => [
-                '@type' => 'Person',
-                'name' => $story['author'] ?? 'Fjeldgruppen',
-            ],
-            'publisher' => [
-                '@type' => 'Organization',
-                'name' => 'Førstehjælp til Hunde',
-                'url' => config('app.url'),
-                'logo' => [
-                    '@type' => 'ImageObject',
-                    'url' => config('app.url') . '/images/logo.png',
-                ],
-            ],
-            'datePublished' => $story['published_at'] ?? null,
-            'dateModified' => $story['updated_at'] ?? null,
-            'mainEntityOfPage' => [
-                '@type' => 'WebPage',
-                '@id' => request()->url(),
-            ],
-        ];
+    // public static function generateStoryStructuredData(array $story): array
+    // {
+    //     $structuredData = [
+    //         '@context' => 'https://schema.org',
+    //         '@type' => 'Article',
+    //         'headline' => $story['title'] ?? '',
+    //         'description' => $story['excerpt'] ?? '',
+    //         'author' => [
+    //             '@type' => 'Person',
+    //             'name' => $story['author'] ?? 'Fjeldgruppen',
+    //         ],
+    //         'publisher' => [
+    //             '@type' => 'Organization',
+    //             'name' => 'Førstehjælp til Hunde',
+    //             'url' => config('app.url'),
+    //             'logo' => [
+    //                 '@type' => 'ImageObject',
+    //                 'url' => config('app.url') . '/images/logo.png',
+    //             ],
+    //         ],
+    //         'datePublished' => $story['published_at'] ?? null,
+    //         'dateModified' => $story['updated_at'] ?? null,
+    //         'mainEntityOfPage' => [
+    //             '@type' => 'WebPage',
+    //             '@id' => request()->url(),
+    //         ],
+    //     ];
 
-        // Add image if available
-        if (isset($story['featured_image']) && $story['featured_image']) {
-            $structuredData['image'] = [
-                '@type' => 'ImageObject',
-                'url' => $story['featured_image'],
-                'alt' => $story['featured_image_alt'] ?? $story['title'] ?? '',
-            ];
-        }
+    //     // Add image if available
+    //     if (isset($story['featured_image']) && $story['featured_image']) {
+    //         $structuredData['image'] = [
+    //             '@type' => 'ImageObject',
+    //             'url' => $story['featured_image'],
+    //             'alt' => $story['featured_image_alt'] ?? $story['title'] ?? '',
+    //         ];
+    //     }
 
-        // Add tags as keywords
-        if (isset($story['tags']) && is_array($story['tags']) && !empty($story['tags'])) {
-            $keywords = collect($story['tags'])->pluck('name')->toArray();
-            $structuredData['keywords'] = implode(', ', $keywords);
-        }
+    //     // Add tags as keywords
+    //     if (isset($story['tags']) && is_array($story['tags']) && !empty($story['tags'])) {
+    //         $keywords = collect($story['tags'])->pluck('name')->toArray();
+    //         $structuredData['keywords'] = implode(', ', $keywords);
+    //     }
 
-        // Add category
-        if (isset($story['category']) && $story['category']) {
-            $structuredData['articleSection'] = $story['category'];
-        }
+    //     // Add category
+    //     if (isset($story['category']) && $story['category']) {
+    //         $structuredData['articleSection'] = $story['category'];
+    //     }
 
-        return $structuredData;
-    }
+    //     return $structuredData;
+    // }
 
     /**
      * Generate structured data (Schema.org) for a blog entry
@@ -533,7 +534,7 @@ class SeoService
         $excerpt = $blogEntry['excerpt'] ?? '';
         
         // Extract tags for keywords
-        $tags = $blogEntry['tags'] ?? [];
+        $tags = $blogEntry['tags'];
         $tagNames = collect($tags)->pluck('name')->toArray();
         
         // Add title keywords
