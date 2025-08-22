@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
@@ -53,6 +52,8 @@ class Page extends Model implements HasMedia
         'service' => 'Ydelse',
     ];
 
+    public $with = ['media'];
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
@@ -62,8 +63,6 @@ class Page extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('featured_image')
-            ->singleFile();
         $this->addMediaCollection('images');
     }
 
@@ -89,7 +88,7 @@ class Page extends Model implements HasMedia
      */
     public function getNextEventAttribute()
     {
-        if (!$this->next_event_title) {
+        if (! $this->next_event_title) {
             return null;
         }
 
@@ -108,7 +107,7 @@ class Page extends Model implements HasMedia
      */
     public function getContactInfoAttribute()
     {
-        if (!$this->contact_phone && !$this->contact_email && !$this->contact_website) {
+        if (! $this->contact_phone && ! $this->contact_email && ! $this->contact_website) {
             return null;
         }
 

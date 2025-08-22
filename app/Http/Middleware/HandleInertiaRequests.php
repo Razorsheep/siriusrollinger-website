@@ -78,10 +78,15 @@ class HandleInertiaRequests extends Middleware
                 'label' => 'Blog',
                 'href' => '/blog',
                 'type' => 'item',
-            ],  
+            ],
             [
                 'label' => 'Om',
                 'href' => '/about',
+                'type' => 'item',
+            ],
+            [
+                'label' => 'Kontakt',
+                'href' => '/contact',
                 'type' => 'item',
             ],
             [
@@ -90,7 +95,7 @@ class HandleInertiaRequests extends Middleware
                 'items' => $ydelser->map(function ($service) {
                     return [
                         'label' => $service->title,
-                        'href' => '/'. $service->slug,
+                        'href' => '/'.$service->slug,
                         'type' => 'item',
                     ];
                 }),

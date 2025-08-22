@@ -14,11 +14,34 @@ class BlogEntryResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return array_merge(
-            parent::toArray($request),
+        return
             [
-                'author' => $this->author->name,
-            ]
-        );
+                'id' => $this->id,
+                'title' => $this->title,
+                'slug' => $this->slug,
+                'content' => $this->content,
+                'excerpt' => $this->excerpt,
+                'tags' => TagResource::collection($this->tags)->resolve(),
+                // 'tags' => $this->tags->map(function ($tag) {
+                //     return [
+                //         'id' => $tag->id,
+                //         'name' => $tag->name,
+                //         'slug' => $tag->slug,
+                //     ];
+                // }),
+
+                'date' => $this->date,
+                'read_time' => $this->calculateReadTime(),
+                'status' => $this->status,
+                'author' => [
+                    'name' => $this->author->name,
+                    'avatar' => $this->author->avatar ?? null,
+                ],
+                'featured_image' => $this->getFirstMediaUrl('featured_image'),
+                'featured_image_preview' => $this->getFirstMediaUrl('featured_image', 'preview'),
+                'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
+                'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            ];
+
     }
 }

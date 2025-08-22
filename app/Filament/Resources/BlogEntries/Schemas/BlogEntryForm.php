@@ -8,8 +8,10 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Forms\Components\SpatieTagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TagsInput;
 use Filament\Schemas\Schema;
 
 class BlogEntryForm
@@ -32,7 +34,7 @@ class BlogEntryForm
                 Select::make('author_id')
                     ->relationship('author', 'name')
                     ->default(1),
-                TextInput::make('category'),
+                SpatieTagsInput::make('tags'),
                 TextInput::make('read_time'),
                 DatePicker::make('date')
                     ->default(now()),

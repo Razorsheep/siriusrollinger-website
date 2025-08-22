@@ -1,4 +1,5 @@
 import React from 'react';
+import { Image } from './image';
 
 interface TipTapNode {
     type: string;
@@ -37,8 +38,8 @@ export function TipTapJsonRenderer({ content, className = '' }: TipTapJsonRender
                         case 'strike':
                             element = <del key={index}>{element}</del>;
                             break;
-                        case 'code':
-                            element = <code key={index} className="bg-muted px-1 py-0.5 rounded text-sm font-mono">{element}</code>;
+                                        case 'code':
+                            element = <code key={index} className="bg-[var(--color-muted)] px-[var(--spacing-xs)] py-[var(--spacing-xs)] rounded-[var(--radius-sm)] text-sm font-mono">{element}</code>;
                             break;
                         case 'link':
                             // Handle links if you have them
@@ -94,13 +95,13 @@ export function TipTapJsonRenderer({ content, className = '' }: TipTapJsonRender
                     );
                 case 'bulletList':
                     return (
-                        <ul key={index} className="list-disc space-y-2 text-muted-foreground mb-4 pl-6">
+                        <ul key={index} className="list-disc space-y-[var(--spacing-sm)] text-[var(--color-muted-foreground)] mb-[var(--spacing-md)] pl-[var(--spacing-xl)]">
                             {children}
                         </ul>
                     );
                 case 'orderedList':
                     return (
-                        <ol key={index} className="list-decimal space-y-2 text-muted-foreground mb-4 pl-6">
+                        <ol key={index} className="list-decimal space-y-[var(--spacing-sm)] text-[var(--color-muted-foreground)] mb-[var(--spacing-md)] pl-[var(--spacing-xl)]">
                             {children}
                         </ol>
                     );
@@ -112,36 +113,35 @@ export function TipTapJsonRenderer({ content, className = '' }: TipTapJsonRender
                     );
                 case 'blockquote':
                     return (
-                        <blockquote key={index} className="border-l-4 border-primary pl-4 italic text-muted-foreground bg-muted/30 py-2 rounded-r">
+                        <blockquote key={index} className="border-l-4 border-[var(--color-primary)] pl-[var(--spacing-md)] italic text-[var(--color-muted-foreground)] bg-[var(--color-muted)]/30 py-[var(--spacing-sm)] rounded-r">
                             {children}
                         </blockquote>
                     );
                 case 'codeBlock':
                     return (
-                        <pre key={index} className="bg-muted p-4 rounded-lg overflow-x-auto">
+                        <pre key={index} className="bg-[var(--color-muted)] p-[var(--spacing-md)] rounded-[var(--radius-lg)] overflow-x-auto">
                             <code className="text-sm font-mono">{children}</code>
                         </pre>
                     );
                 case 'horizontalRule':
-                    return <hr key={index} className="my-6 border-border" />;
+                    return <hr key={index} className="my-[var(--spacing-xl)] border-[var(--color-border)]" />;
                 case 'hardBreak':
                     return <br key={index} />;
                 case 'image':
                     const imageAttrs = attrs || {};
                     return (
-                        <div key={index} className="my-4">
-                            <img 
+                        <div key={index} className="my-[var(--spacing-md)]">
+                            <Image 
                                 src={imageAttrs.src} 
                                 alt={imageAttrs.alt || ''} 
-                                className="max-w-full h-auto rounded-lg"
-                                loading="lazy"
+                                className="max-w-full h-auto rounded-[var(--radius-lg)]"
                             />
                         </div>
                     );
                 case 'table':
                     return (
-                        <div key={index} className="overflow-x-auto my-4">
-                            <table className="min-w-full border border-border rounded-lg">
+                        <div key={index} className="overflow-x-auto my-[var(--spacing-md)]">
+                            <table className="min-w-full border border-[var(--color-border)] rounded-[var(--radius-lg)]">
                                 {children}
                             </table>
                         </div>
@@ -150,13 +150,13 @@ export function TipTapJsonRenderer({ content, className = '' }: TipTapJsonRender
                     return <tr key={index}>{children}</tr>;
                 case 'tableCell':
                     return (
-                        <td key={index} className="border border-border px-3 py-2">
+                        <td key={index} className="border border-[var(--color-border)] px-[var(--spacing-md)] py-[var(--spacing-sm)]">
                             {children}
                         </td>
                     );
                 case 'tableHeader':
                     return (
-                        <th key={index} className="border border-border px-3 py-2 bg-muted font-semibold">
+                        <th key={index} className="border border-[var(--color-border)] px-[var(--spacing-md)] py-[var(--spacing-sm)] bg-[var(--color-muted)] font-semibold">
                             {children}
                         </th>
                     );

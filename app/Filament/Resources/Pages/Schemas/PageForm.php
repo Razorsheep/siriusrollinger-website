@@ -3,12 +3,11 @@
 namespace App\Filament\Resources\Pages\Schemas;
 
 use App\Models\Page;
-use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
-use Filament\Schemas\Components\Section;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Schema;
 
@@ -39,15 +38,14 @@ class PageForm
                                     ->options(Page::$statuses)
                                     ->required()
                                     ->default('draft'),
-                                Textarea::make('content')
+                                RichEditor::make('content')
                                     ->required()
-                                    ->columnSpanFull(),
+                                    ->columnSpanFull()
+                                    ->json(),
                             ])
                             ->columns(2),
                         Tabs\Tab::make('Media')
                             ->schema([
-                                SpatieMediaLibraryFileUpload::make('featured_image')
-                                    ->collection('featured_image'),
                                 SpatieMediaLibraryFileUpload::make('images')
                                     ->collection('images')
                                     ->multiple(),

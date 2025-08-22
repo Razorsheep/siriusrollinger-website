@@ -45,19 +45,30 @@ export interface TiptapContent {
     attrs?: Record<string, any>;
 }
 
+export interface Tag {
+    id: number;
+    name: string;
+    slug: string;
+}
+
 export interface BlogEntry {
     id: number;
     title: string;
     slug: string;
     content: TiptapContent | string;
     excerpt?: string;
-    category: string;
-    author_name: string;
+    tags: Tag[];
+    author: {
+        name: string;
+        avatar?: string;
+    };
     date: string;
-    image?: string;
-    image_url?: string;
+    featured_image?: string;
+    featured_image_preview?: string;
     read_time?: number;
     status: string;
+    updated_at: string;
+    created_at: string;
 }
 
 export interface ServicePage {
@@ -75,12 +86,24 @@ export interface ServicePage {
         description: string;
         registration_link?: string;
     };
-    photos?: string[];
+    images?: MediaResource[];
     contact_info?: {
         phone?: string;
         email?: string;
         website?: string;
     };
+}
+
+export interface MediaResource {
+    id: number;
+    url: string;
+    preview_url: string;
+    type: string;
+    name: string;
+    size: number;
+    mime_type: string;
+    created_at: string;
+    updated_at: string;
 }
 
 export interface SEO {
@@ -114,7 +137,7 @@ export interface SharedData {
     sidebarOpen: boolean;
     blogEntries?: BlogEntry[];
     blogEntry?: BlogEntry;
-    categories?: string[];
+    tags?: Tag[];
     navigationItems?: NavigationData[];
     settings?: any;
     seo?: SEO;

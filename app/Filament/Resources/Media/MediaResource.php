@@ -14,12 +14,11 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-
 class MediaResource extends Resource
 {
     protected static ?string $model = Media::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPhoto;
 
     protected static ?string $recordTitleAttribute = 'name';
 

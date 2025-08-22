@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PageResource;
 use App\Models\Page;
 use App\Services\SeoService;
 use App\Settings\WebsiteSettings;
@@ -23,27 +24,27 @@ class PageController extends Controller
         $component = $page->page_type === 'service' ? 'service' : 'page';
 
         // Generate SEO data based on page type
-        $seo = $page->page_type === 'service' 
+        $seo = $page->page_type === 'service'
             ? SeoService::forPage(
                 $page->title,
-                $page->excerpt ?? 'Lær om ' . $page->title . ' fra Førstehjælp til Hunde. Kvalificeret rådgivning og kurser i hundesikkerhed.',
+                $page->excerpt ?? 'Lær om '.$page->title.' fra Førstehjælp til Hunde. Kvalificeret rådgivning og kurser i hundesikkerhed.',
                 [
-                    'keywords' => 'hundesikkerhed, førstehjælp til hunde, ' . strtolower($page->title) . ', denmark, hundekurser',
+                    'keywords' => 'hundesikkerhed, førstehjælp til hunde, '.strtolower($page->title).', denmark, hundekurser',
                     'og_image' => $page->photos && count($page->photos) > 0 ? $page->photos[0] : '/images/logo.png',
                 ]
             )
             : SeoService::forPage(
                 $page->title,
-                $page->excerpt ?? 'Læs om ' . $page->title . ' fra Førstehjælp til Hunde.',
+                $page->excerpt ?? 'Læs om '.$page->title.' fra Førstehjælp til Hunde.',
                 [
-                    'keywords' => 'hundesikkerhed, førstehjælp til hunde, ' . strtolower($page->title) . ', denmark',
+                    'keywords' => 'hundesikkerhed, førstehjælp til hunde, '.strtolower($page->title).', denmark',
                     'og_image' => '/images/logo.png',
                 ]
             );
 
         return Inertia::render($component, [
             'settings' => app(WebsiteSettings::class)->toArray(),
-            'page' => $page,
+            'page' => new PageResource($page)->resolve(),
             'seo' => $seo,
         ]);
     }

@@ -1,34 +1,30 @@
-import { Footer } from '@/components/footer';
-import { Header } from '@/components/header';
 import { NewsletterSignup } from '@/components/newsletter-signup';
 import { TipTapJsonRenderer } from '@/components/tiptap-json-renderer';
 import { SharedData } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { ArrowLeft, Calendar, User, Tag, Clock, BookOpen, Heart } from 'lucide-react';
+import AppLayout from '@/layouts/app-layout';
 
 export default function BlogShow() {
     const { settings, blogEntry, navigationItems, seo } = usePage<SharedData>().props;
 
     if (!blogEntry) {
         return (
-            <>
-                <Head title="Blog indlæg ikke fundet - Førstehjælp til Hunde" />
-                <Header settings={settings} navigationItems={navigationItems || []} />
-                <div className="min-h-screen bg-red-50 flex items-center justify-center">
+            <AppLayout>
+                <div className="min-h-screen bg-[var(--color-red-50)] flex items-center justify-center">
                     <div className="text-center">
-                        <h1 className="text-3xl font-bold text-red-900 mb-4">Blog indlæg ikke fundet</h1>
-                        <p className="text-red-700 mb-6">Det ønskede blog indlæg kunne ikke findes.</p>
+                        <h1 className="text-3xl font-bold text-[var(--color-red-900)] mb-[var(--spacing-md)]">Blog indlæg ikke fundet</h1>
+                        <p className="text-[var(--color-red-700)] mb-[var(--spacing-lg)]">Det ønskede blog indlæg kunne ikke findes.</p>
                         <Link
                             href="/blog"
-                            className="inline-flex items-center bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                            className="inline-flex items-center bg-[var(--color-red-600)] hover:bg-[var(--color-red-700)] text-[var(--color-white)] font-semibold py-[var(--spacing-sm)] px-[var(--spacing-lg)] rounded-[var(--radius-lg)] transition-colors"
                         >
-                            <ArrowLeft className="h-4 w-4 mr-2" />
+                            <ArrowLeft className="h-4 w-4 mr-[var(--spacing-sm)]" />
                             Tilbage til blog
                         </Link>
                     </div>
                 </div>
-                <Footer settings={settings} />
-            </>
+            </AppLayout>
         );
     }
 
@@ -41,232 +37,136 @@ export default function BlogShow() {
         });
     };
 
-    const estimatedReadTime = (() => {
-        if (!blogEntry.content) return 5;
-        
-        if (typeof blogEntry.content === 'string') {
-            return Math.ceil(blogEntry.content.split(' ').length / 200);
+    const calculateReadTime = (content: string | any): string => {
+        if (typeof content === 'string') {
+            const words = content.split(' ').length;
+            const minutes = Math.ceil(words / 200);
+            return `${minutes} min læsning`;
         }
-        
-        // For TiptapContent, estimate based on content structure
-        const countWords = (content: any): number => {
-            if (typeof content === 'string') return content.split(' ').length;
-            if (content.text) return content.text.split(' ').length;
-            if (content.content) {
-                return content.content.reduce((acc: number, child: any) => acc + countWords(child), 0);
-            }
-            return 0;
-        };
-        
-        return Math.ceil(countWords(blogEntry.content) / 200);
-    })();
+        return '5 min læsning';
+    };
 
     return (
-        <>
-            <Head>
-                <title>{seo?.meta_title || `${blogEntry.title} - Førstehjælp til Hunde`}</title>
-                <meta name="description" content={seo?.meta_description || blogEntry.excerpt || `Læs om ${blogEntry.title} fra Førstehjælp til Hunde.`} />
-                <meta name="keywords" content={seo?.meta_keywords || `hundesikkerhed, førstehjælp til hunde, ${blogEntry.title.toLowerCase()}, denmark`} />
-                <meta name="author" content={seo?.article_author || blogEntry.author_name || 'Julie Pio Kragelund'} />
-                <meta name="robots" content={`${seo?.robots_index ? 'index' : 'noindex'}, ${seo?.robots_follow ? 'follow' : 'nofollow'}`} />
-                
-                {/* Open Graph / Facebook */}
-                <meta property="og:type" content={seo?.og_type || 'article'} />
-                <meta property="og:url" content={seo?.canonical_url || window.location.href} />
-                <meta property="og:title" content={seo?.og_title || blogEntry.title} />
-                <meta property="og:description" content={seo?.og_description || blogEntry.excerpt || `Læs om ${blogEntry.title} fra Førstehjælp til Hunde.`} />
-                <meta property="og:image" content={seo?.og_image || (blogEntry.image || '/images/logo.png')} />
-                <meta property="og:site_name" content="Førstehjælp til Hunde" />
-                <meta property="og:locale" content="da_DK" />
-                <meta property="article:published_time" content={seo?.article_published_time || blogEntry.date} />
-                <meta property="article:modified_time" content={seo?.article_modified_time || blogEntry.updated_at} />
-                <meta property="article:author" content={seo?.article_author || blogEntry.author_name || 'Julie Pio Kragelund'} />
-                <meta property="article:section" content={seo?.article_section || blogEntry.category} />
-                
-                {/* Twitter */}
-                <meta name="twitter:card" content={seo?.twitter_card || 'summary_large_image'} />
-                <meta name="twitter:title" content={seo?.twitter_title || blogEntry.title} />
-                <meta name="twitter:description" content={seo?.twitter_description || blogEntry.excerpt || `Læs om ${blogEntry.title} fra Førstehjælp til Hunde.`} />
-                <meta name="twitter:image" content={seo?.twitter_image || (blogEntry.image || '/images/logo.png')} />
-                
-                {/* Additional SEO */}
-                <meta name="geo.region" content={seo?.geo_region || 'DK'} />
-                <meta name="geo.placename" content={seo?.geo_placename || 'Denmark'} />
-                <link rel="canonical" href={seo?.canonical_url || window.location.href} />
-            </Head>
-
-            {/* Structured Data for SEO */}
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "BlogPosting",
-                        "headline": blogEntry.title,
-                        "description": blogEntry.excerpt || `Læs om ${blogEntry.title} fra Førstehjælp til Hunde.`,
-                        "author": {
-                            "@type": "Person",
-                            "name": blogEntry.author_name || "Julie Pio Kragelund"
-                        },
-                        "publisher": {
-                            "@type": "Organization",
-                            "name": "Førstehjælp til Hunde",
-                            "url": window.location.origin,
-                            "logo": {
-                                "@type": "ImageObject",
-                                "url": `${window.location.origin}/images/logo.png`
-                            }
-                        },
-                        "datePublished": blogEntry.date,
-                        "dateModified": blogEntry.date,
-                        "mainEntityOfPage": {
-                            "@type": "WebPage",
-                            "@id": window.location.href
-                        },
-                        "articleSection": blogEntry.category,
-                        "image": blogEntry.image || `${window.location.origin}/images/logo.png`,
-                        "keywords": `hundesikkerhed, førstehjælp til hunde, ${blogEntry.title.toLowerCase()}, denmark`
-                    })
-                }}
-            />
-            
-            <Header settings={settings} navigationItems={navigationItems || []} />
-
+        <AppLayout>
             {/* Breadcrumb */}
-            <section className="bg-red-50 py-4">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <nav className="flex items-center space-x-2 text-sm">
-                        <Link href="/" className="text-red-600 hover:text-red-800 transition-colors">
+            <section className="bg-[var(--color-red-50)] py-[var(--spacing-md)]">
+                <div className="max-w-7xl mx-auto px-[var(--spacing-md)] sm:px-[var(--spacing-lg)] lg:px-[var(--spacing-xl)]">
+                    <nav className="flex items-center space-x-[var(--spacing-sm)] text-sm">
+                        <Link href="/" className="text-[var(--color-red-600)] hover:text-[var(--color-red-800)] transition-colors">
                             Forside
                         </Link>
-                        <span className="text-red-400">/</span>
-                        <Link href="/blog" className="text-red-600 hover:text-red-800 transition-colors">
+                        <span className="text-[var(--color-red-400)]">/</span>
+                        <Link href="/blog" className="text-[var(--color-red-600)] hover:text-[var(--color-red-800)] transition-colors">
                             Blog
                         </Link>
-                        <span className="text-red-400">/</span>
-                        <span className="text-red-800 font-medium">{blogEntry.title}</span>
+                        <span className="text-[var(--color-red-400)]">/</span>
+                        <span className="text-[var(--color-red-800)] font-medium">{blogEntry.title}</span>
                     </nav>
                 </div>
             </section>
 
-            {/* Blog Post Header */}
-            <section className="py-12 bg-white">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-8">
-                        <div className="inline-flex items-center px-4 py-2 bg-red-100 text-red-700 rounded-full text-sm font-medium mb-4">
-                            <Tag className="h-4 w-4 mr-2" />
-                            {blogEntry.category}
+            {/* Blog Content */}
+            <section className="py-[var(--spacing-2xl)] bg-[var(--color-white)]">
+                <div className="max-w-4xl mx-auto px-[var(--spacing-md)] sm:px-[var(--spacing-lg)] lg:px-[var(--spacing-xl)]">
+                    <div className="text-center mb-[var(--spacing-xl)]">
+                        {/* Tags Badge */}
+                        <div className="inline-flex items-center px-[var(--spacing-md)] py-[var(--spacing-sm)] bg-[var(--color-red-100)] text-[var(--color-red-700)] rounded-full text-sm font-medium mb-[var(--spacing-md)]">
+                            <Tag className="h-4 w-4 mr-[var(--spacing-sm)]" />
+                            {blogEntry.tags && blogEntry.tags.length > 0 ? blogEntry.tags[0].name : 'Generelt'}
                         </div>
-                        
-                        <h1 className="text-4xl lg:text-5xl font-bold text-red-900 mb-6 leading-tight">
+
+                        {/* Title */}
+                        <h1 className="text-4xl lg:text-5xl font-bold text-[var(--color-red-900)] mb-[var(--spacing-lg)] leading-tight">
                             {blogEntry.title}
                         </h1>
-                        
-                        <div className="flex items-center justify-center space-x-6 text-red-600 mb-6">
+
+                        {/* Meta Information */}
+                        <div className="flex items-center justify-center space-x-[var(--spacing-lg)] text-[var(--color-red-600)] mb-[var(--spacing-lg)]">
                             <span className="flex items-center">
-                                <User className="h-5 w-5 mr-2" />
-                                {blogEntry.author || 'Julie Pio Kragelund'}
+                                <User className="h-5 w-5 mr-[var(--spacing-sm)]" />
+                                {blogEntry.author?.name || 'Julie Pio Kragelund'}
                             </span>
                             <span className="flex items-center">
-                                <Calendar className="h-5 w-5 mr-2" />
-                                {formatDate(blogEntry.date)}
+                                <Calendar className="h-5 w-5 mr-[var(--spacing-sm)]" />
+                                {formatDate(blogEntry.created_at)}
                             </span>
                             <span className="flex items-center">
-                                <Clock className="h-5 w-5 mr-2" />
-                                {blogEntry.read_time || estimatedReadTime} min læsning
+                                <Clock className="h-5 w-5 mr-[var(--spacing-sm)]" />
+                                {calculateReadTime(blogEntry.content)}
                             </span>
                         </div>
+                    </div>
 
-                        {blogEntry.image && (
-                            <div className="mb-8">
-                                <img
-                                    src={blogEntry.image_url || blogEntry.image}
-                                    alt={blogEntry.title}
-                                    className="w-full max-w-2xl mx-auto rounded-xl shadow-lg"
-                                />
-                            </div>
-                        )}
+                    {/* Featured Image */}
+                    {blogEntry.featured_image && (
+                        <div className="mb-[var(--spacing-xl)]">
+                            <img
+                                src={blogEntry.featured_image}
+                                alt={blogEntry.title}
+                                className="w-full max-w-2xl mx-auto rounded-[var(--radius-xl)] shadow-lg"
+                            />
+                        </div>
+                    )}
+
+                    {/* Content */}
+                    <div className="mb-[var(--spacing-xl)]">
+                        <TipTapJsonRenderer content={blogEntry.content} />
                     </div>
                 </div>
             </section>
 
-            {/* Blog Content */}
-            <section className="py-12 bg-white">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <article className="prose prose-lg prose-red max-w-none">
-                        <TipTapJsonRenderer 
-                            content={blogEntry.content}
-                            className="text-red-800 leading-relaxed text-lg"
-                        />
-                    </article>
-                </div>
-            </section>
-
-            {/* Author Bio */}
-            <section className="py-12 bg-red-50">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="bg-white rounded-2xl p-8 shadow-lg">
-                        <div className="flex items-start space-x-6">
-                            <div className="flex-shrink-0">
-                                <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center">
-                                    <BookOpen className="h-10 w-10 text-red-600" />
-                                </div>
-                            </div>
-                            <div className="flex-1">
-                                <h3 className="text-2xl font-bold text-red-900 mb-2">
-                                    {blogEntry.author.name || 'Julie Pio Kragelund'}
-                                </h3>
-                                <p className="text-red-700 mb-4 leading-relaxed">
-                                    Dyrlæge med speciale i førstehjælp til hunde. Julie har over 15 års erfaring 
-                                    med at undervise hundeejere og professionelle i at håndtere nødsituationer. 
-                                    Hun er uddannet i NATO-regi som instruktør i taktisk førstehjælp på hund.
-                                </p>
-                                <div className="flex items-center space-x-4">
-                                    <Link
-                                        href="/about"
-                                        className="inline-flex items-center text-red-600 hover:text-red-800 font-semibold transition-colors"
-                                    >
-                                        Læs mere om Julie
-                                        <ArrowLeft className="h-4 w-4 ml-2 rotate-180" />
-                                    </Link>
-                                </div>
-                            </div>
+            {/* CTA Section */}
+            <section className="py-[var(--spacing-2xl)] bg-[var(--color-red-50)]">
+                <div className="max-w-4xl mx-auto px-[var(--spacing-md)] sm:px-[var(--spacing-lg)] lg:px-[var(--spacing-xl)] text-center">
+                    <div className="bg-[var(--color-white)] rounded-[var(--radius-2xl)] p-[var(--spacing-xl)] shadow-lg">
+                        <div className="w-20 h-20 bg-[var(--color-red-100)] rounded-full flex items-center justify-center mx-auto mb-[var(--spacing-md)]">
+                            <BookOpen className="h-10 w-10 text-[var(--color-red-600)]" />
                         </div>
+                        <h3 className="text-2xl font-bold text-[var(--color-red-900)] mb-[var(--spacing-sm)]">
+                            Lær mere om førstehjælp
+                        </h3>
+                        <p className="text-[var(--color-red-700)] mb-[var(--spacing-md)] leading-relaxed">
+                            Er du interesseret i at lære mere om førstehjælp til hunde? 
+                            Tilmeld dig et af vores praktiske kurser og få den viden, der kan redde liv.
+                        </p>
+                        <Link
+                            href="/courses"
+                            className="inline-flex items-center text-[var(--color-red-600)] hover:text-[var(--color-red-800)] font-semibold transition-colors"
+                        >
+                            Se vores kurser
+                            <ArrowLeft className="h-4 w-4 ml-[var(--spacing-sm)] rotate-180" />
+                        </Link>
                     </div>
                 </div>
             </section>
 
-            {/* Related Posts CTA */}
-            <section className="py-16 bg-white">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h3 className="text-3xl font-bold text-red-900 mb-4">
-                        Lær mere om førstehjælp til hunde
+            {/* Newsletter Signup */}
+            <section className="py-[var(--spacing-3xl)] bg-[var(--color-white)]">
+                <div className="max-w-4xl mx-auto px-[var(--spacing-md)] sm:px-[var(--spacing-lg)] lg:px-[var(--spacing-xl)] text-center">
+                    <h3 className="text-3xl font-bold text-[var(--color-red-900)] mb-[var(--spacing-md)]">
+                        Få de nyeste tips direkte i din indbakke
                     </h3>
-                    <p className="text-xl text-red-700 mb-8 max-w-2xl mx-auto">
-                        Udforsk vores blog for at få flere tips, guides og nyheder om hundesikkerhed og førstehjælp
+                    <p className="text-xl text-[var(--color-red-700)] mb-[var(--spacing-xl)] max-w-2xl mx-auto">
+                        Tilmeld dig vores nyhedsbrev og få eksklusive tips om hundesikkerhed og førstehjælp
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <div className="flex flex-col sm:flex-row gap-[var(--spacing-md)] justify-center">
                         <Link
-                            href="/blog"
-                            className="inline-flex items-center bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors shadow-lg hover:shadow-xl"
+                            href="/newsletter"
+                            className="inline-flex items-center bg-[var(--color-red-600)] hover:bg-[var(--color-red-700)] text-[var(--color-white)] font-semibold py-[var(--spacing-md)] px-[var(--spacing-xl)] rounded-[var(--radius-lg)] transition-colors shadow-lg hover:shadow-xl"
                         >
-                            <BookOpen className="h-5 w-5 mr-2" />
-                            Se alle blog indlæg
+                            <BookOpen className="h-5 w-5 mr-[var(--spacing-sm)]" />
+                            Tilmeld dig nyhedsbrev
                         </Link>
                         <Link
-                            href="/"
-                            className="inline-flex items-center border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white font-semibold py-3 px-8 rounded-lg transition-colors"
+                            href="/courses"
+                            className="inline-flex items-center border-2 border-[var(--color-red-600)] text-[var(--color-red-600)] hover:bg-[var(--color-red-600)] hover:text-[var(--color-white)] font-semibold py-[var(--spacing-md)] px-[var(--spacing-xl)] rounded-[var(--radius-lg)] transition-colors"
                         >
-                            <Heart className="h-5 w-5 mr-2" />
-                            Få hjælp til din hund
+                            <Heart className="h-5 w-5 mr-[var(--spacing-sm)]" />
+                            Se vores kurser
                         </Link>
                     </div>
                 </div>
             </section>
-
-            <NewsletterSignup />
-
-            <Footer settings={settings} />
-        </>
+        </AppLayout>
     );
 }

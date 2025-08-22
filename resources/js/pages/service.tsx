@@ -1,9 +1,11 @@
-import { Footer } from '@/components/footer';
-import { Header } from '@/components/header';
 import { TipTapJsonRenderer } from '@/components/tiptap-json-renderer';
-import { Head, usePage } from '@inertiajs/react';
+import { Image } from '@/components/image';
+import { usePage } from '@inertiajs/react';
 import { NavigationData, ServicePage } from '@/types';
-import { Calendar, Clock, MapPin, Phone, Mail, ExternalLink } from 'lucide-react';
+import { Calendar, Clock, MapPin, Phone, Mail, ExternalLink, X } from 'lucide-react';
+import AppLayout from '@/layouts/app-layout';
+import { useRef, useState } from 'react';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 
 interface PageProps {
   settings: any;
@@ -13,7 +15,20 @@ interface PageProps {
 }
 
 export default function ServiceShow() {
-  const { settings, navigationItems, page, seo } = usePage<PageProps>().props;
+  const { page } = usePage<PageProps>().props;
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+  const [lightboxAlt, setLightboxAlt] = useState<string>('');
+
+  const openLightbox = (src: string, alt: string) => {
+    console.log('Opening lightbox:', { src, alt });
+    setLightboxSrc(src);
+    setLightboxAlt(alt);
+    setIsLightboxOpen(true);
+  };
+
+
 
   if (!page) {
     return (
@@ -26,137 +41,82 @@ export default function ServiceShow() {
     );
   }
 
+  console.log(page);
   return (
     <>
-      <Head>
-        <title>{seo?.meta_title || `${page.title} - Førstehjælp til Hunde`}</title>
-        <meta name="description" content={seo?.meta_description || `Lær om ${page.title} fra Førstehjælp til Hunde. Kvalificeret rådgivning og kurser i hundesikkerhed.`} />
-        <meta name="keywords" content={seo?.meta_keywords || `hundesikkerhed, førstehjælp til hunde, ${page.title.toLowerCase()}, denmark, hundekurser`} />
-        <meta name="author" content={seo?.author || 'Førstehjælp til Hunde'} />
-        <meta name="robots" content={`${seo?.robots_index ? 'index' : 'noindex'}, ${seo?.robots_follow ? 'follow' : 'nofollow'}`} />
-        
-        {/* Open Graph / Facebook */}
-        <meta property="og:type" content={seo?.og_type || 'website'} />
-        <meta property="og:url" content={seo?.canonical_url || window.location.href} />
-        <meta property="og:title" content={seo?.og_title || page.title} />
-        <meta property="og:description" content={seo?.og_description || `Lær om ${page.title} fra Førstehjælp til Hunde. Kvalificeret rådgivning og kurser i hundesikkerhed.`} />
-        <meta property="og:image" content={seo?.og_image || (page.photos && page.photos.length > 0 ? page.photos[0] : '/images/logo.png')} />
-        <meta property="og:site_name" content="Førstehjælp til Hunde" />
-        <meta property="og:locale" content="da_DK" />
-        
-        {/* Twitter */}
-        <meta name="twitter:card" content={seo?.twitter_card || 'summary_large_image'} />
-        <meta name="twitter:title" content={seo?.twitter_title || page.title} />
-        <meta name="twitter:description" content={seo?.twitter_description || `Lær om ${page.title} fra Førstehjælp til Hunde. Kvalificeret rådgivning og kurser i hundesikkerhed.`} />
-        <meta name="twitter:image" content={seo?.twitter_image || (page.photos && page.photos.length > 0 ? page.photos[0] : '/images/logo.png')} />
-        
-        {/* Additional SEO */}
-        <meta name="geo.region" content={seo?.geo_region || 'DK'} />
-        <meta name="geo.placename" content={seo?.geo_placename || 'Denmark'} />
-        <link rel="canonical" href={seo?.canonical_url || window.location.href} />
-      </Head>
 
-      {/* Structured Data for SEO */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "name": page.title,
-            "description": `Lær om ${page.title} fra Førstehjælp til Hunde. Kvalificeret rådgivning og kurser i hundesikkerhed.`,
-            "provider": {
-              "@type": "Organization",
-              "name": "Førstehjælp til Hunde",
-              "url": window.location.origin,
-              "logo": {
-                "@type": "ImageObject",
-                "url": `${window.location.origin}/images/logo.png`
-              }
-            },
-            "serviceType": page.page_type,
-            "areaServed": {
-              "@type": "Country",
-              "name": "Denmark"
-            },
-            "url": window.location.href,
-            "image": page.photos && page.photos.length > 0 ? page.photos[0] : `${window.location.origin}/images/logo.png`,
-            "keywords": `hundesikkerhed, førstehjælp til hunde, ${page.title.toLowerCase()}, denmark, hundekurser`
-          })
-        }}
-      />
 
-      <Header settings={settings} navigationItems={navigationItems} />
-
-      <main className="min-h-screen bg-white">
+      <AppLayout>
+        <main className="min-h-screen bg-[var(--color-white)]">
         {/* Hero Section */}
-        <section className="py-20 bg-gradient-to-br from-red-50 to-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl lg:text-5xl font-bold text-red-900 mb-6">
+        <section className="py-[var(--spacing-4xl)] bg-gradient-to-br from-[var(--color-red-50)] to-[var(--color-white)]">
+          <div className="max-w-7xl mx-auto px-[var(--spacing-md)] sm:px-[var(--spacing-lg)] lg:px-[var(--spacing-xl)] text-center">
+            <h1 className="text-4xl lg:text-5xl font-bold text-[var(--color-red-900)] mb-[var(--spacing-xl)]">
               {page.title}
             </h1>
-            <div className="w-24 h-1 bg-red-600 mx-auto mb-8"></div>
+            <div className="w-24 h-1 bg-[var(--color-red-600)] mx-auto mb-[var(--spacing-xl)]"></div>
           </div>
         </section>
 
         {/* Main Content Section */}
-        <section className="py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <section className="py-[var(--spacing-3xl)]">
+          <div className="max-w-7xl mx-auto px-[var(--spacing-md)] sm:px-[var(--spacing-lg)] lg:px-[var(--spacing-xl)]">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-[var(--spacing-2xl)]">
               
               {/* Main Content Column */}
               <div className="lg:col-span-2">
-                <div className="prose prose-lg prose-red max-w-none">
+                <div ref={contentRef} className="prose prose-lg prose-red max-w-none">
                   <TipTapJsonRenderer 
                     content={page.content}
                     className="prose prose-lg prose-red max-w-none"
                   />
+
                 </div>
               </div>
 
               {/* Sidebar Column */}
-              <div className="lg:col-span-1 space-y-8">
+              <div className="lg:col-span-1 space-y-[var(--spacing-xl)]">
                 
                 {/* Next Event Info Box */}
                 {page.next_event && (
-                  <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-                    <h3 className="text-xl font-bold text-red-900 mb-4 flex items-center">
-                      <Calendar className="h-5 w-5 mr-2" />
+                  <div className="bg-[var(--color-red-50)] border border-[var(--color-red-200)] rounded-[var(--radius-xl)] p-[var(--spacing-xl)]">
+                    <h3 className="text-xl font-bold text-[var(--color-red-900)] mb-[var(--spacing-md)] flex items-center">
+                      <Calendar className="h-5 w-5 mr-[var(--spacing-sm)]" />
                       Næste arrangement
                     </h3>
                     
-                    <div className="space-y-3">
+                    <div className="space-y-[var(--spacing-md)]">
                       <div>
-                        <h4 className="font-semibold text-red-800 text-lg">
+                        <h4 className="font-semibold text-[var(--color-red-800)] text-lg">
                           {page.next_event.title}
                         </h4>
                       </div>
                       
-                      <div className="flex items-center text-red-700">
-                        <Calendar className="h-4 w-4 mr-2 flex-shrink-0" />
+                      <div className="flex items-center text-[var(--color-red-700)]">
+                        <Calendar className="h-4 w-4 mr-[var(--spacing-sm)] flex-shrink-0" />
                         <span>{page.next_event.date}</span>
                       </div>
                       
-                      <div className="flex items-center text-red-700">
-                        <Clock className="h-4 w-4 mr-2 flex-shrink-0" />
+                      <div className="flex items-center text-[var(--color-red-700)]">
+                        <Clock className="h-4 w-4 mr-[var(--spacing-sm)] flex-shrink-0" />
                         <span>{page.next_event.time}</span>
                       </div>
                       
-                      <div className="flex items-start text-red-700">
-                        <MapPin className="h-4 w-4 mr-2 flex-shrink-0 mt-0.5" />
+                      <div className="flex items-start text-[var(--color-red-700)]">
+                        <MapPin className="h-4 w-4 mr-[var(--spacing-sm)] flex-shrink-0 mt-[var(--spacing-xs)]" />
                         <span>{page.next_event.location}</span>
                       </div>
                       
-                      <p className="text-red-700 text-sm">
+                      <p className="text-[var(--color-red-700)] text-sm">
                         {page.next_event.description}
                       </p>
                       
                       {page.next_event.registration_link && (
                         <a
                           href={page.next_event.registration_link}
-                          className="inline-flex items-center bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
+                          className="inline-flex items-center bg-[var(--color-red-600)] hover:bg-[var(--color-red-700)] text-[var(--color-white)] font-semibold py-[var(--spacing-sm)] px-[var(--spacing-md)] rounded-[var(--radius-lg)] transition-colors text-sm"
                         >
-                          <ExternalLink className="h-4 w-4 mr-2" />
+                          <ExternalLink className="h-4 w-4 mr-[var(--spacing-sm)]" />
                           Tilmelding
                         </a>
                       )}
@@ -165,82 +125,35 @@ export default function ServiceShow() {
                 )}
 
                 {/* Photos Section */}
-                {page.photos && page.photos.length > 0 && (
-                  <div className="bg-white border border-gray-200 rounded-xl p-6">
-                    <h3 className="text-xl font-bold text-gray-900 mb-4">
+                {page.images && page.images.length > 0 && (
+                  <div className="bg-[var(--color-white)] border border-[var(--color-gray-200)] rounded-[var(--radius-xl)] p-[var(--spacing-xl)]">
+                    <h3 className="text-xl font-bold text-[var(--color-gray-900)] mb-[var(--spacing-md)]">
                       Billeder
                     </h3>
-                    <div className="grid grid-cols-2 gap-3">
-                      {page.photos.map((photo, index) => (
-                        <div key={index} className="aspect-square rounded-lg overflow-hidden">
-                          <img
-                            src={photo}
-                            alt={`${page.title} - billede ${index + 1}`}
-                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
-                          />
-                        </div>
-                      ))}
+                    <div className="grid grid-cols-2 gap-[var(--spacing-md)]">
+                      {page.images.map((image, index) => {
+                        console.log(`Image ${index}:`, { 
+                          preview_url: image.preview_url, 
+                          url: image.url, 
+                          name: image.name 
+                        });
+                        return (
+                          <div
+                            key={index}
+                            className="aspect-square rounded-[var(--radius-lg)] overflow-hidden focus:outline-none focus:ring-2 focus:ring-[var(--color-red-500)]"
+                          >
+                            <Image
+                              src={image.preview_url}
+                              alt={`${page.title} - billede ${index + 1}`}
+                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
+                              lightboxSrc={image.url || image.preview_url}
+                            />
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
-
-                {/* Upcoming Events Calendar Box */}
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
-                  <h3 className="text-xl font-bold text-blue-900 mb-4 flex items-center">
-                    <Calendar className="h-5 w-5 mr-2" />
-                    Kommende arrangementer
-                  </h3>
-                  
-                  <div className="space-y-4">
-                    <div className="bg-white rounded-lg p-4 border border-blue-100">
-                      <div className="flex items-start space-x-3">
-                        <div className="flex-shrink-0">
-                          <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                            <Calendar className="h-6 w-6 text-blue-600" />
-                          </div>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="text-sm font-semibold text-blue-900 mb-1">
-                            {page.next_event?.title || 'Ingen kommende arrangementer'}
-                          </h4>
-                          {page.next_event ? (
-                            <>
-                              <p className="text-xs text-blue-700 mb-2">
-                                {page.next_event.date} • {page.next_event.time}
-                              </p>
-                              <p className="text-xs text-blue-600 mb-3">
-                                {page.next_event.location}
-                              </p>
-                              {page.next_event.registration_link && (
-                                <a
-                                  href={page.next_event.registration_link}
-                                  className="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium py-1.5 px-3 rounded-md transition-colors"
-                                >
-                                  <ExternalLink className="h-3 w-3 mr-1" />
-                                  Tilmelding
-                                </a>
-                              )}
-                            </>
-                          ) : (
-                            <p className="text-xs text-blue-600">
-                              Tjek tilbage senere for nye arrangementer
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="text-center">
-                      <a
-                        href="mailto:info@firstaiddog.dk?subject=Forespørgsel om arrangementer"
-                        className="inline-flex items-center text-blue-700 hover:text-blue-800 text-sm font-medium transition-colors"
-                      >
-                        <Mail className="h-4 w-4 mr-1" />
-                        Forespørg om private arrangementer
-                      </a>
-                    </div>
-                  </div>
-                </div>
 
                 
               </div>
@@ -249,33 +162,33 @@ export default function ServiceShow() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 bg-red-50">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-bold text-red-900 mb-4">Har du spørgsmål?</h2>
-            <p className="text-xl text-red-700 mb-8">
+        <section className="py-[var(--spacing-3xl)] bg-[var(--color-red-50)]">
+          <div className="max-w-4xl mx-auto px-[var(--spacing-md)] sm:px-[var(--spacing-lg)] lg:px-[var(--spacing-xl)] text-center">
+            <h2 className="text-3xl font-bold text-[var(--color-red-900)] mb-[var(--spacing-md)]">Har du spørgsmål?</h2>
+            <p className="text-xl text-[var(--color-red-700)] mb-[var(--spacing-xl)]">
               Kontakt os for at få mere information om vores {page.title.toLowerCase()}
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-[var(--spacing-md)] justify-center">
               <a
                 href="tel:+45XXXXXXXX"
-                className="inline-flex items-center bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors"
+                className="inline-flex items-center bg-[var(--color-red-600)] hover:bg-[var(--color-red-700)] text-[var(--color-white)] font-semibold py-[var(--spacing-md)] px-[var(--spacing-xl)] rounded-[var(--radius-lg)] transition-colors"
               >
-                <Phone className="h-4 w-4 mr-2" />
+                <Phone className="h-4 w-4 mr-[var(--spacing-sm)]" />
                 Ring til os
               </a>
               <a
                 href="mailto:info@firstaiddog.dk"
-                className="inline-flex items-center bg-white hover:bg-red-50 text-red-600 font-semibold py-3 px-8 rounded-lg border-2 border-red-600 transition-colors"
+                className="inline-flex items-center bg-[var(--color-white)] hover:bg-[var(--color-red-50)] text-[var(--color-red-600)] font-semibold py-[var(--spacing-md)] px-[var(--spacing-xl)] rounded-[var(--radius-lg)] border-2 border-[var(--color-red-600)] transition-colors"
               >
-                <Mail className="h-4 w-4 mr-2" />
+                <Mail className="h-4 w-4 mr-[var(--spacing-sm)]" />
                 Send email
               </a>
             </div>
           </div>
         </section>
-      </main>
 
-      <Footer settings={settings} />
-    </>
-  );
-}
+                </main>
+        </AppLayout>
+      </>
+    );
+  }

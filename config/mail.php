@@ -113,4 +113,17 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Email Address
+    |--------------------------------------------------------------------------
+    |
+    | This is the email address where contact form notifications and other
+    | admin-related emails will be sent. This can be different from the
+    | "from" address used for outgoing emails.
+    |
+    */
+
+    'admin_email' => env('MAIL_ADMIN_EMAIL', 'info@firstaiddog.dk'),
+
 ];

@@ -14,7 +14,11 @@ class SeoService
         $content = isset($blogEntry['content']) && is_array($blogEntry['content']) ? self::extractTextFromJson($blogEntry['content']) : ($blogEntry['content'] ?? '');
         $description = $excerpt ?: $content;
         $author = $blogEntry['author']['name'] ?? 'Førstehjælp til Hunde';
-        $category = $blogEntry['category'] ?? 'Hundesikkerhed';
+        
+        // Extract tags for category and keywords
+        $tags = $blogEntry['tags'] ?? [];
+        $tagNames = collect($tags)->pluck('name')->toArray();
+        $category = !empty($tagNames) ? $tagNames[0] : 'Hundesikkerhed';
         
         return [
             'meta_title' => self::generateMetaTitle($title),
@@ -527,7 +531,10 @@ class SeoService
         
         $title = $blogEntry['title'] ?? '';
         $excerpt = $blogEntry['excerpt'] ?? '';
-        $category = $blogEntry['category'] ?? '';
+        
+        // Extract tags for keywords
+        $tags = $blogEntry['tags'] ?? [];
+        $tagNames = collect($tags)->pluck('name')->toArray();
         
         // Add title keywords
         if ($title) {
@@ -539,9 +546,9 @@ class SeoService
             $keywords = array_merge($keywords, explode(' ', strtolower($excerpt)));
         }
         
-        // Add category keywords
-        if ($category) {
-            $keywords[] = strtolower($category);
+        // Add tag keywords
+        if (!empty($tagNames)) {
+            $keywords = array_merge($keywords, array_map('strtolower', $tagNames));
         }
         
         return implode(', ', array_unique($keywords));

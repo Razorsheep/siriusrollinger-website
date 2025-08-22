@@ -1,30 +1,33 @@
 export function HeroSection() {
     return (
-        <section className="relative bg-gradient-to-br from-red-50 to-white py-20 lg:py-32">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid lg:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <h2 className="text-4xl lg:text-6xl font-bold text-red-900 mb-6">
-                            Førstehjælp til din <span className="text-red-600">hund</span>
+        <section className="relative bg-gradient-to-br from-[var(--color-red-50)] to-[var(--color-white)] py-[var(--spacing-4xl)] lg:py-[var(--spacing-5xl)]">
+            <div className="max-w-7xl mx-auto px-[var(--spacing-md)] sm:px-[var(--spacing-lg)] lg:px-[var(--spacing-xl)]">
+                <div className="grid lg:grid-cols-2 gap-[var(--spacing-3xl)] items-center">
+                    {/* Text Content */}
+                    <div className="text-center lg:text-left">
+                        <h2 className="text-4xl lg:text-6xl font-bold text-[var(--color-red-900)] mb-[var(--spacing-lg)]">
+                            Førstehjælp til din <span className="text-[var(--color-red-600)]">hund</span>
                         </h2>
-                        <p className="text-xl text-red-700 mb-8 leading-relaxed">
-                            Vi lærer dig både at forebygge og behandle skader på din hund, samt håndtere nødsituationer og give førstehjælp, når det er vigtigst. Sammen kan vi redde liv.
+                        <p className="text-xl text-[var(--color-red-700)] mb-[var(--spacing-xl)] leading-relaxed max-w-2xl lg:max-w-none">
+                            Lær at håndtere nødsituationer og give din hund den bedste førstehjælp når det betyder mest
                         </p>
-                        <div className="flex flex-col sm:flex-row gap-4">
-                            <button className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors shadow-lg hover:shadow-xl">
-                                Book et kursus
+                        <div className="flex flex-col sm:flex-row gap-[var(--spacing-md)] justify-center lg:justify-start mb-[var(--spacing-3xl)]">
+                            <button className="bg-[var(--color-red-600)] hover:bg-[var(--color-red-700)] text-[var(--color-white)] font-semibold py-[var(--spacing-sm)] px-[var(--spacing-xl)] rounded-[var(--radius-lg)] transition-colors shadow-lg hover:shadow-xl">
+                                Kom i gang
                             </button>
-                            <button className="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white font-semibold py-3 px-8 rounded-lg transition-colors">
+                            <button className="border-2 border-[var(--color-red-600)] text-[var(--color-red-600)] hover:bg-[var(--color-red-600)] hover:text-[var(--color-white)] font-semibold py-[var(--spacing-sm)] px-[var(--spacing-xl)] rounded-[var(--radius-lg)] transition-colors">
                                 Læs mere
                             </button>
                         </div>
                     </div>
+                    
+                    {/* Image */}
                     <div className="relative">
-                        <div className="bg-red-100 rounded-2xl p-8 shadow-xl">
+                        <div className="bg-[var(--color-red-100)] rounded-[var(--radius-2xl)] p-0 shadow-xl">
                             <img
-                                src="/images/logo.png"
-                                alt="Førstehjælp til Hunde"
-                                className="w-full h-auto max-w-md mx-auto"
+                                src="/images/hero-image.jpg"
+                                alt="Førstehjælp til hunde"
+                                className="w-full h-full object-cover rounded-[var(--radius-2xl)]"
                             />
                         </div>
                     </div>

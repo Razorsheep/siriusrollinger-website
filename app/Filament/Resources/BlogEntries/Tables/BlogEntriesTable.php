@@ -11,6 +11,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\TagsColumn;
 use Filament\Tables\Table;
 
 class BlogEntriesTable
@@ -32,7 +33,8 @@ class BlogEntriesTable
                     ->conversion('preview'),
                 TextColumn::make('author.name')
                     ->label('Forfatter'),
-                TextColumn::make('category')
+                TagsColumn::make('tags')
+                    ->label('Tags')
                     ->searchable(),
                 TextColumn::make('read_time')
                     ->searchable(),

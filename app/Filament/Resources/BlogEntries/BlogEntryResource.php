@@ -18,7 +18,7 @@ class BlogEntryResource extends Resource
 {
     protected static ?string $model = BlogEntry::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPencil;
 
     protected static ?string $recordTitleAttribute = 'title';
 

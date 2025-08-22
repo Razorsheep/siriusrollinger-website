@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BlogEntryResource;
 use App\Models\BlogEntry;
 use App\Services\SeoService;
 use App\Settings\WebsiteSettings;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class HomeController extends Controller
@@ -16,7 +16,7 @@ class HomeController extends Controller
 
         return Inertia::render('home', [
             'settings' => app(WebsiteSettings::class)->toArray(),
-            'blogEntries' => $blogEntries,
+            'blogEntries' => BlogEntryResource::collection($blogEntries)->resolve(),
             'seo' => SeoService::forHome(),
         ]);
     }
