@@ -36,8 +36,8 @@ export function Header({ navigationItems }: { navigationItems: NavigationData[] 
                                 className="h-30 w-auto" 
                             />
                             <div className="ml-3">
-                                <h1 className="text-xl font-bold text-red-700">Førstehjælp til Hunde</h1>
-                                <p className="text-sm text-red-600">Din hunds sikkerhed kommer først</p>
+                                <h1 className="text-xl font-bold text-red-700">Førstehjælp til hund</h1>
+                                <p className="text-sm text-red-600">Viden og træning redder liv</p>
                             </div>
                         </Link>
                     </div>
@@ -105,8 +105,8 @@ export function Header({ navigationItems }: { navigationItems: NavigationData[] 
                                         className="h-16 w-auto" 
                                     />
                                     <div className="ml-3">
-                                        <h2 className="text-lg font-bold text-red-700">Førstehjælp til Hunde</h2>
-                                        <p className="text-sm text-red-600">Din hunds sikkerhed kommer først</p>
+                                        <h2 className="text-lg font-bold text-red-700">Førstehjælp til hund</h2>
+                                        <p className="text-sm text-red-600">Viden og træning redder liv</p>
                                     </div>
                                 </div>
                                 

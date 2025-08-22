@@ -65,6 +65,7 @@ class PagesTable
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->reorderable('order_column');
     }
 }

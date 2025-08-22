@@ -73,7 +73,7 @@ export default function BlogIndex() {
                             Blog
                         </h1>
                         <p className="text-xl text-[var(--color-red-700)] max-w-3xl mx-auto mb-[var(--spacing-xl)]">
-                            Få de nyeste tips, guides og indsigter om førstehjælp til hunde direkte fra vores eksperter
+                            Få de nyeste tips og guides om førstehjælp til hund.
                         </p>
                         
                         {/* Search Bar */}

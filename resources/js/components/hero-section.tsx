@@ -6,10 +6,10 @@ export function HeroSection() {
                     {/* Text Content */}
                     <div className="text-center lg:text-left">
                         <h2 className="text-4xl lg:text-6xl font-bold text-[var(--color-red-900)] mb-[var(--spacing-lg)]">
-                            Førstehjælp til din <span className="text-[var(--color-red-600)]">hund</span>
+                            Førstehjælp til <span className="text-[var(--color-red-600)]">hund</span>
                         </h2>
                         <p className="text-xl text-[var(--color-red-700)] mb-[var(--spacing-xl)] leading-relaxed max-w-2xl lg:max-w-none">
-                            Lær at håndtere nødsituationer og give din hund den bedste førstehjælp når det betyder mest
+                            Med viden, øvelse og det rette udstyr kan du redde liv, yde god førstehjælp og håndtere akutte situationer for din hund. Vi glæder os til at hjælpe dig, så du kan hjælpe din hund
                         </p>
                         <div className="flex flex-col sm:flex-row gap-[var(--spacing-md)] justify-center lg:justify-start mb-[var(--spacing-3xl)]">
                             <button className="bg-[var(--color-red-600)] hover:bg-[var(--color-red-700)] text-[var(--color-white)] font-semibold py-[var(--spacing-sm)] px-[var(--spacing-xl)] rounded-[var(--radius-lg)] transition-colors shadow-lg hover:shadow-xl">
