@@ -1,13 +1,29 @@
 import { HeroSection } from '@/components/hero-section';
 import { NewsletterSignup } from '@/components/newsletter-signup';
+import { NewsletterPopup } from '@/components/newsletter-popup';
 import { ServicesSection } from '@/components/services-section';
 import { SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { Calendar, User, ArrowRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import AppLayout from '@/layouts/app-layout';
 
 export default function Home() {
     const { settings, blogEntries, navigationItems, seo } = usePage<SharedData>().props;
+    const [showNewsletterPopup, setShowNewsletterPopup] = useState(false);
+
+    // Show newsletter popup after 3 seconds, but only if user hasn't dismissed it before
+    useEffect(() => {
+        const hasDismissed = localStorage.getItem('newsletter-popup-dismissed');
+        
+        if (!hasDismissed) {
+            const timer = setTimeout(() => {
+                setShowNewsletterPopup(true);
+            }, 3000);
+
+            return () => clearTimeout(timer);
+        }
+    }, []);
 
     console.log(blogEntries);
     return (
@@ -105,6 +121,12 @@ export default function Home() {
             </section>
             
             <NewsletterSignup />
+
+            {/* Newsletter Popup */}
+            <NewsletterPopup 
+                isOpen={showNewsletterPopup} 
+                onClose={() => setShowNewsletterPopup(false)} 
+            />
         </AppLayout>
     );
 }
