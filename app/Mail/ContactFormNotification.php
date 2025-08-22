@@ -29,7 +29,7 @@ class ContactFormNotification extends Mailable
         return new Envelope(
             subject: 'Ny kontaktformular: '.$this->contactData['subject'],
             replyTo: [
-                $this->contactData['email'] => $this->contactData['name'],
+                $this->contactData['name'] => $this->contactData['email'],
             ]
         );
     }

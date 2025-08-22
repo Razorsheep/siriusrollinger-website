@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
+use Resend\Client;
 
 class ContactController extends Controller
 {
@@ -47,13 +48,11 @@ class ContactController extends Controller
             // Add to Mailchimp audience
             $this->addToMailchimp($request);
 
-            // Send notification email to admin
+            // Send notification email to admin using Resend
             $this->sendNotificationEmail($request);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Tak for din besked! Vi vender tilbage hurtigst muligt.',
-            ]);
+            // Return Inertia response with success message
+            return back()->with('success', 'Tak for din besked! Vi vender tilbage hurtigst muligt.');
 
         } catch (\Exception $e) {
             Log::error('Contact form submission error', [
@@ -61,10 +60,8 @@ class ContactController extends Controller
                 'data' => $request->validated(),
             ]);
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Der opstod en fejl. Prøv venligst igen.',
-            ], 500);
+            // Return Inertia response with error message
+            return back()->with('error', 'Der opstod en fejl. Prøv venligst igen.');
         }
     }
 
@@ -120,7 +117,7 @@ class ContactController extends Controller
     private function sendNotificationEmail(ContactRequest $request): void
     {
         try {
-            $adminEmail = config('mail.admin_email', 'info@firstaiddog.dk');
+            $adminEmail = config('mail.admin_email', 'kontakt@firstaiddog.dk');
 
             if (! $adminEmail) {
                 Log::warning('Admin email not configured for contact form notifications');
@@ -130,14 +127,8 @@ class ContactController extends Controller
 
             Mail::to($adminEmail)->send(new ContactFormNotification($request->validated()));
 
-            Log::info('Contact form notification sent', [
-                'to' => $adminEmail,
-                'subject' => 'Ny kontaktformular: '.$request->subject,
-                'from' => $request->email,
-            ]);
-
         } catch (\Exception $e) {
-            Log::error('Email notification error', [
+            Log::error('Resend email notification error', [
                 'error' => $e->getMessage(),
                 'email' => $request->email,
             ]);

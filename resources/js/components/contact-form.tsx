@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import { router } from '@inertiajs/react';
+import { useState, useEffect } from 'react';
+import { router, usePage } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Loader2, Send } from 'lucide-react';
+import { Loader2, Send, CheckCircle, AlertCircle, X } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface ContactFormData {
     name: string;
@@ -14,17 +15,21 @@ interface ContactFormData {
     subject: string;
     preferred_contact: string;
     message: string;
+    [key: string]: string; // Index signature for Inertia compatibility
 }
 
-interface ContactFormErrors {
-    name?: string;
-    email?: string;
-    phone?: string;
-    subject?: string;
-    message?: string;
+interface PageProps {
+    flash?: {
+        success?: string;
+        error?: string;
+    };
+    errors?: Record<string, string>;
+    [key: string]: any; // Index signature for Inertia compatibility
 }
 
 export function ContactForm() {
+    const { flash, errors } = usePage<PageProps>().props;
+    
     const [formData, setFormData] = useState<ContactFormData>({
         name: '',
         email: '',
@@ -34,15 +39,33 @@ export function ContactForm() {
         message: ''
     });
 
-    const [errors, setErrors] = useState<ContactFormErrors>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+
+    // Reset form on successful submission
+    useEffect(() => {
+        if (flash?.success) {
+            setFormData({
+                name: '',
+                email: '',
+                phone: '',
+                subject: '',
+                preferred_contact: 'email',
+                message: ''
+            });
+            setShowSuccess(true);
+            
+            // Auto-hide success message after 8 seconds
+            const timer = setTimeout(() => {
+                setShowSuccess(false);
+            }, 8000);
+            
+            return () => clearTimeout(timer);
+        }
+    }, [flash?.success]);
 
     const handleChange = (field: keyof ContactFormData, value: string) => {
         setFormData(prev => ({ ...prev, [field]: value }));
-        // Clear error when user starts typing
-        if (errors[field as keyof ContactFormErrors]) {
-            setErrors(prev => ({ ...prev, [field]: undefined }));
-        }
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -50,8 +73,7 @@ export function ContactForm() {
         setIsSubmitting(true);
 
         try {
-            await router.post('/contact', formData as Record<string, any>);
-            // Form will be handled by the backend, errors will come back if validation fails
+            await router.post('/contact', formData);
         } catch (error) {
             console.error('Form submission error:', error);
         } finally {
@@ -68,6 +90,41 @@ export function ContactForm() {
                 </p>
             </div>
 
+            {/* Success Message */}
+            {flash?.success && showSuccess && (
+                <Alert className="mb-[var(--spacing-lg)] border-green-300 bg-gradient-to-r from-green-50 to-emerald-50 shadow-sm animate-in slide-in-from-top-2 duration-500 relative">
+                    <CheckCircle className="h-5 w-5 text-green-600" />
+                    <AlertDescription className="text-green-800 font-medium text-base">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center">
+                                <span className="mr-2">🎉</span>
+                                {flash.success}
+                            </div>
+                            <button
+                                onClick={() => setShowSuccess(false)}
+                                className="ml-4 text-green-600 hover:text-green-800 transition-colors"
+                                aria-label="Luk besked"
+                            >
+                                <X className="h-4 w-4" />
+                            </button>
+                        </div>
+                    </AlertDescription>
+                </Alert>
+            )}
+
+            {/* Error Message */}
+            {flash?.error && (
+                <Alert className="mb-[var(--spacing-lg)] border-red-300 bg-gradient-to-r from-red-50 to-rose-50 shadow-sm animate-in slide-in-from-top-2 duration-500">
+                    <AlertCircle className="h-5 w-5 text-red-600" />
+                    <AlertDescription className="text-red-800 font-medium text-base">
+                        <div className="flex items-center">
+                            <span className="mr-2">⚠️</span>
+                            {flash.error}
+                        </div>
+                    </AlertDescription>
+                </Alert>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-[var(--spacing-lg)]">
                 <div className="grid md:grid-cols-2 gap-[var(--spacing-lg)]">
                     <div>
@@ -82,7 +139,7 @@ export function ContactForm() {
                             className="mt-[var(--spacing-sm)]"
                             required
                         />
-                        {errors.name && (
+                        {errors?.name && (
                             <p className="text-[var(--color-red-600)] text-sm mt-[var(--spacing-xs)]">{errors.name}</p>
                         )}
                     </div>
@@ -98,7 +155,7 @@ export function ContactForm() {
                             className="mt-[var(--spacing-sm)]"
                             required
                         />
-                        {errors.email && (
+                        {errors?.email && (
                             <p className="text-[var(--color-red-600)] text-sm mt-[var(--spacing-xs)]">{errors.email}</p>
                         )}
                     </div>
@@ -116,6 +173,9 @@ export function ContactForm() {
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('phone', e.target.value)}
                             className="mt-[var(--spacing-sm)]"
                         />
+                        {errors?.phone && (
+                            <p className="text-[var(--color-red-600)] text-sm mt-[var(--spacing-xs)]">{errors.phone}</p>
+                        )}
                     </div>
                     <div>
                         <Label htmlFor="subject" className="text-[var(--color-red-900)] font-medium">
@@ -129,7 +189,7 @@ export function ContactForm() {
                             className="mt-[var(--spacing-sm)]"
                             required
                         />
-                        {errors.subject && (
+                        {errors?.subject && (
                             <p className="text-[var(--color-red-600)] text-sm mt-[var(--spacing-xs)]">{errors.subject}</p>
                         )}
                     </div>
@@ -146,8 +206,12 @@ export function ContactForm() {
                         <SelectContent>
                             <SelectItem value="email">Email</SelectItem>
                             <SelectItem value="phone">Telefon</SelectItem>
+                            <SelectItem value="both">Email og telefon</SelectItem>
                         </SelectContent>
                     </Select>
+                    {errors?.preferred_contact && (
+                        <p className="text-[var(--color-red-600)] text-sm mt-[var(--spacing-xs)]">{errors.preferred_contact}</p>
+                    )}
                 </div>
 
                 <div>
@@ -162,7 +226,7 @@ export function ContactForm() {
                         className="mt-[var(--spacing-sm)]"
                         required
                     />
-                    {errors.message && (
+                    {errors?.message && (
                         <p className="text-[var(--color-red-600)] text-sm mt-[var(--spacing-xs)]">{errors.message}</p>
                     )}
                 </div>

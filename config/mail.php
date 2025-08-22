@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'log'),
+    'default' => env('MAIL_MAILER', 'resend'),
 
     /*
     |--------------------------------------------------------------------------
@@ -124,6 +124,6 @@ return [
     |
     */
 
-    'admin_email' => env('MAIL_ADMIN_EMAIL', 'info@firstaiddog.dk'),
+    'admin_email' => env('MAIL_ADMIN_EMAIL', 'kontakt@firstaiddog.dk'),
 
 ];

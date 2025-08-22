@@ -180,7 +180,7 @@ export default function ServiceShow() {
                 Ring til os
               </a>
               <a
-                href="mailto:info@firstaiddog.dk"
+                href="mailto:kontakt@firstaiddog.dk"
                 className="inline-flex items-center bg-[var(--color-white)] hover:bg-[var(--color-red-50)] text-[var(--color-red-600)] font-semibold py-[var(--spacing-md)] px-[var(--spacing-xl)] rounded-[var(--radius-lg)] border-2 border-[var(--color-red-600)] transition-colors"
               >
                 <Mail className="h-4 w-4 mr-[var(--spacing-sm)]" />

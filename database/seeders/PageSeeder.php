@@ -24,13 +24,13 @@ class PageSeeder extends Seeder
                 'next_event_time' => '09:00 - 13:00',
                 'next_event_location' => 'Bagsværd Hundetræningscenter',
                 'next_event_description' => '4-timers kursus med teori og praktiske øvelser. Maks 12 deltagere.',
-                'next_event_registration_link' => 'mailto:info@firstaiddog.dk?subject=Tilmelding til førstehjælpskursus',
+                'next_event_registration_link' => 'mailto:kontakt@firstaiddog.dk?subject=Tilmelding til førstehjælpskursus',
                 'photos' => [
                     '/images/logo.png',
                     '/images/logo.png'
                 ],
                 'contact_phone' => '+45 42 20 38 70',
-                'contact_email' => 'info@firstaiddog.dk',
+                'contact_email' => 'kontakt@firstaiddog.dk',
                 'content' => [
                     'type' => 'doc',
                     'content' => [
@@ -367,13 +367,13 @@ class PageSeeder extends Seeder
                 'next_event_time' => '19:00 - 21:00',
                 'next_event_location' => 'Københavns Dyrlægeforening',
                 'next_event_description' => 'Kom med på en fantastisk rejse fra Arktis til Afghanistan med dyrlæge og major Julie Pio Kragelund.',
-                'next_event_registration_link' => 'mailto:info@firstaiddog.dk?subject=Tilmelding til foredrag',
+                'next_event_registration_link' => 'mailto:kontakt@firstaiddog.dk?subject=Tilmelding til foredrag',
                 'photos' => [
                     '/images/logo.png',
                     '/images/logo.png'
                 ],
                 'contact_phone' => '+45 42 20 38 70',
-                'contact_email' => 'info@firstaiddog.dk',
+                'contact_email' => 'kontakt@firstaiddog.dk',
                 'content' => [
                     'type' => 'doc',
                     'content' => [
@@ -447,13 +447,13 @@ class PageSeeder extends Seeder
                 'next_event_time' => '14:00 - 16:00',
                 'next_event_location' => 'Online via Zoom',
                 'next_event_description' => 'Lær at sammensætte det perfekte førstehjælpskit til din hund. Gratis workshop.',
-                'next_event_registration_link' => 'mailto:info@firstaiddog.dk?subject=Tilmelding til workshop',
+                'next_event_registration_link' => 'mailto:kontakt@firstaiddog.dk?subject=Tilmelding til workshop',
                 'photos' => [
                     '/images/logo.png',
                     '/images/logo.png'
                 ],
                 'contact_phone' => '+45 42 20 38 70',
-                'contact_email' => 'info@firstaiddog.dk',
+                'contact_email' => 'kontakt@firstaiddog.dk',
                 'content' => [
                     'type' => 'doc',
                     'content' => [
@@ -606,7 +606,7 @@ class PageSeeder extends Seeder
                     '/images/logo.png'
                 ],
                 'contact_phone' => '+45 42 20 38 70',
-                'contact_email' => 'info@firstaiddog.dk',
+                'contact_email' => 'kontakt@firstaiddog.dk',
                 'content' => [
                     'type' => 'doc',
                     'content' => [

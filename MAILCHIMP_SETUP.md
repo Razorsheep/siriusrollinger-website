@@ -26,7 +26,7 @@ MAIL_PASSWORD=your-smtp-password
 MAIL_ENCRYPTION=tls
 MAIL_FROM_ADDRESS=noreply@firstaiddog.dk
 MAIL_FROM_NAME="Førstehjælp til Hunde"
-MAIL_ADMIN_EMAIL=info@firstaiddog.dk
+MAIL_ADMIN_EMAIL=kontakt@firstaiddog.dk
 ```
 
 ## 🔧 Getting Your Mailchimp Credentials

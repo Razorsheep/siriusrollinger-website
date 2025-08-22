@@ -39,9 +39,9 @@ export default function Contact() {
                                             <div>
                                                 <h3 className="text-lg font-semibold text-[var(--color-red-900)] mb-[var(--spacing-xs)]">Email</h3>
                                                 <p className="text-[var(--color-red-700)]">
-                                                    <a href="mailto:info@firstaiddog.dk" 
+                                                    <a href="mailto:kontakt@firstaiddog.dk" 
                                                        className="hover:text-[var(--color-red-800)] transition-colors">
-                                                        info@firstaiddog.dk
+                                                        kontakt@firstaiddog.dk
                                                     </a>
                                                 </p>
                                                 <p className="text-[var(--color-red-600)] text-sm mt-[var(--spacing-xs)]">

@@ -13,7 +13,7 @@ export function Footer() {
                     <div className="md:col-span-2">
                         <div className="flex items-center mb-[var(--spacing-md)]">
                             <img src="/images/logo.png" alt="Logo" className="h-12 w-auto mr-[var(--spacing-sm)]" />
-                            <h4 className="text-xl font-bold">Førstehjælp til Hunde</h4>
+                            <h4 className="text-xl font-bold">Førstehjælp til hund</h4>
                         </div>
                         <p className="text-[var(--color-red-200)] leading-relaxed">
                             Vi er dedikerede til at hjælpe hundeejere med at lære førstehjælp, så de kan give deres kæledyr den bedste pleje når det betyder mest.
@@ -95,7 +95,7 @@ export function Footer() {
 
                 {/* Copyright section */}
                 <div className="border-t border-[var(--color-red-800)] mt-[var(--spacing-xl)] pt-[var(--spacing-xl)] text-center text-[var(--color-red-300)]">
-                    <p>&copy; {new Date().getFullYear()} Førstehjælp til Hunde. Alle rettigheder forbeholdes.</p>
+                    <p>&copy; {new Date().getFullYear()} Førstehjælp til hund. Alle rettigheder forbeholdes.</p>
                 </div>
             </div>
         </footer>
