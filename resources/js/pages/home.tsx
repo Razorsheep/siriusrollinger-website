@@ -11,8 +11,7 @@ export default function Home() {
 
     console.log(blogEntries);
     return (
-        <>
-            <AppLayout>
+        <AppLayout>
             <HeroSection />
             
             <ServicesSection />
@@ -106,7 +105,6 @@ export default function Home() {
             </section>
             
             <NewsletterSignup />
-            </AppLayout>
-        </>
+        </AppLayout>
     );
 }
