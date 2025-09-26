@@ -1,4 +1,4 @@
-import { Menu, ChevronDown } from "lucide-react"
+import { Menu, ChevronDown, Moon, Sun } from "lucide-react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { 
@@ -11,10 +11,18 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Separator } from "@/components/ui/separator"
 import { Link } from "@inertiajs/react"
 import { NavigationData, NavigationItem, NavigationGroup } from "@/types"
+// import { useAppearance } from "@/hooks/use-appearance"
 
 export function Header({ navigationItems }: { navigationItems: NavigationData[] }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false);
+    // const { appearance, updateAppearance } = useAppearance();
+
+    // const toggleAppearance = () => {
+    //     const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    //     const isCurrentlyDark = appearance === 'dark' || (appearance === 'system' && prefersDark);
+    //     updateAppearance(isCurrentlyDark ? 'light' : 'dark');
+    // };
 
     // Extract main navigation items (excluding the services group)
     const mainNavigationItems = navigationItems.filter(item => item.type === 'item') as NavigationItem[];
@@ -82,6 +90,19 @@ export function Header({ navigationItems }: { navigationItems: NavigationData[] 
                                 ))}
                             </DropdownMenuContent>
                         </DropdownMenu>
+
+                        {/* Appearance toggle */}
+                        {/* <Button
+                            type="button"
+                            onClick={toggleAppearance}
+                            variant="ghost"
+                            size="icon"
+                            aria-label="Skift tema"
+                            className="ml-2 text-red-700 hover:text-red-900 dark:text-red-300 dark:hover:text-red-200"
+                        >
+                            <Sun className="h-5 w-5 hidden dark:block" />
+                            <Moon className="h-5 w-5 dark:hidden" />
+                        </Button> */}
                     </nav>
 
                     {/* Mobile Navigation */}
@@ -98,16 +119,29 @@ export function Header({ navigationItems }: { navigationItems: NavigationData[] 
                         </SheetTrigger>
                         <SheetContent side="right" className="w-[300px] bg-white">
                             <div className="py-6">
-                                <div className="flex items-center mb-6">
-                                    <img 
-                                        src="/images/logo.png" 
-                                        alt="Førstehjælp til Hunde Logo" 
-                                        className="h-16 w-auto" 
-                                    />
-                                    <div className="ml-3">
-                                        <h2 className="text-lg font-bold text-red-700">Førstehjælp til hund</h2>
-                                        <p className="text-sm text-red-600">Viden og træning redder liv</p>
+                                <div className="flex items-center justify-between mb-6">
+                                    <div className="flex items-center">
+                                        <img 
+                                            src="/images/logo.png" 
+                                            alt="Førstehjælp til Hunde Logo" 
+                                            className="h-16 w-auto" 
+                                        />
+                                        <div className="ml-3">
+                                            <h2 className="text-lg font-bold text-red-700">Førstehjælp til hund</h2>
+                                            <p className="text-sm text-red-600">Viden og træning redder liv</p>
+                                        </div>
                                     </div>
+                                    {/* <Button
+                                        type="button"
+                                        onClick={toggleAppearance}
+                                        variant="ghost"
+                                        size="icon"
+                                        aria-label="Skift tema"
+                                        className="text-red-700 hover:text-red-900 dark:text-red-300 dark:hover:text-red-200"
+                                    >
+                                        <Sun className="h-5 w-5 hidden dark:block" />
+                                        <Moon className="h-5 w-5 dark:hidden" />
+                                    </Button> */}
                                 </div>
                                 
                                 <Separator className="mb-6" />
