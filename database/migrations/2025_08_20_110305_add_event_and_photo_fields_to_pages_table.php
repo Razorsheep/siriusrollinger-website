@@ -19,10 +19,10 @@ return new class extends Migration
             $table->string('next_event_location')->nullable();
             $table->text('next_event_description')->nullable();
             $table->string('next_event_registration_link')->nullable();
-            
+
             // Photos field (JSON array)
             $table->json('photos')->nullable();
-            
+
             // Contact information fields
             $table->string('contact_phone')->nullable();
             $table->string('contact_email')->nullable();
@@ -46,7 +46,7 @@ return new class extends Migration
                 'photos',
                 'contact_phone',
                 'contact_email',
-                'contact_website'
+                'contact_website',
             ]);
         });
     }

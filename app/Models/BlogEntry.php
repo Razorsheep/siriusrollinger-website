@@ -16,7 +16,7 @@ use Spatie\Tags\HasTags;
 class BlogEntry extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\BlogEntryFactory> */
-    use HasFactory, InteractsWithMedia, HasTags;
+    use HasFactory, HasTags, InteractsWithMedia;
 
     protected $fillable = [
         'title',

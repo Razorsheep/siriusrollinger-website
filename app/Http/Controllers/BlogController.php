@@ -4,13 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\BlogEntryResource;
 use App\Http\Resources\TagResource;
-use App\Services\SeoService;
-use App\Settings\WebsiteSettings;
 use App\Models\BlogEntry;
-use App\Models\Page;
-use Spatie\Tags\Tag;
-use Illuminate\Http\Request;
+use App\Services\SeoService;
 use Inertia\Inertia;
+use Spatie\Tags\Tag;
 
 class BlogController extends Controller
 {
@@ -18,7 +15,7 @@ class BlogController extends Controller
     {
         $blogEntries = BlogEntry::where('status', 'published')->get();
         $tags = TagResource::collection(Tag::all())->resolve();
-        
+
         return Inertia::render('blog/index', [
             'blogEntries' => BlogEntryResource::collection($blogEntries)->resolve(),
             'tags' => $tags,
@@ -28,11 +25,12 @@ class BlogController extends Controller
 
     public function show(BlogEntry $blogEntry)
     {
-        if($blogEntry->status != 'published')
+        if ($blogEntry->status != 'published') {
             abort(404);
+        }
 
         $formattedBlogEntry = new BlogEntryResource($blogEntry)->resolve();
-        
+
         return Inertia::render('blog/show', [
             'blogEntry' => $formattedBlogEntry,
             'seo' => SeoService::forBlogEntry($formattedBlogEntry),

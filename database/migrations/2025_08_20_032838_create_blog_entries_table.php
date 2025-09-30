@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('title');
-            $table->string('excerpt')->nullable();            
+            $table->string('excerpt')->nullable();
             $table->string('slug');
             $table->text('content');
             $table->string('image')->nullable();
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('read_time')->nullable();
             $table->string('date')->nullable();
             $table->string('status')->default('draft');
-            
+
             $table->timestamps();
         });
     }

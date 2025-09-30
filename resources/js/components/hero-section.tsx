@@ -1,42 +1,116 @@
 import { Button } from "./ui/button";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
+import { 
+    Carousel, 
+    CarouselContent, 
+    CarouselItem, 
+    CarouselNext, 
+    CarouselPrevious 
+} from "./ui/carousel";
+import { SharedData } from "@/types";
+import { useEffect, useState } from "react";
 
 export function HeroSection() {
+    const { settings } = usePage<SharedData>().props;
+    const [api, setApi] = useState<any>(null);
+    const [current, setCurrent] = useState(0);
+    
+    // Get hero images from settings or fallback to default image
+    const heroImages = settings?.hero_images && settings.hero_images.length > 0 
+        ? settings.hero_images.map((image: string) => image.startsWith('http') ? image : `/storage/${image}`)
+        : ['/images/hero-image.jpeg'];
+
+    // Auto-play functionality
+    useEffect(() => {
+        if (!api || heroImages.length <= 1) return;
+
+        const interval = setInterval(() => {
+            api.scrollNext();
+        }, 5000); // Change slide every 5 seconds
+
+        return () => clearInterval(interval);
+    }, [api, heroImages.length]);
+
+    // Track current slide
+    useEffect(() => {
+        if (!api) return;
+
+        setCurrent(api.selectedScrollSnap());
+
+        api.on("select", () => {
+            setCurrent(api.selectedScrollSnap());
+        });
+    }, [api]);
+
     return (
-        <section className="relative bg-gradient-to-br from-[var(--color-red-50)] to-[var(--color-white)] py-[var(--spacing-4xl)] lg:py-[var(--spacing-5xl)]">
-            <div className="max-w-7xl mx-auto px-[var(--spacing-md)] sm:px-[var(--spacing-lg)] lg:px-[var(--spacing-xl)]">
-                <div className="grid lg:grid-cols-2 gap-[var(--spacing-3xl)] items-center">
-                    {/* Text Content */}
-                    <div className="text-center lg:text-left">
-                        <h2 className="text-4xl lg:text-6xl font-bold text-[var(--color-red-900)] mb-[var(--spacing-lg)]">
-                            Førstehjælp til <span className="text-[var(--color-red-600)]">hund</span>
-                        </h2>
-                        <p className="text-xl text-[var(--color-red-700)] mb-[var(--spacing-xl)] leading-relaxed max-w-2xl lg:max-w-none">
-                            Med viden, øvelse og det rette udstyr kan du redde liv, yde god førstehjælp og håndtere akutte situationer for din hund. Vi glæder os til at hjælpe dig, så du kan hjælpe din hund
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-[var(--spacing-md)] justify-center lg:justify-start mb-[var(--spacing-3xl)]">
-                            <Button asChild className="bg-[var(--color-red-600)] hover:bg-[var(--color-red-700)] text-[var(--color-white)] font-semibold py-[var(--spacing-sm)] px-[var(--spacing-xl)] rounded-[var(--radius-lg)] transition-colors shadow-lg hover:shadow-xl">
-                                <Link href="/contact">
-                                    Kontakt os
-                                </Link>
-                            </Button>
-                            {/* <button className="border-2 border-[var(--color-red-600)] text-[var(--color-red-600)] hover:bg-[var(--color-red-600)] hover:text-[var(--color-white)] font-semibold py-[var(--spacing-sm)] px-[var(--spacing-xl)] rounded-[var(--radius-lg)] transition-colors">
-                                Læs mere
-                            </button> */}
-                        </div>
-                    </div>
-                    
-                    {/* Image */}
-                    <div className="relative">
-                        <div className="bg-[var(--color-red-100)] rounded-[var(--radius-2xl)] p-0 shadow-xl">
-                            <img
-                                src="/images/hero-image.jpg"
-                                alt="Førstehjælp til hunde"
-                                className="w-full h-full object-cover rounded-[var(--radius-2xl)]"
+        <section className="relative">
+            {/* Full-width Image Carousel */}
+            <div className="w-full">
+                <Carousel 
+                    className="w-full" 
+                    setApi={setApi}
+                    opts={{
+                        align: "start",
+                        loop: true,
+                    }}
+                >
+                    <CarouselContent className="-ml-0">
+                        {heroImages.map((image: string, index: number) => (
+                            <CarouselItem key={index} className="pl-0">
+                                <div className="aspect-video w-full relative">
+                                    <img
+                                        src={image}
+                                        alt={`Sirius Rollingerne ${index + 1}`}
+                                        className="w-full h-full object-cover"
+                                    />
+                                    {/* Overlay with text content */}
+                                    <div className="absolute inset-0 bg-primary/20 flex items-center">
+                                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                                            <div className="max-w-2xl">
+                                                <h2 className="text-4xl lg:text-6xl font-bold text-white mb-6">
+                                                    Sirius <span className="text-destructive">Rollingerne</span>
+                                                </h2>
+                                                <p className="text-xl text-white/90 mb-8 leading-relaxed">
+                                                    Mental og fysisk trivsel for børn og unge gennem fællesskab og natur
+                                                </p>
+                                                <div className="flex flex-col sm:flex-row gap-4">
+                                                    <Button asChild className="bg-destructive hover:bg-destructive/90 text-destructive-foreground font-semibold py-2 px-8 rounded-lg transition-colors shadow-lg hover:shadow-xl">
+                                                        <Link href="/contact">
+                                                            Kontakt os
+                                                        </Link>
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    {heroImages.length > 1 && (
+                        <>
+                            <CarouselPrevious className="left-4 bg-background/80 hover:bg-background text-foreground border-border" />
+                            <CarouselNext className="right-4 bg-background/80 hover:bg-background text-foreground border-border" />
+                        </>
+                    )}
+                </Carousel>
+                
+                {/* Dots indicator */}
+                {heroImages.length > 1 && (
+                    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                        {heroImages.map((_: string, index: number) => (
+                            <button
+                                key={index}
+                                className={`w-2 h-2 rounded-full transition-all ${
+                                    index === current 
+                                        ? 'bg-destructive' 
+                                        : 'bg-background/50 hover:bg-background/75'
+                                }`}
+                                onClick={() => api?.scrollTo(index)}
                             />
-                        </div>
+                        ))}
                     </div>
-                </div>
+                )}
             </div>
         </section>
     );

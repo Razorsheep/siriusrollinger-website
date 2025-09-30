@@ -15,12 +15,12 @@ class SeoService
         $content = isset($blogEntry['content']) && is_array($blogEntry['content']) ? self::extractTextFromJson($blogEntry['content']) : ($blogEntry['content'] ?? '');
         $description = $excerpt ?: $content;
         $author = $blogEntry['author']['name'] ?? 'Førstehjælp til Hunde';
-        
+
         // Extract tags for category and keywords
         $tags = $blogEntry['tags'] ?? [];
         $tagNames = collect($tags)->pluck('name')->toArray();
-        $category = !empty($tagNames) ? $tagNames[0] : 'Hundesikkerhed';
-        
+        $category = ! empty($tagNames) ? $tagNames[0] : 'Hundesikkerhed';
+
         return [
             'meta_title' => self::generateMetaTitle($title),
             'meta_description' => self::generateMetaDescription($description),
@@ -91,7 +91,7 @@ class SeoService
     //         ];
     //     }
 
-        // Add upcoming events if available
+    // Add upcoming events if available
     //     if (isset($course['events']['data']) && !empty($course['events']['data'])) {
     //         $structuredData['hasCourseInstance'] = collect($course['events']['data'])->map(function ($event) {
     //             return [
@@ -122,7 +122,7 @@ class SeoService
     //     $start = \Carbon\Carbon::parse($course['booking_start_date']);
     //     $end = \Carbon\Carbon::parse($course['booking_end_date']);
     //     $diff = $start->diff($end);
-        
+
     //     if ($diff->days > 0) {
     //         return 'P' . $diff->days . 'D';
     //     } elseif ($diff->h > 0) {
@@ -140,7 +140,7 @@ class SeoService
     //     if (isset($course['participant_requirements']) && is_array($course['participant_requirements'])) {
     //         return self::extractTextFromJson($course['participant_requirements']);
     //     }
-        
+
     //     return $course['participant_requirements'] ?? 'Basic fitness level required';
     // }
 
@@ -227,10 +227,10 @@ class SeoService
     //     $title = $story['title'] ?? '';
     //     $excerpt = $story['excerpt'] ?? '';
     //     $tags = $story['tags'] ?? [];
-        
+
     //     // Extract tag names for keywords
     //     $tagNames = collect($tags)->pluck('name')->toArray();
-        
+
     //     return [
     //         'meta_title' => self::generateMetaTitle($title),
     //         'meta_description' => self::generateMetaDescription($excerpt),
@@ -332,7 +332,7 @@ class SeoService
                 'url' => config('app.url'),
                 'logo' => [
                     '@type' => 'ImageObject',
-                    'url' => config('app.url') . '/images/logo.png',
+                    'url' => config('app.url').'/images/logo.png',
                 ],
             ],
             'datePublished' => $blogEntry['created_at'] ?? null,
@@ -355,7 +355,7 @@ class SeoService
 
         // Add read time if available
         if (isset($blogEntry['read_time']) && $blogEntry['read_time']) {
-            $structuredData['timeRequired'] = 'PT' . $blogEntry['read_time'] . 'M';
+            $structuredData['timeRequired'] = 'PT'.$blogEntry['read_time'].'M';
         }
 
         // Add category
@@ -373,14 +373,14 @@ class SeoService
     {
         $base = $title;
         if ($subtitle) {
-            $base .= ' - ' . $subtitle;
+            $base .= ' - '.$subtitle;
         }
-        
+
         // Limit to 60 characters for optimal SEO
         if (strlen($base) > 60) {
-            $base = substr($base, 0, 57) . '...';
+            $base = substr($base, 0, 57).'...';
         }
-        
+
         return $base;
     }
 
@@ -390,12 +390,12 @@ class SeoService
     private static function generateMetaDescription(string $description, string $subtitle = ''): string
     {
         $text = $subtitle ?: $description;
-        
+
         // Limit to 160 characters for optimal SEO
         if (strlen($text) > 160) {
-            $text = substr($text, 0, 157) . '...';
+            $text = substr($text, 0, 157).'...';
         }
-        
+
         return $text;
     }
 
@@ -405,23 +405,23 @@ class SeoService
     private static function generateKeywords(array $course): string
     {
         $keywords = ['førstehjælp til hunde', 'hundesikkerhed', 'hundeførstehjælp', 'denmark'];
-        
+
         // Add level-specific keywords
         if (isset($course['level'])) {
             $keywords[] = $course['level'];
         }
-        
+
         // Add season-specific keywords
         if (isset($course['season'])) {
             $keywords[] = $course['season'];
         }
-        
+
         // Add course subjects
         if (isset($course['course_subjects']) && is_array($course['course_subjects'])) {
             $subjects = self::extractTextFromJson($course['course_subjects']);
             $keywords = array_merge($keywords, explode(', ', $subjects));
         }
-        
+
         return implode(', ', array_unique($keywords));
     }
 
@@ -463,10 +463,10 @@ class SeoService
     private static function getCourseImage(array $course): string
     {
         // Check if course has photos
-        if (isset($course['photos']['data']) && !empty($course['photos']['data'])) {
+        if (isset($course['photos']['data']) && ! empty($course['photos']['data'])) {
             return $course['photos']['data'][0]['preview_url'];
         }
-        
+
         // Fallback to logo
         return '/images/logo.png';
     }
@@ -480,7 +480,7 @@ class SeoService
         if (isset($story['featured_image']) && $story['featured_image']) {
             return $story['featured_image'];
         }
-        
+
         // Fallback to logo
         return '/images/logo.png';
     }
@@ -494,12 +494,12 @@ class SeoService
         if (isset($blogEntry['image']) && $blogEntry['image']) {
             return $blogEntry['image'];
         }
-        
+
         // Check if blog entry has media
-        if (isset($blogEntry['media']) && !empty($blogEntry['media'])) {
+        if (isset($blogEntry['media']) && ! empty($blogEntry['media'])) {
             return $blogEntry['media'][0]['original_url'] ?? '/images/logo.png';
         }
-        
+
         // Fallback to logo
         return '/images/logo.png';
     }
@@ -510,16 +510,16 @@ class SeoService
     private static function generateStoryKeywords(string $title, string $excerpt, array $tagNames): string
     {
         $keywords = ['førstehjælp til hunde', 'hundesikkerhed', 'hundeførstehjælp', 'denmark'];
-        
+
         // Add title keywords
         $keywords = array_merge($keywords, explode(' ', $title));
-        
+
         // Add excerpt keywords
         $keywords = array_merge($keywords, explode(' ', $excerpt));
-        
+
         // Add tag keywords
         $keywords = array_merge($keywords, $tagNames);
-        
+
         return implode(', ', array_unique($keywords));
     }
 
@@ -529,29 +529,29 @@ class SeoService
     private static function generateBlogKeywords(array $blogEntry): string
     {
         $keywords = ['førstehjælp til hunde', 'hundesikkerhed', 'hundeførstehjælp', 'denmark'];
-        
+
         $title = $blogEntry['title'] ?? '';
         $excerpt = $blogEntry['excerpt'] ?? '';
-        
+
         // Extract tags for keywords
         $tags = $blogEntry['tags'];
         $tagNames = collect($tags)->pluck('name')->toArray();
-        
+
         // Add title keywords
         if ($title) {
             $keywords = array_merge($keywords, explode(' ', strtolower($title)));
         }
-        
+
         // Add excerpt keywords
         if ($excerpt) {
             $keywords = array_merge($keywords, explode(' ', strtolower($excerpt)));
         }
-        
+
         // Add tag keywords
-        if (!empty($tagNames)) {
+        if (! empty($tagNames)) {
             $keywords = array_merge($keywords, array_map('strtolower', $tagNames));
         }
-        
+
         return implode(', ', array_unique($keywords));
     }
 
@@ -563,25 +563,25 @@ class SeoService
         if (is_string($jsonContent)) {
             $jsonContent = json_decode($jsonContent, true);
         }
-        
-        if (!is_array($jsonContent)) {
+
+        if (! is_array($jsonContent)) {
             return '';
         }
-        
+
         $text = '';
-        
+
         if (isset($jsonContent['content'])) {
             foreach ($jsonContent['content'] as $block) {
                 if (isset($block['content'])) {
                     foreach ($block['content'] as $content) {
                         if (isset($content['text'])) {
-                            $text .= $content['text'] . ' ';
+                            $text .= $content['text'].' ';
                         }
                     }
                 }
             }
         }
-        
+
         return trim($text);
     }
 }

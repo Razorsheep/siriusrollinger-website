@@ -29,7 +29,6 @@ class TestResendCommand extends Command
     {
         $adminEmail = 'ro.sonne@gmail.com';
 
-
         // Ensure we have all required contact data fields
         $contactData = [
             'name' => 'Rasmus Sonne',
@@ -40,7 +39,6 @@ class TestResendCommand extends Command
             'preferred_contact' => 'email',
             'created_at' => now(),
         ];
-
 
         Mail::to($adminEmail)->send(new ContactFormNotification($contactData));
     }

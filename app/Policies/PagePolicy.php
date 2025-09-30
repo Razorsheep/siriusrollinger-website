@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Page;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class PagePolicy
 {
@@ -13,7 +12,7 @@ class PagePolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -21,7 +20,7 @@ class PagePolicy
      */
     public function view(User $user, Page $page): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -29,7 +28,7 @@ class PagePolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -37,7 +36,7 @@ class PagePolicy
      */
     public function update(User $user, Page $page): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -45,7 +44,7 @@ class PagePolicy
      */
     public function delete(User $user, Page $page): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -53,7 +52,7 @@ class PagePolicy
      */
     public function restore(User $user, Page $page): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -61,6 +60,6 @@ class PagePolicy
      */
     public function forceDelete(User $user, Page $page): bool
     {
-        return true;
+        return false;
     }
 }

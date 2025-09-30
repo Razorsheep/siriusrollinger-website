@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Page;
 use App\Settings\WebsiteSettings;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ServiceController extends Controller

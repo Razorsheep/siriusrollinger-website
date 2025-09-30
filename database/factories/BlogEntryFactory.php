@@ -30,11 +30,11 @@ class BlogEntryFactory extends Factory
                         'content' => [
                             [
                                 'type' => 'text',
-                                'text' => fake()->paragraphs(3, true)
-                            ]
-                        ]
-                    ]
-                ]
+                                'text' => fake()->paragraphs(3, true),
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'excerpt' => fake()->paragraph(),
             'author_id' => User::factory(),

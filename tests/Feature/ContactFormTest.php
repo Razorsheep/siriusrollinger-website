@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\ContactController;
-use App\Http\Requests\ContactRequest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;

@@ -71,29 +71,6 @@ export interface BlogEntry {
     created_at: string;
 }
 
-export interface ServicePage {
-    id: number;
-    title: string;
-    slug: string;
-    content: TiptapContent | string;
-    page_type: string;
-    status: string;
-    next_event?: {
-        title: string;
-        date: string;
-        time: string;
-        location: string;
-        description: string;
-        registration_link?: string;
-    };
-    images?: MediaResource[];
-    contact_info?: {
-        phone?: string;
-        email?: string;
-        website?: string;
-    };
-}
-
 export interface MediaResource {
     id: number;
     url: string;
@@ -154,4 +131,21 @@ export interface User {
     created_at: string;
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
+}
+
+export interface Event {
+    id: number;
+    title: string;
+    slug: string;
+    content: TiptapContent | string;
+    start_time: string;
+    end_time: string;
+    location_name: string;
+    location_description: string;
+    image: string;
+    status: string;
+    min_participants: number;
+    max_participants: number;
+    created_at: string;
+    updated_at: string;
 }

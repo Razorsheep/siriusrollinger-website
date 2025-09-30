@@ -9,6 +9,7 @@ use MailchimpMarketing\ApiClient;
 class MailchimpService
 {
     private $mailchimp;
+
     private string $audienceId;
 
     public function __construct()

@@ -4,14 +4,11 @@ namespace App\Filament\Resources\BlogEntries\Schemas;
 
 use App\Models\BlogEntry;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\SpatieTagsInput;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TagsInput;
 use Filament\Schemas\Schema;
 
 class BlogEntryForm
@@ -28,7 +25,10 @@ class BlogEntryForm
                 RichEditor::make('content')
                     ->required()
                     ->columnSpanFull()
-                    ->json(),
+                    ->json()
+                    ->fileAttachmentsDisk('public')
+                    ->fileAttachmentsDirectory('attachments')
+                    ->fileAttachmentsVisibility('public'),
                 SpatieMediaLibraryFileUpload::make('featured_image')
                     ->collection('featured_image'),
                 Select::make('author_id')

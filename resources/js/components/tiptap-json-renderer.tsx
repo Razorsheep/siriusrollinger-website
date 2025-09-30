@@ -5,7 +5,7 @@ interface TipTapNode {
     type: string;
     content?: TipTapNode[];
     text?: string;
-    marks?: Array<{ type: string }>;
+    marks?: Array<{ type: string; attrs?: Record<string, any> }>;
     attrs?: Record<string, any>;
 }
 
@@ -15,7 +15,7 @@ interface TipTapJsonRendererProps {
 }
 
 export function TipTapJsonRenderer({ content, className = '' }: TipTapJsonRendererProps) {
-    const renderNode = (node: TipTapNode, index: number): React.ReactNode => {
+    const renderNode = (node: TipTapNode, index: number, parentType?: string): React.ReactNode => {
         const { type, content, text, marks, attrs } = node;
 
         // Handle text nodes
@@ -42,7 +42,15 @@ export function TipTapJsonRenderer({ content, className = '' }: TipTapJsonRender
                             element = <code key={index} className="bg-[var(--color-muted)] px-[var(--spacing-xs)] py-[var(--spacing-xs)] rounded-[var(--radius-sm)] text-sm font-mono">{element}</code>;
                             break;
                         case 'link':
-                            // Handle links if you have them
+                            {
+                                const href = mark.attrs?.href || '#';
+                                const target = mark.attrs?.target || '_blank';
+                                element = (
+                                    <a key={index} href={href} target={target} rel="noopener noreferrer" className="text-primary underline underline-offset-4 hover:text-primary/90">
+                                        {element}
+                                    </a>
+                                );
+                            }
                             break;
                     }
                 });
@@ -51,10 +59,44 @@ export function TipTapJsonRenderer({ content, className = '' }: TipTapJsonRender
             return element;
         }
 
+        // Handle image nodes (no children in TipTap image schema)
+        if (type === 'image') {
+            const imageAttrs = attrs || {};
+            const align = imageAttrs.textAlign || imageAttrs.align || 'center';
+            const justify = align === 'right' ? 'justify-end' : align === 'left' ? 'justify-start' : 'justify-center';
+            // When inside a paragraph, render inline to avoid invalid <figure> inside <p>
+            if (parentType === 'paragraph') {
+                return (
+                    <Image
+                        key={index}
+                        src={imageAttrs.src}
+                        alt={imageAttrs.alt || ''}
+                        className="inline-block align-middle max-w-full h-auto rounded-[var(--radius-md)] my-[var(--spacing-xs)]"
+                        showLightbox={true}
+                    />
+                );
+            }
+            // Otherwise render as block-level figure
+            return (
+                <div key={index} className={`my-[var(--spacing-md)] flex ${justify}`}>
+                    <figure className="w-full max-w-3xl">
+                        <Image 
+                            src={imageAttrs.src}
+                            alt={imageAttrs.alt || ''}
+                            className="w-full h-auto rounded-[var(--radius-lg)]"
+                        />
+                        {imageAttrs.title && (
+                            <figcaption className="mt-2 text-xs text-muted-foreground text-center">{imageAttrs.title}</figcaption>
+                        )}
+                    </figure>
+                </div>
+            );
+        }
+
         // Handle content nodes
         if (content) {
             const children = content.map((child, childIndex) => 
-                renderNode(child, childIndex)
+                renderNode(child, childIndex, type)
             );
 
             switch (type) {
@@ -127,17 +169,6 @@ export function TipTapJsonRenderer({ content, className = '' }: TipTapJsonRender
                     return <hr key={index} className="my-[var(--spacing-xl)] border-[var(--color-border)]" />;
                 case 'hardBreak':
                     return <br key={index} />;
-                case 'image':
-                    const imageAttrs = attrs || {};
-                    return (
-                        <div key={index} className="my-[var(--spacing-md)]">
-                            <Image 
-                                src={imageAttrs.src} 
-                                alt={imageAttrs.alt || ''} 
-                                className="max-w-full h-auto rounded-[var(--radius-lg)]"
-                            />
-                        </div>
-                    );
                 case 'table':
                     return (
                         <div key={index} className="overflow-x-auto my-[var(--spacing-md)]">

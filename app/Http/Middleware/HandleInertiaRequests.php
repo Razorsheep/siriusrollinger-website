@@ -80,26 +80,31 @@ class HandleInertiaRequests extends Middleware
                 'type' => 'item',
             ],
             [
+                'label' => 'Events',
+                'href' => '/events',
+                'type' => 'item',
+            ],
+            [
                 'label' => 'Om',
                 'href' => '/about',
                 'type' => 'item',
             ],
-            [
-                'label' => 'Kontakt',
-                'href' => '/contact',
-                'type' => 'item',
-            ],
-            [
-                'label' => 'Ydelser',
-                'type' => 'group',
-                'items' => $ydelser->map(function ($service) {
-                    return [
-                        'label' => $service->title,
-                        'href' => '/'.$service->slug,
-                        'type' => 'item',
-                    ];
-                }),
-            ],
+            // [
+            //     'label' => 'Kontakt',
+            //     'href' => '/contact',
+            //     'type' => 'item',
+            // ],
+            // [
+            //     'label' => 'Ydelser',
+            //     'type' => 'group',
+            //     'items' => $ydelser->map(function ($service) {
+            //         return [
+            //             'label' => $service->title,
+            //             'href' => '/'.$service->slug,
+            //             'type' => 'item',
+            //         ];
+            //     }),
+            // ],
         ];
 
         return $navigationItems;
