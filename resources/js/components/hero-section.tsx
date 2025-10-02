@@ -17,7 +17,7 @@ export function HeroSection() {
     
     // Get hero images from settings or fallback to default image
     const heroImages = settings?.hero_images && settings.hero_images.length > 0 
-        ? settings.hero_images.map((image: string) => image.startsWith('http') ? image : `/storage/${image}`)
+        ? settings.hero_images.map((image: string) => image.startsWith('https') ? image : `/storage/${image}`)
         : ['/images/hero-image.jpeg'];
 
     // Auto-play functionality
