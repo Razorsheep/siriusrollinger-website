@@ -18,7 +18,7 @@ class BlogEntrySeeder extends Seeder
         $blogEntry1 = BlogEntry::create([
             'title' => 'Sirius Juniordag 2023',
             'slug' => 'sirius-juniordag-2023',
-            'content' => json_encode([
+            'content' => [
                 'type' => 'doc',
                 'content' => [
                     [
@@ -47,7 +47,7 @@ class BlogEntrySeeder extends Seeder
                         ],
                     ],
                 ],
-            ]),
+            ],
             'author_id' => 1,
             'date' => '2025-08-20',
             'image' => '/images/logo.png',

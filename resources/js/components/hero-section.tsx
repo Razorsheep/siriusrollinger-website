@@ -60,7 +60,7 @@ export function HeroSection() {
                                 <div className="aspect-video w-full relative">
                                     <img
                                         src={image}
-                                        alt={`Sirius Rollingerne ${index + 1}`}
+                                        alt={`Sirius Rollinger ${index + 1}`}
                                         className="w-full h-full object-cover"
                                     />
                                     {/* Overlay with text content */}
@@ -68,7 +68,7 @@ export function HeroSection() {
                                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                                             <div className="max-w-2xl">
                                                 <h2 className="text-4xl lg:text-6xl font-bold text-white mb-6">
-                                                    Sirius <span className="text-destructive">Rollingerne</span>
+                                                    Sirius <span className="text-destructive">Rollinger</span>
                                                 </h2>
                                                 <p className="text-xl text-white/90 mb-8 leading-relaxed">
                                                     Mental og fysisk trivsel for børn og unge gennem fællesskab og natur

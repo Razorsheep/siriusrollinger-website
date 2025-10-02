@@ -13,7 +13,7 @@ export function Footer() {
                     <div className="md:col-span-2">
                         <div className="flex items-center mb-4">
                             {/* <img src="/images/logo.png" alt="Logo" className="h-12 w-auto mr-2" /> */}
-                            <h4 className="text-xl font-bold">Sirius Rollingerne</h4>
+                            <h4 className="text-xl font-bold">Sirius Rollinger</h4>
                         </div>
                         <p className="text-primary-foreground/80 leading-relaxed">
                             {settings?.footer_text}

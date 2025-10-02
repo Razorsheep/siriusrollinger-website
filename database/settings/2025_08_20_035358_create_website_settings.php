@@ -7,12 +7,12 @@ return new class extends SettingsMigration
     public function up(): void
     {
         $this->migrator->add('website.phone_number', '+45 42 20 38 70');
-        $this->migrator->add('website.email', 'kontakt@siriusrollingerne.dk');
+        $this->migrator->add('website.email', 'kontakt@siriusrollinger.dk');
         $this->migrator->add('website.footer_text', 'Mental og fysisk trivsel for børn og unge gennem fællesskab og natur. | Julie Pio Kragelund og Rasmus Beck');
         $this->migrator->add('website.hero_images', []);
-        $this->migrator->add('website.hero_title', 'Sirius Rollingerne');
+        $this->migrator->add('website.hero_title', 'Sirius');
         $this->migrator->add('website.hero_text', 'Mental og fysisk trivsel for børn og unge gennem fællesskab og natur');
-        $this->migrator->add('website.about_title', 'Om Sirius Rollingerne');
+        $this->migrator->add('website.about_title', 'Om Sirius Rollinger');
 
         $this->migrator->add('website.about_text', [
             'type' => 'doc',

@@ -30,7 +30,8 @@ class BlogEntryForm
                     ->fileAttachmentsDirectory('attachments')
                     ->fileAttachmentsVisibility('public'),
                 SpatieMediaLibraryFileUpload::make('featured_image')
-                    ->collection('featured_image'),
+                    ->collection('featured_image')
+                    ->disk('public'),
                 Select::make('author_id')
                     ->relationship('author', 'name')
                     ->default(1),

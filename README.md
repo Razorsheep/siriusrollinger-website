@@ -1,95 +1,86 @@
-# First Aid Dog Website
+# Sirius Rollinger Website
 
-A professional website for a dog first aid specialist, built with Laravel, React, and Tailwind CSS.
+Public website for Sirius Rollinger. Built with Laravel, Inertia + React, Tailwind CSS, and shadcn/ui, with Filament for admin.
 
 ## Features
 
-- **Danish Language Support**: Menu items and content in Danish
-- **Responsive Design**: Mobile-first approach with beautiful responsive layouts
-- **Professional Color Scheme**: Red and white theme matching the logo
-- **Modern UI Components**: Built with Tailwind CSS and React
+- **Pages & Content**: About page content rendered via TipTap JSON renderer
+- **Blog**: Listing and detail pages, tags, rich content
+- **Events**: Listing and detail pages with calendar download (.ics)
+- **Contact**: Contact form with notifications (Resend)
+- **Admin**: Filament v4 panel for managing content and media
+- **Design System**: Tailwind v4 + shadcn/ui components
 
-## Menu Structure
+## Tech Stack
 
-- **Forside** (Home)
-- **Blog**
-- **Om** (About)
-- **Ydelser** (Services) - Dropdown menu with:
-  - Førstehjælpskurser (First Aid Courses)
-  - Foredrag (Lectures)
-  - Førstehjælpsgrej (First Aid Equipment)
-  - Guides og gode råd (Guides and Good Advice)
+- **Backend**: Laravel 12 (PHP 8.4)
+- **Frontend**: Inertia v2 + React 19 + TypeScript
+- **Styling**: Tailwind CSS v4
+- **UI**: shadcn/ui
+- **Admin**: Filament v4 (Livewire v3)
+- **Testing**: Pest v3
+- **Formatting**: Laravel Pint
 
-## Homepage Sections
+## Navigation
 
-1. **Header**: Logo, navigation menu, and mobile-responsive design
-2. **Hero Section**: Compelling headline with call-to-action buttons
-3. **Services Section**: 4 service cards highlighting main offerings
-4. **CTA Section**: Call-to-action for course enrollment
-5. **Footer**: Company information and quick links
-
-## Technical Stack
-
-- **Backend**: Laravel 11
-- **Frontend**: React 19 with TypeScript
-- **Styling**: Tailwind CSS 4
-- **Build Tool**: Vite
-- **Icons**: Lucide React
+- Forside: `/`
+- Blog: `/blog`
+- Events: `/events`
+- Om: `/about`
+- Kontakt: `/contact`
 
 ## Getting Started
 
-1. Install dependencies:
-   ```bash
-   composer install
-   npm install
-   ```
+1) Install dependencies
+```bash
+composer install
+npm install
+```
 
-2. Set up environment:
-   ```bash
-   cp .env.example .env
-   php artisan key:generate
-   ```
+2) Configure environment
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-3. Run database migrations:
-   ```bash
-   php artisan migrate
-   ```
+3) Database (SQLite preconfigured in repo)
+```bash
+php artisan migrate --seed
+```
 
-4. Build assets:
-   ```bash
-   npm run build
-   ```
+4) Run dev servers
+```bash
+npm run dev
+php artisan serve
+```
 
-5. Start development server:
-   ```bash
-   php artisan serve
-   npm run dev
-   ```
+If assets don’t load, run: `npm run build`.
 
-## Development
+## Development Scripts
 
-- **Frontend Development**: `npm run dev`
-- **Type Checking**: `npm run types`
-- **Production Build**: `npm run build`
+- Start Vite (dev): `npm run dev`
+- Build assets: `npm run build`
+- Lint/format PHP (Pint): `vendor/bin/pint --dirty`
+- Run tests (Pest): `php artisan test`
 
-## File Structure
+## Notable Code
 
-- `resources/js/pages/home.tsx` - Main homepage component
-- `app/Http/Controllers/HomeController.php` - Homepage controller
-- `routes/web.php` - Web routes including homepage
-- `public/images/logo.png` - Company logo
+- Inertia shared props: `app/Http/Middleware/HandleInertiaRequests.php`
+- Routes: `routes/web.php`
+- TipTap JSON renderer: `resources/js/components/tiptap-json-renderer.tsx`
+- Pages
+  - Home: `resources/js/pages/home.tsx`
+  - Blog: `resources/js/pages/blog/*`
+  - Events: `resources/js/pages/events/*`
+  - About: `resources/js/pages/about.tsx`
+- Admin (Filament): `app/Filament/*`
 
-## Customization
+## Events Calendar (.ics)
 
-The homepage uses a red and white color scheme that can be customized by modifying the Tailwind classes in the React components. The color palette includes:
+Event details page provides a “Gem i kalender” button that generates an ICS file client‑side with title, start/end, location, and description.
 
-- Primary Red: `red-600`, `red-700`, `red-900`
-- Light Reds: `red-50`, `red-100`, `red-200`
-- White: `white`
-- Text Colors: Various shades of red for hierarchy
+## Troubleshooting
 
-## Browser Support
-
-- Modern browsers with ES6+ support
-- Mobile-responsive design
-- Progressive enhancement approach
+- Vite manifest error: run `npm run build` or restart `npm run dev`
+- Missing DB/tables: run `php artisan migrate --seed`
+- Styles off after edits: run `vendor/bin/pint --dirty` and rebuild assets

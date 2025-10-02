@@ -73,7 +73,7 @@ export default function EventShow() {
     };
 
     const handleAddToCalendar = () => {
-        const uid = `${event.id}@siriusrollingerne`;
+        const uid = `${event.id}@siriusrollinger`;
         const dtStart = toICSDate(event.start_time);
         const dtEnd = event.end_time ? toICSDate(event.end_time) : undefined;
         const description = extractTextFromTiptap(event.content).slice(0, 1000);
